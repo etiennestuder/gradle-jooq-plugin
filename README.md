@@ -7,7 +7,9 @@ For each source set, the plugin adds a task to generate the jOOQ Java sources fr
 The schema generation tasks fully participate in the Gradle uptodate checks.
 
 # Usage
-To use the plugin, configure your `build.gradle` script and add the plugin:
+
+## Gradle 1.x and 2.0
+To use the plugin with versions of Gradle older than 2.1, configure your `build.gradle` script and add the plugin:
 
 ```groovy
 buildscript {
@@ -20,6 +22,15 @@ buildscript {
     }
 }
 apply plugin: 'nu.studer.jooq'
+```
+
+## Gradle 2.1 and higher
+As of Gradle 2.1, configure your `build.gradle` script and add the plugin:
+
+```groovy
+plugins {
+    id 'nu.studer.jooq' version '1.0'
+}
 ```
 
 # Tasks
