@@ -8,6 +8,7 @@ The schema generation tasks fully participate in the Gradle uptodate checks.
 
 # Usage
 To use the plugin, configure your `build.gradle` script and add the plugin:
+
 ```groovy
 buildscript {
     repositories {
