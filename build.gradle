@@ -96,3 +96,7 @@ bintray {
 
     dryRun = false
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0-rc-1'
+}
