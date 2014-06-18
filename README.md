@@ -43,21 +43,30 @@ jooq {
            user = 'some_user'
            password = 'secret'
            schema = 'public'
+           properties = []
        }
        generator {
            name = 'org.jooq.util.DefaultGenerator'
+           strategy {
+               name = 'org.jooq.util.DefaultGeneratorStrategy'
+               // ...
+           }
            database {
                name = 'org.jooq.util.postgres.PostgresDatabase'
                inputSchema = 'public'
+               // ...
            }
            generate {
+               relations = true
                deprecated = false
                records = true
                immutablePojos = true
                fluentSetters = true
+               // ...
            }
            target {
                packageName = 'nu.studer.sample'
+               // directory = ...
            }
        }
    }
