@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 buildscript {
     repositories {
         jcenter()
@@ -35,7 +37,7 @@ project.tasks.withType(Jar).all {
                 'Implementation-Version': version,
                 'Implementation-Vendor': 'Etienne Studer',
                 'Implementation-URL': 'https://github.com/etiennestuder/gradle-jooq-plugin',
-                'Build-Date': new Date(),
+                'Build-Date': new SimpleDateFormat("yyyy-MM-dd").format(new Date()),
                 'Build-JDK': System.getProperty('java.version'),
                 'Build-Gradle': gradle.gradleVersion
     }
