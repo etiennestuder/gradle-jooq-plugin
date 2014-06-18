@@ -54,8 +54,9 @@ gradle generateJooqSchemaSource
 
 The code generation tasks are automatically configured as dependencies of the corresponding source compilation tasks
 of the Java plugin. Hence, running a build that eventually needs to compile sources will first trigger the required
-jOOQ code generation tasks. To see the log output of the jOOQ code generation tool, run the Gradle build with log
-level `info`:
+jOOQ code generation tasks.
+
+To see the log output of the jOOQ code generation tool, run the Gradle build with log level `info`:
 
 ```console
 gradle build -i
