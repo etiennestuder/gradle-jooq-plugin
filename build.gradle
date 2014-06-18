@@ -28,7 +28,7 @@ dependencies {
 }
 
 group = 'nu.studer'
-version = '1.0'
+version = '1.0.1'
 
 project.tasks.withType(Jar).all {
     from file('LICENSE')
@@ -71,5 +71,5 @@ bintray {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.0-rc-1'
+    gradleVersion = '1.12'
 }
