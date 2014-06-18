@@ -53,35 +53,6 @@ artifacts {
     archives jarSources
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: uri('../repo'))
-            pom.project {
-                name 'Gradle jOOQ plugin'
-                description 'Gradle plugin that integrates jOOQ. Adds a task for each source set to generate the sources from a given database schema. The tasks fully participate in the Gradle uptodate checks.'
-                url 'https://github.com/etiennestuder/gradle-jooq-plugin'
-                inceptionYear '2014'
-
-                developers {
-                    developer {
-                        id 'etiennestuder'
-                        name 'Etienne Studer'
-                        email 'etienne@studer.nu'
-                    }
-                }
-
-                licenses {
-                    license {
-                        name 'Apache License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.html'
-                    }
-                }
-            }
-        }
-    }
-}
-
 bintray {
     user = "$BINTRAY_USER"
     key = "$BINTRAY_API_KEY"
