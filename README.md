@@ -16,6 +16,9 @@ You can find out more details about the actual jOOQ source code generation in th
 The jOOQ plugin automatically applies the Java plugin. Thus, there is no need to explicitly apply the Java plugin in
 your build script when using the jOOQ plugin.
 
+Depending on the type of database that is accessed to derive the jOOQ Java sources, the corresponding driver must
+be made available on the plugin classpath.
+
 The jOOQ plugin is hosted at [JCenter](https://bintray.com/bintray/jcenter).
 
 ## Gradle 1.x and 2.0
@@ -28,6 +31,7 @@ buildscript {
     }
     dependencies {
         classpath 'nu.studer:gradle-jooq-plugin:1.0'
+        classpath 'postgresql:postgresql:9.1-901.jdbc4' // database-specific JDBC driver
     }
 }
 apply plugin: 'nu.studer.jooq'
