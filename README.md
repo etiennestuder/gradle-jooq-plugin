@@ -3,8 +3,8 @@ gradle-jooq-plugin
 
 # Overview
 [Gradle](http://www.gradle.org) plugin that integrates [jOOQ](http://www.jooq.org).
-The plugin adds a task for each source set to generate the jOOQ sources from a given database schema.
-The tasks fully participate in the Gradle uptodate checks.
+For each source set, the plugin adds a task to generate the jOOQ Java sources from a given database schema.
+The schema generation tasks fully participate in the Gradle uptodate checks.
 
 # Usage
 To use the plugin, configure your `build.gradle` script and add the plugin:
@@ -25,11 +25,15 @@ apply plugin: 'nu.studer.jooq'
 The plugin extends the Java plugin and, for each source set, adds a new `generate[SourceSet]JooqSchemaSource` task to your project.
 Each task generates the jOOQ Java sources from the configured database schema and includes them in the corresponding source set.
 Using the default source sets of the Java plugin, the tasks `generateJooqSchemaSource` and `generateTestJooqSchemaSource` are available.
-
+The schema generation tasks are automatically configured as dependencies of the corresponding source compilation tasks of the Java plugin.
 
 ## Configuration
 
 ### build.gradle
+The jOOQ code generation is configured per target source set.
+The configuration below shows a sample configuration that will create the jOOQ Java sources and include them in the `main` source set.
+See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.3.0.xsd) for the full set of configuration options.
+
 ```groovy
 jooq {
    main {
@@ -59,8 +63,6 @@ jooq {
    }
 }
 ```
-
-See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.3.0.xsd) for the full set of configuration options.
 
 # License
 This plugin is available under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
