@@ -64,7 +64,6 @@ gradle build -i
 
 ## Configuration
 
-### build.gradle
 The jOOQ code generation is configured per source set in which to include the generated sources. The configuration
 below shows a sample configuration that creates the jOOQ Java sources from a PostgreSQL database schema and includes
 them in the `main` source set.
