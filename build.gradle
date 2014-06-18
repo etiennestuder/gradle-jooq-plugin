@@ -36,10 +36,10 @@ project.tasks.withType(Jar).all {
         attributes 'Implementation-Title': 'Gradle jOOQ plugin',
                 'Implementation-Version': version,
                 'Implementation-Vendor': 'Etienne Studer',
-                'Implementation-URL': 'https://github.com/etiennestuder/gradle-jooq-plugin',
                 'Build-Date': new SimpleDateFormat("yyyy-MM-dd").format(new Date()),
                 'Build-JDK': System.getProperty('java.version'),
-                'Build-Gradle': gradle.gradleVersion
+                'Build-Gradle': gradle.gradleVersion,
+                'Project-Url': 'https://github.com/etiennestuder/gradle-jooq-plugin'
     }
 }
 
