@@ -12,7 +12,7 @@ You can find out more details about the actual jOOQ source code generation in th
 
 # Plugin
 
-#General
+##General
 The jOOQ plugin automatically applies the Java plugin. Thus, there is no need to explicitly apply the Java plugin in
 your build script when using the jOOQ plugin.
 
@@ -48,21 +48,20 @@ to your project. Each task generates the jOOQ Java sources from the configured d
 sources in the corresponding source set. Assuming the default source sets of the Java plugin, the tasks
 `generateJooqSchemaSource` and `generateTestJooqSchemaSource` are available.
 
-The code generation tasks are automatically configured as dependencies of the corresponding source compilation tasks
-of the Java plugin. Hence, running a build that eventually needs to compile sources will first trigger the required
-jOOQ code generation tasks. Run the full build as usual:
-
 ```console
-gradle build
+gradle generateJooqSchemaSource
 ```
 
-To see the log output of the jOOQ code generation tool, run the Gradle build with log level `info`:
+The code generation tasks are automatically configured as dependencies of the corresponding source compilation tasks
+of the Java plugin. Hence, running a build that eventually needs to compile sources will first trigger the required
+jOOQ code generation tasks. To see the log output of the jOOQ code generation tool, run the Gradle build with log
+level `info`:
 
 ```console
 gradle build -i
 ```
 
-## Configuration
+# Configuration
 
 The jOOQ code generation is configured per source set in which to include the generated sources. The configuration
 below shows a sample configuration that creates the jOOQ Java sources from a PostgreSQL database schema and includes
