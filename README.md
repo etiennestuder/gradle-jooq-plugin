@@ -69,7 +69,7 @@ The jOOQ code generation is configured per source set in which to include the ge
 below shows a sample configuration that creates the jOOQ Java sources from a PostgreSQL database schema and includes
 them in the `main` source set.
 
-By default, the generated sources are written to `build/generated-src/jooq/<sourceSet>'. The output directory can
+By default, the generated sources are written to `build/generated-src/jooq/<sourceSet>`. The output directory can
 be configured by explicitly setting the `directory` attribute of the `target` configuration.
 
 See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.3.0.xsd) for the full set of configuration options.
