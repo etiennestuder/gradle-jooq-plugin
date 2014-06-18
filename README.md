@@ -24,7 +24,7 @@ apply plugin: 'nu.studer.jooq'
 # Tasks
 The plugin extends the Java plugin and, for each source set, adds a new `generate[SourceSet]JooqSchemaSource` task to your project.
 Each task generates the jOOQ Java sources from the configured database schema and includes them in the corresponding source set.
-Using the default source sets of the Java plugin, the tasks `generateJooqSchemaSource` and `generateTestJooqSchemaSource` are available.
+Assuming the default source sets of the Java plugin, the tasks `generateJooqSchemaSource` and `generateTestJooqSchemaSource` are available.
 The schema generation tasks are automatically configured as dependencies of the corresponding source compilation tasks of the Java plugin.
 
 ## Configuration
