@@ -2,14 +2,24 @@ gradle-jooq-plugin
 ==================
 
 # Overview
-[Gradle](http://www.gradle.org) plugin that integrates [jOOQ](http://www.jooq.org).
-For each source set, the plugin adds a task to generate the jOOQ Java sources from a given database schema.
-The schema generation tasks fully participate in the Gradle uptodate checks.
+[Gradle](http://www.gradle.org) plugin that integrates [jOOQ](http://www.jooq.org). For each source set,
+the plugin adds a task to generate the jOOQ Java sources from a given database schema, and includes the
+generated sources in that given source set. The code generation tasks fully participate in the Gradle
+uptodate checks.
 
-# Usage
+You can find out more details about the actual jOOQ source code generation in the
+[jOOQ documentation](http://www.jooq.org/doc/3.0/manual/code-generation).
+
+# Plugin
+
+#General
+The jOOQ plugin is hosted at [JCenter](https://bintray.com/bintray/jcenter).
+
+The jOOQ plugin automatically applies the Java plugin. Thus, there is no need to explicitly apply the Java plugin in
+your build script when using the jOOQ plugin.
 
 ## Gradle 1.x and 2.0
-To use the plugin with versions of Gradle older than 2.1, configure your `build.gradle` script and add the plugin:
+To use the jOOQ plugin with versions of Gradle older than 2.1, configure your `build.gradle` script and add the plugin:
 
 ```groovy
 buildscript {
@@ -34,17 +44,31 @@ plugins {
 ```
 
 # Tasks
-The plugin extends the Java plugin and, for each source set, adds a new `generate[SourceSet]JooqSchemaSource` task to your project.
-Each task generates the jOOQ Java sources from the configured database schema and includes them in the corresponding source set.
-Assuming the default source sets of the Java plugin, the tasks `generateJooqSchemaSource` and `generateTestJooqSchemaSource` are available.
-The schema generation tasks are automatically configured as dependencies of the corresponding source compilation tasks of the Java plugin.
+For each source set declared in the build, the jOOQ plugin adds a new `generate[SourceSet]JooqSchemaSource` task
+to your project. Each task generates the jOOQ Java sources from the configured database schema and includes these
+sources in the corresponding source set. Assuming the default source sets of the Java plugin, the tasks
+`generateJooqSchemaSource` and `generateTestJooqSchemaSource` are available.
+
+The code generation tasks are automatically configured as dependencies of the corresponding source compilation tasks
+of the Java plugin. Hence, running a build that eventually needs to compile sources will first trigger the jOOQ code
+generation tasks. Run the full build as usual:
+
+```console
+gradle build
+```
+
+To see the log output of the jOOQ code generation tool, run the Gradle build with log level `info`:
+
+```console
+gradle build -i
+```
 
 ## Configuration
 
 ### build.gradle
-The jOOQ code generation is configured per target source set.
-The configuration below shows a sample configuration that will create the jOOQ Java sources and include them in the `main` source set.
-See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.3.0.xsd) for the full set of configuration options.
+The jOOQ code generation is configured per target source set. The configuration below shows a sample configuration that
+will create the jOOQ Java sources and include them in the `main` source set. See the
+[jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.3.0.xsd) for the full set of configuration options.
 
 ```groovy
 jooq {
