@@ -30,7 +30,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'nu.studer:gradle-jooq-plugin:1.0.1'
+        classpath 'nu.studer:gradle-jooq-plugin:1.0.2'
         classpath 'postgresql:postgresql:9.1-901.jdbc4' // database-specific JDBC driver
     }
 }
