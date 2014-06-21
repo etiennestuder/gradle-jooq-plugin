@@ -28,7 +28,7 @@ dependencies {
 }
 
 group = 'nu.studer'
-version = '1.0.1'
+version = '1.0.2'
 
 project.tasks.withType(Jar).all {
     from file('LICENSE')
@@ -51,6 +51,14 @@ task jarSources(type: Jar) {
 
 artifacts {
     archives jarSources
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repo'))
+        }
+    }
 }
 
 bintray {
