@@ -42,7 +42,7 @@ class JooqTask extends DefaultTask {
         // this check is necessary since a jOOQ configuration is always created for each source set by the plugin
         JooqExtension jooqExtension = (JooqExtension) project.property(JooqConstants.JOOQ_EXTENSION_NAME);
         if (jooqExtension.configuredConfigs["$sourceSetName"]) {
-            Configuration config = (Configuration) jooqExtension."$sourceSetName".target;
+            Configuration config = jooqExtension.getJooqConfiguration("$sourceSetName")
             config.generator.target.directory = project.file(config.generator.target.directory).absolutePath
             new GenerationTool().run config;
         } else {

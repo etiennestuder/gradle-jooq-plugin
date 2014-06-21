@@ -16,6 +16,7 @@
 package nu.studer.gradle.jooq
 
 import nu.studer.gradle.util.BridgeExtension
+import org.gradle.api.tasks.SourceSet
 import org.jooq.util.jaxb.Configuration
 
 /**
@@ -39,14 +40,19 @@ class JooqExtension {
             // keep track of the source sets for which configuration has been invoked via closure
             configuredConfigs[sourceSetName] = true
 
-            // find existing extension for the given source set, otherwise create new extension
-            def config = getOrCreateConfigExtension sourceSetName
+            // find bridge extension for the given source set
+            def config = configs[sourceSetName]
 
-            // apply the given closure to the extension, i.e. its Configuration object
+            // apply the given closure to the bridge extension, i.e. its Configuration object
+            def delegate = config
             Closure copy = (Closure) args[0].clone();
             copy.resolveStrategy = Closure.DELEGATE_FIRST;
-            copy.delegate = config;
-            copy.call();
+            copy.delegate = delegate;
+            if (copy.maximumNumberOfParameters == 0) {
+                copy.call();
+            } else {
+                copy.call delegate;
+            }
 
             config.target
         } else {
@@ -54,18 +60,14 @@ class JooqExtension {
         }
     }
 
-    def propertyMissing(String sourceSetName) {
-        // find existing extension for the given source set, otherwise create new extension
-        getOrCreateConfigExtension sourceSetName
+    def registerSourceSet(SourceSet sourceSet) {
+        def sourceSetName = sourceSet.name
+        def config = new BridgeExtension(new Configuration(), "${path}.${sourceSetName}")
+        configs[sourceSetName] = config
     }
 
-    def getOrCreateConfigExtension(String sourceSetName) {
-        def config = configs[sourceSetName]
-        if (!config) {
-            config = new BridgeExtension(new Configuration(), "${path}.${sourceSetName}")
-            configs[sourceSetName] = config
-        }
-        config
+    Configuration getJooqConfiguration(String sourceSetName) {
+        configs[sourceSetName].target
     }
 
 }

@@ -16,7 +16,6 @@
 package nu.studer.gradle.jooq
 
 import nu.studer.gradle.util.Objects
-import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
@@ -49,19 +48,13 @@ class JooqPlugin implements Plugin<Project> {
         JooqExtension jooqExtension = project.extensions.create(JooqConstants.JOOQ_EXTENSION_NAME,
                 JooqExtension.class, JooqConstants.JOOQ_EXTENSION_NAME);
 
-        // validate extension only contains configurations for valid source sets
-        project.afterEvaluate {
-            Set existingSourceSets = project.convention.getPlugin(JavaPluginConvention.class).sourceSets.names
-            Set configuredSourceSets = new HashSet(jooqExtension.configs.keySet())
-            configuredSourceSets.removeAll(existingSourceSets)
-            if (configuredSourceSets) {
-                throw new InvalidUserDataException("Extension '$JooqConstants.JOOQ_EXTENSION_NAME' contains unknown source set(s): $configuredSourceSets")
-            }
-        }
-
         // add a jOOQ task for each source set
         project.convention.getPlugin(JavaPluginConvention.class).sourceSets.all { SourceSet sourceSet ->
-            org.jooq.util.jaxb.Configuration config = jooqExtension."$sourceSet.name".target
+            // make the source set known to the extension
+            jooqExtension.registerSourceSet sourceSet
+
+            // get the jOOQ configuration object created by the extension for the source set
+            org.jooq.util.jaxb.Configuration config = jooqExtension.getJooqConfiguration("$sourceSet.name")
 
             // add a task instance that generates the jOOQ sources
             String jooqTaskName = sourceSet.getTaskName("generate", "JooqSchemaSource");
