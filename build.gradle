@@ -12,7 +12,7 @@ buildscript {
 
 apply plugin: 'groovy'
 apply plugin: 'maven-publish'
-apply plugin: 'bintray'
+apply plugin: 'com.jfrog.bintray'
 
 repositories {
     jcenter()
@@ -28,7 +28,7 @@ dependencies {
 }
 
 group = 'nu.studer'
-version = '1.0.2'
+version = '1.0.3'
 
 project.tasks.withType(Jar).all {
     from file('LICENSE')
@@ -46,6 +46,16 @@ project.tasks.withType(Jar).all {
 task sourcesJar(type: Jar) {
     description = 'Assembles a jar archive containing the main sources.'
     from sourceSets.main.allSource
+}
+
+task docsJar(type: Jar) {
+    description = 'Assembles a jar archive containing the source documentation.'
+    into('javadoc') {
+        from javadoc
+    }
+    into('groovydoc') {
+        from groovydoc
+    }
 }
 
 def pomConfig = {
@@ -77,6 +87,10 @@ publishing {
                 classifier "sources"
             }
 
+            artifact docsJar {
+                classifier "javadoc"
+            }
+
             pom.withXml {
                 asNode().children().last() + pomConfig
             }
@@ -86,6 +100,7 @@ publishing {
     // local file repo
     repositories {
         maven {
+            name 'localFolder'
             url '../repo'
         }
     }
@@ -110,4 +125,5 @@ bintray {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.12'
+    description = 'Generates the Gradle wrapper files'
 }
