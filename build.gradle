@@ -11,7 +11,7 @@ buildscript {
 }
 
 apply plugin: 'groovy'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'bintray'
 
 repositories {
@@ -43,20 +43,50 @@ project.tasks.withType(Jar).all {
     }
 }
 
-task jarSources(type: Jar) {
+task sourcesJar(type: Jar) {
     description = 'Assembles a jar archive containing the main sources.'
     from sourceSets.main.allSource
-    classifier = 'sources'
 }
 
-artifacts {
-    archives jarSources
+def pomConfig = {
+    name 'Gradle jOOQ plugin'
+    description 'Gradle plugin that integrates jOOQ. Adds a task for each source set to generate the sources from a given database schema. The tasks fully participate in the Gradle uptodate checks.'
+    url 'https://github.com/etiennestuder/gradle-jooq-plugin'
+    inceptionYear '2014'
+    developers {
+        developer {
+            id 'etiennestuder'
+            name 'Etienne Studer'
+            email 'etienne@studer.nu'
+        }
+    }
+    licenses {
+        license {
+            name 'Apache License, Version 2.0'
+            url 'http://www.apache.org/licenses/LICENSE-2.0.html'
+        }
+    }
 }
 
-uploadArchives {
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+
+            artifact sourcesJar {
+                classifier "sources"
+            }
+
+            pom.withXml {
+                asNode().children().last() + pomConfig
+            }
+        }
+    }
+
+    // local file repo
     repositories {
-        mavenDeployer {
-            repository(url: uri('../repo'))
+        maven {
+            url '../repo'
         }
     }
 }
@@ -65,7 +95,7 @@ bintray {
     user = "$BINTRAY_USER"
     key = "$BINTRAY_API_KEY"
 
-    configurations = ['archives']
+    publications = ['mavenJava']
 
     pkg {
         repo = 'gradle-plugins'
