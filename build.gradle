@@ -12,7 +12,7 @@ buildscript {
 
 apply plugin: 'groovy'
 apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'bintray'
 
 repositories {
     jcenter()
@@ -118,11 +118,11 @@ bintray {
         desc = 'Gradle plugin that integrates jOOQ'
         licenses = ['Apache-2.0']
         labels = ['gradle', 'plugin']
-        publicDownloadNumbers = true
+        // publicDownloadNumbers = true
     }
 
     dryRun = true
-    publish = false
+    // publish = false
 }
 
 task wrapper(type: Wrapper) {
