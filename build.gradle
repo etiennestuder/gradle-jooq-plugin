@@ -118,9 +118,11 @@ bintray {
         desc = 'Gradle plugin that integrates jOOQ'
         licenses = ['Apache-2.0']
         labels = ['gradle', 'plugin']
+        publicDownloadNumbers = true
     }
 
-    dryRun = false
+    dryRun = true
+    publish = false
 }
 
 task wrapper(type: Wrapper) {
