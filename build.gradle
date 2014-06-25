@@ -97,7 +97,6 @@ publishing {
         }
     }
 
-    // local file repo
     repositories {
         maven {
             name 'localFolder'
@@ -127,5 +126,5 @@ bintray {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.12'
-    description = 'Generates the Gradle wrapper files'
+    description = 'Generates the Gradle wrapper files.'
 }
