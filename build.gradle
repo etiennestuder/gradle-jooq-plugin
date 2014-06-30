@@ -30,6 +30,11 @@ dependencies {
 group = 'nu.studer'
 version = '1.0.3'
 
+compileGroovy {
+    sourceCompatibility = compatibilityJreVersion
+    targetCompatibility = compatibilityJreVersion
+}
+
 project.tasks.withType(Jar).all {
     from file('LICENSE')
     manifest {
