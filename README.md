@@ -12,7 +12,7 @@ You can find out more details about the actual jOOQ source code generation in th
 
 # Plugin
 
-##General
+## General
 The jOOQ plugin automatically applies the Java plugin. Thus, there is no need to explicitly apply the Java plugin in
 your build script when using the jOOQ plugin.
 
