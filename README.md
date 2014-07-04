@@ -17,7 +17,7 @@ The jOOQ plugin automatically applies the Java plugin. Thus, there is no need to
 your build script when using the jOOQ plugin.
 
 Depending on the type of database that is accessed to derive the jOOQ Java sources, the corresponding driver must
-be made available on the plugin classpath.
+be put on the plugin classpath.
 
 The jOOQ plugin is hosted at [JCenter](https://bintray.com/bintray/jcenter).
 
