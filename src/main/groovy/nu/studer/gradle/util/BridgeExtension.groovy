@@ -63,7 +63,7 @@ class BridgeExtension {
         if (target.hasProperty(name)) {
             target."$name" = value
         } else {
-            throw new InvalidUserDataException("Invalid property: \"$name\" on \"extension '$path'\", value: $value")
+            throw new InvalidUserDataException("Invalid property: '$name' on extension '$path', value: $value")
         }
     }
 
