@@ -16,58 +16,75 @@
 package nu.studer.gradle.jooq
 
 import nu.studer.gradle.util.BridgeExtension
+import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.jooq.util.jaxb.Configuration
 
 /**
- * Extension point used to configure the tasks that are made available by this plugin.
- * This extension point allows separate configuration for each source set.
+ * Extension point to configure the jOOQ source code generation and the source set in which to include
+ * the generated sources. This extension point allows multiple jOOQ configurations per source set.
  */
 class JooqExtension {
 
+    final Project project
+    final Closure jooqConfigurationHandler
     final String path
-    final configs
-    final configuredConfigs
+    final Map<String, JooqConfiguration> configs
 
-    JooqExtension(String path) {
+    JooqExtension(Project project, Closure jooqConfigurationHandler, String path) {
+        this.project = project
+        this.jooqConfigurationHandler = jooqConfigurationHandler
         this.path = path
         this.configs = [:]
-        this.configuredConfigs = [:]
     }
 
-    def methodMissing(String sourceSetName, args) {
-        if (args.length == 1 && args[0] instanceof Closure) {
-            // keep track of the source sets for which configuration has been invoked via closure
-            configuredConfigs[sourceSetName] = true
-
-            // find bridge extension for the given source set
-            def config = configs[sourceSetName]
-
-            // apply the given closure to the bridge extension, i.e. its Configuration object
-            def delegate = config
-            Closure copy = (Closure) args[0].clone();
-            copy.resolveStrategy = Closure.DELEGATE_FIRST;
-            copy.delegate = delegate;
-            if (copy.maximumNumberOfParameters == 0) {
-                copy.call();
-            } else {
-                copy.call delegate;
-            }
-
-            config.target
+    @SuppressWarnings("GroovyAssignabilityCheck")
+    def methodMissing(String configName, args) {
+        if (args.length == 2 && args[0] instanceof SourceSet && args[1] instanceof Closure) {
+            applyClosureToConfig(configName, args[0], args[1])
         } else {
-            throw new MissingMethodException(sourceSetName, getClass(), args)
+            throw new MissingMethodException(configName, getClass(), args)
         }
     }
 
-    def registerSourceSet(SourceSet sourceSet) {
-        def sourceSetName = sourceSet.name
-        def config = new BridgeExtension(new Configuration(), "${path}.${sourceSetName}")
-        configs[sourceSetName] = config
+    private void applyClosureToConfig(String configName, SourceSet sourceSet, Closure closure) {
+        // find or create bridge extension for the given configuration name
+        def jooqConfig = findOrCreateConfig(configName, sourceSet)
+
+        // ensure the same configuration is not defined for different source sets
+        if (sourceSet.name != jooqConfig.sourceSet.name) {
+            throw new IllegalArgumentException("Configuration '$configName' configured for multiple source sets: $sourceSet and $jooqConfig.sourceSet")
+        }
+
+        // apply the given closure to the bridge extension, i.e. its Configuration object
+        def delegate = jooqConfig.configBridge
+        Closure copy = (Closure) closure.clone();
+        copy.resolveStrategy = Closure.DELEGATE_FIRST;
+        copy.delegate = delegate;
+        if (copy.maximumNumberOfParameters == 0) {
+            copy.call();
+        } else {
+            copy.call delegate;
+        }
+
+        delegate.target
     }
 
-    Configuration getJooqConfiguration(String sourceSetName) {
-        configs[sourceSetName].target
+    @SuppressWarnings("GroovyAssignabilityCheck")
+    private JooqConfiguration findOrCreateConfig(String configName, SourceSet sourceSet) {
+        JooqConfiguration jooqConfig = configs[configName]
+        if (!jooqConfig) {
+            // create jOOQ configuration
+            def configBridge = new BridgeExtension(new Configuration(), "${path}.${configName}")
+            jooqConfig = new JooqConfiguration(sourceSet, configBridge)
+
+            // pre-configure jOOQ configuration and create task derived from the configuration
+            jooqConfigurationHandler configName, jooqConfig
+
+            // register jOOQ configuration
+            configs[configName] = jooqConfig
+        }
+        jooqConfig
     }
 
 }

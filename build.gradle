@@ -21,6 +21,7 @@ repositories {
 dependencies {
     compile gradleApi()
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+    compile "commons-lang:commons-lang:$comonsLangVersion"
 
     compile("org.jooq:jooq:$jooqVersion")
     compile("org.jooq:jooq-meta:$jooqVersion")

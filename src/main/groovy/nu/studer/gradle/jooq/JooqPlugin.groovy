@@ -15,66 +15,77 @@
  */
 package nu.studer.gradle.jooq
 
+import nu.studer.gradle.util.BridgeExtension
 import nu.studer.gradle.util.Objects
+import org.apache.commons.lang.StringUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.JavaPlugin
-import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.TaskOutputs
 import org.jooq.util.jaxb.Generator
 import org.jooq.util.jaxb.Target
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * Plugin that extends the Java plugin, adds an empty 'jooq' configuration inherited by the compile configuration, and
- * registers a {@link JooqTask} for each defined source set that generates the jOOQ sources from the configured
- * database. The tasks properly participate in the Gradle uptodate checks. The tasks are wired as dependencies of the
- * compilation tasks of the Java plugin.
+ * registers a {@link JooqTask} for each defined jOOQ configuration. Each task generates the jOOQ source code from the
+ * configured database. The tasks properly participate in the Gradle uptodate checks. The tasks are wired as dependencies
+ * of the compilation tasks of the Java plugin.
  */
 class JooqPlugin implements Plugin<Project> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JooqPlugin.class);
+
+    @SuppressWarnings("GroovyAssignabilityCheck")
     public void apply(Project project) {
         // apply the Java plugin since jOOQ generates Java source code
-        project.plugins.apply(JavaPlugin.class);
+        project.plugins.apply(JavaPlugin.class)
+        LOGGER.debug("Applied plugin 'JavaPlugin'")
 
         // add a new 'jooq' configuration that the Java compile configuration will inherit from
-        Configuration jooqConfiguration = project.configurations.create(JooqConstants.JOOQ_CONFIGURATION_NAME).
+        Configuration configuration = project.configurations.create(JooqConstants.JOOQ_CONFIGURATION_NAME).
                 setVisible(false).
                 setTransitive(false).
-                setDescription("Compile classpath for generated jOOQ sources.");
-        project.configurations.getByName(JavaPlugin.COMPILE_CONFIGURATION_NAME).extendsFrom(jooqConfiguration);
+                setDescription("Compile classpath for generated jOOQ sources.")
+        project.configurations.getByName(JavaPlugin.COMPILE_CONFIGURATION_NAME).extendsFrom(configuration)
+        LOGGER.debug("Registered configuration '$JooqConstants.JOOQ_CONFIGURATION_NAME'")
 
-        // register extension
-        JooqExtension jooqExtension = project.extensions.create(JooqConstants.JOOQ_EXTENSION_NAME,
-                JooqExtension.class, JooqConstants.JOOQ_EXTENSION_NAME);
+        // define the logic of what to do when a new jOOQ configuration is declared in the 'jooq' extension
+        Closure<TaskOutputs> configHandler = { String jooqConfigName, JooqConfiguration jooqConfiguration ->
+            // add a task instance that generates the jOOQ sources for the given jOOQ configuration
+            String jooqTaskName = "generate${StringUtils.capitalize(jooqConfigName)}JooqSchemaSource"
+            JooqTask jooqTask = project.tasks.create(jooqTaskName, JooqTask.class)
+            jooqTask.description = "Generates the jOOQ sources from the '$jooqConfigName' jOOQ configuration."
+            jooqTask.group = "jOOQ"
+            jooqTask.jooqConfiguration = jooqConfiguration
+            LOGGER.debug("Registered task '$jooqTask.name'")
 
-        // add a jOOQ task for each source set
-        project.convention.getPlugin(JavaPluginConvention.class).sourceSets.all { SourceSet sourceSet ->
-            // make the source set known to the extension
-            jooqExtension.registerSourceSet sourceSet
+            // get the jOOQ-specific configuration object and the target source set from the given jOOQ configuration
+            BridgeExtension configBridge = jooqConfiguration.configBridge
+            org.jooq.util.jaxb.Configuration config = configBridge.target
+            SourceSet sourceSet = jooqConfiguration.sourceSet
 
-            // get the jOOQ configuration object created by the extension for the source set
-            org.jooq.util.jaxb.Configuration config = jooqExtension.getJooqConfiguration("$sourceSet.name")
-
-            // add a task instance that generates the jOOQ sources
-            String jooqTaskName = sourceSet.getTaskName("generate", "JooqSchemaSource");
-            JooqTask jooqTask = project.tasks.create(jooqTaskName, JooqTask.class);
-            jooqTask.description = String.format("Generates the jOOQ %s sources from the database schema", sourceSet.name);
-            jooqTask.group = "jOOQ";
-            jooqTask.sourceSetName = sourceSet.name;
-
-            // add the directory where the jOOQ sources are generated to the jOOQ configuration and to the source set
-            String outputDirectoryName = String.format("%s/generated-src/jooq/%s", project.buildDir, sourceSet.name);
+            // add the default directory where the jOOQ sources are generated to the jOOQ configuration and to the source set
+            String outputDirectoryName = "${project.buildDir}/generated-src/jooq/${sourceSet.name}/$jooqConfigName"
             config.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName)))
-            sourceSet.java.srcDir { project.file(config.generator.target.directory) };
+            sourceSet.java.srcDir { project.file(config.generator.target.directory) }
 
             // add a task dependency to generate the sources before the compilation takes place
-            project.tasks.getByName(sourceSet.getCompileJavaTaskName()).dependsOn jooqTaskName;
+            project.tasks.getByName(sourceSet.compileJavaTaskName).dependsOn jooqTaskName
 
             // add inputs and outputs to participate in uptodate checks
-            jooqTask.inputs.property "configState", { Objects.deepHashCode config }
+            jooqTask.inputs.property "configBridge", { Objects.deepHashCode configBridge }
+            jooqTask.inputs.property "configSourceSet", { Objects.deepHashCode sourceSet.name }
             jooqTask.outputs.dir { project.file(config.generator.target.directory) }
         }
+
+        // register the 'jooq' extension
+        project.extensions.create(JooqConstants.JOOQ_EXTENSION_NAME,
+                JooqExtension.class, project, configHandler, JooqConstants.JOOQ_EXTENSION_NAME)
+        LOGGER.debug("Registered extension '$JooqConstants.JOOQ_EXTENSION_NAME'")
     }
 
 }
