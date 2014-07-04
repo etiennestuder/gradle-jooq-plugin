@@ -49,8 +49,8 @@ plugins {
 # Tasks
 For each jOOQ configuration declared in the build, the plugin adds a new `generate[ConfigurationName]JooqSchemaSource` 
 task to your project. Each task generates the jOOQ Java sources from the configured database schema and includes these
-sources in the specified source set. For example, a configuration named `sample` will add a code generation task 
-`generateSampleJooqSchemaSource` to the project.
+sources in the specified source set. For example, a jOOQ configuration named `sample` will cause the plugin to add a 
+new code generation task `generateSampleJooqSchemaSource` to the project.
 
 ```console
 gradle generateSampleJooqSchemaSource
