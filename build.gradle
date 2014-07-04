@@ -130,6 +130,14 @@ bintray {
     // publish = false
 }
 
+project.afterEvaluate {
+    bintray.publications.each { pub ->
+        bintrayUpload.inputs.files { ->
+            project.publishing.publications.getByName(pub).publishableFiles
+        }
+    }
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '1.12'
     description = 'Generates the Gradle wrapper files.'
