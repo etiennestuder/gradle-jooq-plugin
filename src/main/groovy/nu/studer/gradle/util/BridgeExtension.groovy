@@ -30,6 +30,7 @@ class BridgeExtension {
         this.path = path
     }
 
+    @SuppressWarnings("GroovyAssignabilityCheck")
     def methodMissing(String methodName, args) {
         if (args.length == 1 && args[0] instanceof Closure) {
             // invoke the bean getter method
