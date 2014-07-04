@@ -2,10 +2,10 @@ gradle-jooq-plugin
 ==================
 
 # Overview
-[Gradle](http://www.gradle.org) plugin that integrates [jOOQ](http://www.jooq.org). For each source set,
-the plugin adds a task to generate the jOOQ Java sources from a given database schema, and includes the
-generated sources in that source set. The code generation tasks fully participate in the Gradle
-uptodate checks.
+[Gradle](http://www.gradle.org) plugin that integrates [jOOQ](http://www.jooq.org). For each jOOQ configuration declared 
+in the build, the plugin adds a task to generate the jOOQ Java sources from a given database schema, and includes the
+generated sources in the specified source set. Multiple configurations are supported. The code generation tasks fully 
+participate in the Gradle uptodate checks.
 
 You can find out more details about the actual jOOQ source code generation in the
 [jOOQ documentation](http://www.jooq.org/doc/3.3/manual/code-generation).
@@ -30,7 +30,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'nu.studer:gradle-jooq-plugin:1.0.2'
+        classpath 'nu.studer:gradle-jooq-plugin:1.0.3'
         classpath 'postgresql:postgresql:9.1-901.jdbc4' // database-specific JDBC driver
     }
 }
@@ -42,18 +42,18 @@ As of Gradle 2.1, declare the plugin in your `build.gradle` script:
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '1.0'
+    id 'nu.studer.jooq' version '1.0.3'
 }
 ```
 
 # Tasks
-For each source set declared in the build, the jOOQ plugin adds a new `generate[SourceSet]JooqSchemaSource` task
-to your project. Each task generates the jOOQ Java sources from the configured database schema and includes these
-sources in the corresponding source set. Assuming the default source sets of the Java plugin, the tasks
-`generateJooqSchemaSource` and `generateTestJooqSchemaSource` are available.
+For each jOOQ configuration declared in the build, the plugin adds a new `generate[ConfigurationName]JooqSchemaSource` 
+task to your project. Each task generates the jOOQ Java sources from the configured database schema and includes these
+sources in the specified source set. For example, a configuration named `sample` will add a code generation task 
+`generateSampleJooqSchemaSource` to the project.
 
 ```console
-gradle generateJooqSchemaSource
+gradle generateSampleJooqSchemaSource
 ```
 
 The code generation tasks are automatically configured as dependencies of the corresponding source compilation tasks
@@ -68,18 +68,17 @@ gradle build -i
 
 # Configuration
 
-The jOOQ code generation is configured per source set in which to include the generated sources. The configuration
-below shows a sample configuration that creates the jOOQ Java sources from a PostgreSQL database schema and includes
-them in the `main` source set.
+The example below shows a jOOQ configuration that creates the jOOQ Java sources from a PostgreSQL database schema and 
+includes them in the `main` source set.
 
-By default, the generated sources are written to `build/generated-src/jooq/<sourceSet>`. The output directory can
-be configured by explicitly setting the `directory` attribute of the `target` configuration.
+By default, the generated sources are written to `build/generated-src/jooq/<sourceSet>/<configurationName>`. The 
+output directory can be configured by explicitly setting the `directory` attribute of the `target` configuration.
 
 See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.3.0.xsd) for the full set of configuration options.
 
 ```groovy
 jooq {
-   main {
+   sample(sourceSets.main) {
        jdbc {
            driver = 'org.postgresql.Driver'
            url = 'jdbc:postgresql://localhost:5432/sample'
