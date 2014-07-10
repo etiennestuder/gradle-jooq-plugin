@@ -8,7 +8,7 @@ generated sources in the specified source set. Multiple configurations are suppo
 participate in the Gradle uptodate checks.
 
 You can find out more details about the actual jOOQ source code generation in the
-[jOOQ documentation](http://www.jooq.org/doc/3.3/manual/code-generation).
+[jOOQ documentation](http://www.jooq.org/doc/latest/manual/code-generation).
 
 # Plugin
 
