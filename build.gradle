@@ -29,7 +29,7 @@ dependencies {
 }
 
 group = 'nu.studer'
-version = '1.0.3'
+version = '1.0.4'
 
 compileGroovy {
     sourceCompatibility = compatibilityJreVersion
