@@ -70,7 +70,6 @@ class JooqExtension {
         delegate.target
     }
 
-    @SuppressWarnings("GroovyAssignabilityCheck")
     private JooqConfiguration findOrCreateConfig(String configName, SourceSet sourceSet) {
         JooqConfiguration jooqConfig = configs[configName]
         if (!jooqConfig) {
