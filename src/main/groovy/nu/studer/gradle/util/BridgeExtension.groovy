@@ -17,6 +17,10 @@ package nu.studer.gradle.util
 
 import org.gradle.api.InvalidUserDataException
 
+import javax.xml.bind.annotation.XmlElement
+import java.lang.reflect.Field
+import java.lang.reflect.ParameterizedType
+
 /**
  * Generic Gradle Extension element to map (nested) configuration properties to a given target object.
  */
@@ -37,21 +41,47 @@ class BridgeExtension {
             def targetMethod = target.class.methods.find { it.name == "get${methodName.capitalize()}" }
             def methodInvocationResult = targetMethod.invoke(target)
 
-            // if the return value is null, create a new instance of the defined return type and set via bean setter method
-            if (!methodInvocationResult) {
-                methodInvocationResult = targetMethod.returnType.newInstance()
-                target."$methodName" = methodInvocationResult
-            }
+            // apply special handling if the defined return type is of type List
+            if (targetMethod.returnType == List.class) {
+                // if the return value is null, create a new List instance of the defined return type and set via bean setter method
+                if (!methodInvocationResult) {
+                    methodInvocationResult = new ArrayList()
+                    target."$methodName" = methodInvocationResult
+                }
 
-            // apply the given closure to the target
-            def delegate = new BridgeExtension(methodInvocationResult, "${path}.${methodName}")
-            Closure copy = (Closure) args[0].clone();
-            copy.resolveStrategy = Closure.DELEGATE_FIRST;
-            copy.delegate = delegate
-            if (copy.maximumNumberOfParameters == 0) {
-                copy.call();
+                // determine the name of a list element and the element type
+                Field field = target.class.declaredFields.find { it.name == "$methodName" }
+                String nameOfChildren = field.getAnnotation(XmlElement).name()
+                ParameterizedType elementType = field.getGenericType()
+                Class classOfChildren = elementType.actualTypeArguments.first()
+
+                // apply the given closure to the target
+                def delegate = new BridgeExtensionForList(methodInvocationResult, nameOfChildren, classOfChildren, "${path}.${methodName}")
+                Closure copy = (Closure) args[0].clone()
+                copy.resolveStrategy = Closure.DELEGATE_FIRST;
+                copy.delegate = delegate
+                if (copy.maximumNumberOfParameters == 0) {
+                    copy.call();
+                } else {
+                    copy.call delegate;
+                }
             } else {
-                copy.call delegate;
+                // if the return value is null, create a new instance of the defined return type and set via bean setter method
+                if (!methodInvocationResult) {
+                    methodInvocationResult = targetMethod.returnType.newInstance()
+                    target."$methodName" = methodInvocationResult
+                }
+
+                // apply the given closure to the target
+                def delegate = new BridgeExtension(methodInvocationResult, "${path}.${methodName}")
+                Closure copy = (Closure) args[0].clone()
+                copy.resolveStrategy = Closure.DELEGATE_FIRST;
+                copy.delegate = delegate
+                if (copy.maximumNumberOfParameters == 0) {
+                    copy.call();
+                } else {
+                    copy.call delegate;
+                }
             }
 
             target
