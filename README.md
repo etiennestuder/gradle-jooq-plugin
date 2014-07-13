@@ -30,7 +30,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'nu.studer:gradle-jooq-plugin:1.0.3'
+        classpath 'nu.studer:gradle-jooq-plugin:1.0.4'
         classpath 'postgresql:postgresql:9.1-901.jdbc4' // database-specific JDBC driver
     }
 }
@@ -42,7 +42,7 @@ As of Gradle 2.1, declare the plugin in your `build.gradle` script:
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '1.0.3'
+    id 'nu.studer.jooq' version '1.0.4'
 }
 ```
 
@@ -85,7 +85,12 @@ jooq {
            user = 'some_user'
            password = 'secret'
            schema = 'public'
-           properties = []
+           properties {
+               property {
+                   key = 'ssl'
+                   value = 'true'
+               }
+           }
        }
        generator {
            name = 'org.jooq.util.DefaultGenerator'
