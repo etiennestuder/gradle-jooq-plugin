@@ -122,7 +122,8 @@ jooq {
 
 # Acknowledgements
 
-+ [dubacher](https://github.com/dubacher) (ideas and patches)
++ [dubacher](https://github.com/dubacher) (ideas and patch)
++ [lukaseder](https://github.com/lukaseder) (patch)
 
 # License
 This plugin is available under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
