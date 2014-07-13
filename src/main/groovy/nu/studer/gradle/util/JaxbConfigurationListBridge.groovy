@@ -16,16 +16,16 @@
 package nu.studer.gradle.util
 
 /**
- * Generic Gradle Extension element to map (nested) configuration properties to a given target list object.
+ * Generically maps from a Gradle configuration Closure to a (nested) JAXB configuration target list.
  */
-class BridgeExtensionForList {
+class JaxbConfigurationListBridge {
 
     final List target
     final String nameOfChildren
     final Class classOfChildren
     final String path
 
-    BridgeExtensionForList(List target, String nameOfChildren, Class classOfChildren, String path) {
+    JaxbConfigurationListBridge(List target, String nameOfChildren, Class classOfChildren, String path) {
         this.target = target
         this.nameOfChildren = nameOfChildren
         this.classOfChildren = classOfChildren
@@ -39,7 +39,7 @@ class BridgeExtensionForList {
             target.add(child)
 
             // apply the given closure to the target
-            def delegate = new BridgeExtension(child, "${path}.${methodName}")
+            def delegate = new JaxbConfigurationBridge(child, "${path}.${methodName}")
             Closure copy = (Closure) args[0].clone();
             copy.resolveStrategy = Closure.DELEGATE_FIRST;
             copy.delegate = delegate

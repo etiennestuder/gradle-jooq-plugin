@@ -1,6 +1,6 @@
 package nu.studer.gradle.jooq
 
-import nu.studer.gradle.util.BridgeExtension
+import nu.studer.gradle.util.JaxbConfigurationBridge
 import org.gradle.api.tasks.SourceSet
 
 /**
@@ -10,9 +10,9 @@ import org.gradle.api.tasks.SourceSet
 class JooqConfiguration {
 
     final SourceSet sourceSet
-    final BridgeExtension configBridge
+    final JaxbConfigurationBridge configBridge
 
-    JooqConfiguration(SourceSet sourceSet, BridgeExtension configBridge) {
+    JooqConfiguration(SourceSet sourceSet, JaxbConfigurationBridge configBridge) {
         this.sourceSet = sourceSet
         this.configBridge = configBridge
     }

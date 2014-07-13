@@ -15,7 +15,7 @@
  */
 package nu.studer.gradle.jooq
 
-import nu.studer.gradle.util.BridgeExtension
+import nu.studer.gradle.util.JaxbConfigurationBridge
 import nu.studer.gradle.util.Objects
 import org.apache.commons.lang.StringUtils
 import org.gradle.api.Plugin
@@ -64,7 +64,7 @@ class JooqPlugin implements Plugin<Project> {
             LOGGER.debug("Registered task '$jooqTask.name'")
 
             // get the jOOQ-specific configuration object and the target source set from the given jOOQ configuration
-            BridgeExtension configBridge = jooqConfiguration.configBridge
+            JaxbConfigurationBridge configBridge = jooqConfiguration.configBridge
             org.jooq.util.jaxb.Configuration config = configBridge.target
             SourceSet sourceSet = jooqConfiguration.sourceSet
 

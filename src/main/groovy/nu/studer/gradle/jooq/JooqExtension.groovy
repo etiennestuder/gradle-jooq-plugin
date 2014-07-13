@@ -15,7 +15,7 @@
  */
 package nu.studer.gradle.jooq
 
-import nu.studer.gradle.util.BridgeExtension
+import nu.studer.gradle.util.JaxbConfigurationBridge
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.jooq.util.jaxb.Configuration
@@ -56,7 +56,7 @@ class JooqExtension {
             throw new IllegalArgumentException("Configuration '$configName' configured for multiple source sets: $sourceSet and $jooqConfig.sourceSet")
         }
 
-        // apply the given closure to the bridge extension, i.e. its Configuration object
+        // apply the given closure to the configuration bridge, i.e. its contained JAXB Configuration object
         def delegate = jooqConfig.configBridge
         Closure copy = (Closure) closure.clone();
         copy.resolveStrategy = Closure.DELEGATE_FIRST;
@@ -74,7 +74,7 @@ class JooqExtension {
         JooqConfiguration jooqConfig = configs[configName]
         if (!jooqConfig) {
             // create jOOQ configuration
-            def configBridge = new BridgeExtension(new Configuration(), "${path}.${configName}")
+            def configBridge = new JaxbConfigurationBridge(new Configuration(), "${path}.${configName}")
             jooqConfig = new JooqConfiguration(sourceSet, configBridge)
 
             // pre-configure jOOQ configuration and create task derived from the configuration

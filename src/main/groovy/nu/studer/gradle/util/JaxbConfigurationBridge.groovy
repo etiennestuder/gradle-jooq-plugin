@@ -22,14 +22,14 @@ import java.lang.reflect.Field
 import java.lang.reflect.ParameterizedType
 
 /**
- * Generic Gradle Extension element to map (nested) configuration properties to a given target object.
+ * Generically maps from a Gradle configuration Closure to a (nested) JAXB configuration target object.
  */
-class BridgeExtension {
+class JaxbConfigurationBridge {
 
     final Object target
     final String path
 
-    BridgeExtension(Object target, String path) {
+    JaxbConfigurationBridge(Object target, String path) {
         this.target = target
         this.path = path
     }
@@ -56,7 +56,7 @@ class BridgeExtension {
                 Class classOfChildren = elementType.actualTypeArguments.first()
 
                 // apply the given closure to the target
-                def delegate = new BridgeExtensionForList(methodInvocationResult, nameOfChildren, classOfChildren, "${path}.${methodName}")
+                def delegate = new JaxbConfigurationListBridge(methodInvocationResult, nameOfChildren, classOfChildren, "${path}.${methodName}")
                 Closure copy = (Closure) args[0].clone()
                 copy.resolveStrategy = Closure.DELEGATE_FIRST;
                 copy.delegate = delegate
@@ -73,7 +73,7 @@ class BridgeExtension {
                 }
 
                 // apply the given closure to the target
-                def delegate = new BridgeExtension(methodInvocationResult, "${path}.${methodName}")
+                def delegate = new JaxbConfigurationBridge(methodInvocationResult, "${path}.${methodName}")
                 Closure copy = (Closure) args[0].clone()
                 copy.resolveStrategy = Closure.DELEGATE_FIRST;
                 copy.delegate = delegate
