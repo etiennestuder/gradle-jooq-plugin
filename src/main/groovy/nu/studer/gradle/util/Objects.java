@@ -15,15 +15,43 @@
  */
 package nu.studer.gradle.util;
 
+import groovy.lang.Closure;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
 
 /**
  * Utility class.
  */
 public final class Objects {
+
+    /**
+     * Applies the given closure to the given delegate.
+     *
+     * @param closure  the closure to apply
+     * @param delegate the delegate that the closure is applied to
+     */
+    public static void applyClosureToDelegate(Closure closure, Object delegate) {
+        Closure copy = (Closure) closure.clone();
+        copy.setResolveStrategy(Closure.DELEGATE_FIRST);
+        copy.setDelegate(delegate);
+        if (copy.getMaximumNumberOfParameters() == 0) {
+            copy.call();
+        } else {
+            copy.call(delegate);
+        }
+    }
 
     /**
      * Calculates a hash code for the given object by traversing recursively into each field that does not contain

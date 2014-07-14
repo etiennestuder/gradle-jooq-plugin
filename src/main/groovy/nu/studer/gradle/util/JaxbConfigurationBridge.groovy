@@ -57,14 +57,7 @@ class JaxbConfigurationBridge {
 
                 // apply the given closure to the target
                 def delegate = new JaxbConfigurationListBridge(methodInvocationResult, nameOfChildren, classOfChildren, "${path}.${methodName}")
-                Closure copy = (Closure) args[0].clone()
-                copy.resolveStrategy = Closure.DELEGATE_FIRST;
-                copy.delegate = delegate
-                if (copy.maximumNumberOfParameters == 0) {
-                    copy.call();
-                } else {
-                    copy.call delegate;
-                }
+                Objects.applyClosureToDelegate(args[0], delegate)
             } else {
                 // if the return value is null, create a new instance of the defined return type and set via bean setter method
                 if (!methodInvocationResult) {
@@ -74,14 +67,7 @@ class JaxbConfigurationBridge {
 
                 // apply the given closure to the target
                 def delegate = new JaxbConfigurationBridge(methodInvocationResult, "${path}.${methodName}")
-                Closure copy = (Closure) args[0].clone()
-                copy.resolveStrategy = Closure.DELEGATE_FIRST;
-                copy.delegate = delegate
-                if (copy.maximumNumberOfParameters == 0) {
-                    copy.call();
-                } else {
-                    copy.call delegate;
-                }
+                Objects.applyClosureToDelegate(args[0], delegate)
             }
 
             target

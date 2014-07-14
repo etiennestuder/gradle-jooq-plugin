@@ -40,14 +40,7 @@ class JaxbConfigurationListBridge {
 
             // apply the given closure to the target
             def delegate = new JaxbConfigurationBridge(child, "${path}.${methodName}")
-            Closure copy = (Closure) args[0].clone();
-            copy.resolveStrategy = Closure.DELEGATE_FIRST;
-            copy.delegate = delegate
-            if (copy.maximumNumberOfParameters == 0) {
-                copy.call();
-            } else {
-                copy.call delegate;
-            }
+            Objects.applyClosureToDelegate(args[0], delegate)
 
             target
         } else {
