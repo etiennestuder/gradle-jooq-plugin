@@ -122,7 +122,8 @@ jooq {
 
 # Acknowledgements
 
-+ [dubacher](https://github.com/dubacher) (ideas and patch)
++ [jamespedwards42](https://github.com/jamespedwards42) (idea)
++ [dubacher](https://github.com/dubacher) (patch)
 + [lukaseder](https://github.com/lukaseder) (patch)
 
 # License
