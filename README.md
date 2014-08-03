@@ -39,7 +39,7 @@ apply plugin: 'nu.studer.jooq'
 
 ## Custom jOOQ Version
 You can use the jOOQ plugin with any current, previous, or future version of jOOQ. Simply enforce the required version of the jOOQ libraries in your `build.gradle` script:
-```
+```groovy
 buildscript {
     repositories {
         jcenter()
