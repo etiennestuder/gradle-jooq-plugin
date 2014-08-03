@@ -21,8 +21,8 @@ be put on the plugin classpath.
 
 The jOOQ plugin is hosted at [JCenter](https://bintray.com/bintray/jcenter).
 
-## Gradle 1.x and 2.0
-To use the jOOQ plugin with versions of Gradle older than 2.1, apply the plugin in your `build.gradle` script:
+## Gradle 1.x and 2.x
+To use the jOOQ plugin with versions of Gradle 1.x and 2.x, apply the plugin in your `build.gradle` script:
 
 ```groovy
 buildscript {
@@ -35,15 +35,6 @@ buildscript {
     }
 }
 apply plugin: 'nu.studer.jooq'
-```
-
-## Gradle 2.1 and higher
-As of Gradle 2.1, declare the plugin in your `build.gradle` script:
-
-```groovy
-plugins {
-    id 'nu.studer.jooq' version '1.0.5'
-}
 ```
 
 # Tasks
