@@ -37,6 +37,30 @@ buildscript {
 apply plugin: 'nu.studer.jooq'
 ```
 
+## Custom jOOQ Version
+You can use the jOOQ plugin with any current, previous, or future version of jOOQ. Simply enforce the required versions of the jOOQ libraries in your `build.gradle' script:
+```
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'nu.studer:gradle-jooq-plugin:1.0.5'
+        classpath 'postgresql:postgresql:9.1-901.jdbc4' // database-specific JDBC driver
+    }
+    configurations.classpath {
+        resolutionStrategy {                            // enforce a specific jOOQ version
+            forcedModules = [
+                'org.jooq:jooq:3.4.1',
+                'org.jooq:jooq-meta:3.4.1',
+                'org.jooq:jooq-codegen:3.4.1'
+            ]     
+        }
+    }
+}
+apply plugin: 'nu.studer.jooq'
+```
+
 # Tasks
 For each jOOQ configuration declared in the build, the plugin adds a new `generate[ConfigurationName]JooqSchemaSource` 
 task to your project. Each task generates the jOOQ Java sources from the configured database schema and includes these
