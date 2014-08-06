@@ -19,10 +19,10 @@ your build script when using the jOOQ plugin.
 Depending on the type of database that is accessed to derive the jOOQ Java sources, the corresponding driver must
 be put on the plugin classpath.
 
-The jOOQ plugin is hosted at [JCenter](https://bintray.com/bintray/jcenter).
+The jOOQ plugin is hosted at [JCenter](https://bintray.com/etienne/gradle-plugins/nu.studer.jooq).
 
-## Gradle 1.x and 2.0
-To use the jOOQ plugin with versions of Gradle older than 2.1, apply the plugin in your `build.gradle` script:
+## Gradle 1.x and 2.x
+To use the jOOQ plugin with versions of Gradle 1.x and 2.x, apply the plugin in your `build.gradle` script:
 
 ```groovy
 buildscript {
@@ -37,13 +37,28 @@ buildscript {
 apply plugin: 'nu.studer.jooq'
 ```
 
-## Gradle 2.1 and higher
-As of Gradle 2.1, declare the plugin in your `build.gradle` script:
-
+## Custom jOOQ Version
+You can use the jOOQ plugin with any current, previous, or future version of jOOQ. Simply enforce the required version of the jOOQ libraries in your `build.gradle` script:
 ```groovy
-plugins {
-    id 'nu.studer.jooq' version '1.0.5'
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'nu.studer:gradle-jooq-plugin:1.0.5'
+        classpath 'postgresql:postgresql:9.1-901.jdbc4' // database-specific JDBC driver
+    }
+    configurations.classpath {
+        resolutionStrategy {                            // enforce a specific jOOQ version
+            forcedModules = [
+                'org.jooq:jooq:3.4.1',
+                'org.jooq:jooq-meta:3.4.1',
+                'org.jooq:jooq-codegen:3.4.1'
+            ]     
+        }
+    }
 }
+apply plugin: 'nu.studer.jooq'
 ```
 
 # Tasks
