@@ -16,15 +16,18 @@
 package nu.studer.gradle.util
 
 import org.gradle.api.InvalidUserDataException
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import javax.xml.bind.annotation.XmlElement
 import java.lang.reflect.Field
 import java.lang.reflect.ParameterizedType
-
 /**
  * Generically maps from a Gradle configuration Closure to a (nested) JAXB configuration target object.
  */
 class JaxbConfigurationBridge {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JaxbConfigurationBridge.class);
 
     final Object target
     final String path
@@ -72,6 +75,8 @@ class JaxbConfigurationBridge {
 
             target
         } else {
+            LOGGER.error("Cannot find configuration container element '$methodName' on '$path'. " +
+                    "Make sure to use the equal sign to set simple configuration property values.")
             throw new MissingMethodException(methodName, getClass(), args)
         }
     }

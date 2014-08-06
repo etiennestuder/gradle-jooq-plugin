@@ -15,10 +15,15 @@
  */
 package nu.studer.gradle.util
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 /**
  * Generically maps from a Gradle configuration Closure to a (nested) JAXB configuration target list.
  */
 class JaxbConfigurationListBridge {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JaxbConfigurationListBridge.class);
 
     final List target
     final String nameOfChildren
@@ -44,6 +49,8 @@ class JaxbConfigurationListBridge {
 
             target
         } else {
+            LOGGER.error("Cannot find configuration list element '$methodName' on '$path'. " +
+                    "The expected configuration list element name is '$nameOfChildren'.")
             throw new MissingMethodException(methodName, getClass(), args)
         }
     }
