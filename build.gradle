@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         jcenter()
-        // mavenLocal()
+        mavenLocal()
     }
     dependencies {
         // of bintray plugin and plugin dev plugin
@@ -11,7 +11,6 @@ buildscript {
 }
 
 apply plugin: 'groovy'
-apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'nu.studer.plugindev'
 
@@ -51,26 +50,11 @@ plugindev {
     pluginTitle = 'Gradle jOOQ plugin'
     authorName = 'Etienne Studer'
     projectUrl = 'https://github.com/etiennestuder/gradle-jooq-plugin'
+    done()
 }
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-
-            artifact sourcesJar {
-                classifier "sources"
-            }
-
-            artifact docsJar {
-                classifier "javadoc"
-            }
-
-            pom.withXml {
-                asNode().children().last() + pomConfig
-            }
-        }
-    }
+publishing.publications['mavenJava'].pom.withXml {
+    asNode().children().last() + pomConfig
 }
 
 bintray {
