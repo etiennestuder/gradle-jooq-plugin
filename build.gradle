@@ -1,25 +1,21 @@
-import java.text.SimpleDateFormat
-
 buildscript {
     repositories {
         jcenter()
+        // mavenLocal()
     }
     dependencies {
-        // of bintray plugin
+        // of bintray plugin and plugin dev plugin
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayPluginVersion"
+        classpath "nu.studer:gradle-plugindev-plugin:$plugindevPluginVersion"
     }
 }
 
 apply plugin: 'groovy'
 apply plugin: 'maven-publish'
-apply plugin: 'bintray'
-
-repositories {
-    jcenter()
-}
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'nu.studer.plugindev'
 
 dependencies {
-    compile gradleApi()
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
     compile "commons-lang:commons-lang:$comonsLangVersion"
 
@@ -29,50 +25,17 @@ dependencies {
 }
 
 group = 'nu.studer'
-version = '1.0.5'
-
-compileGroovy {
-    sourceCompatibility = compatibilityJreVersion
-    targetCompatibility = compatibilityJreVersion
-}
-
-project.tasks.withType(Jar).all {
-    from file('LICENSE')
-    manifest {
-        attributes 'Implementation-Title': 'Gradle jOOQ plugin',
-                'Implementation-Version': version,
-                'Implementation-Vendor': 'Etienne Studer',
-                'Build-Date': new SimpleDateFormat("yyyy-MM-dd").format(new Date()),
-                'Build-JDK': System.getProperty('java.version'),
-                'Build-Gradle': gradle.gradleVersion,
-                'Project-Url': 'https://github.com/etiennestuder/gradle-jooq-plugin'
-    }
-}
-
-task sourcesJar(type: Jar) {
-    description = 'Assembles a jar archive containing the main sources.'
-    from sourceSets.main.allSource
-}
-
-task docsJar(type: Jar) {
-    description = 'Assembles a jar archive containing the source documentation.'
-    into('javadoc') {
-        from javadoc
-    }
-    into('groovydoc') {
-        from groovydoc
-    }
-}
+version = '1.0.6'
 
 def pomConfig = {
-    name 'Gradle jOOQ plugin'
+    name project.plugindev.pluginTitle
     description 'Gradle plugin that integrates jOOQ. Adds a task for each source set to generate the sources from a given database schema. The tasks fully participate in the Gradle uptodate checks.'
-    url 'https://github.com/etiennestuder/gradle-jooq-plugin'
+    url project.plugindev.projectUrl
     inceptionYear '2014'
     developers {
         developer {
             id 'etiennestuder'
-            name 'Etienne Studer'
+            name project.plugindev.authorName
             email 'etienne@studer.nu'
         }
     }
@@ -82,6 +45,12 @@ def pomConfig = {
             url 'http://www.apache.org/licenses/LICENSE-2.0.html'
         }
     }
+}
+
+plugindev {
+    pluginTitle = 'Gradle jOOQ plugin'
+    authorName = 'Etienne Studer'
+    projectUrl = 'https://github.com/etiennestuder/gradle-jooq-plugin'
 }
 
 publishing {
@@ -102,13 +71,6 @@ publishing {
             }
         }
     }
-
-    repositories {
-        maven {
-            name 'localFolder'
-            url '../repo'
-        }
-    }
 }
 
 bintray {
@@ -122,12 +84,12 @@ bintray {
         name = 'nu.studer.jooq'
         desc = 'Gradle plugin that integrates jOOQ'
         licenses = ['Apache-2.0']
-        labels = ['gradle', 'plugin']
-        // publicDownloadNumbers = true
+        labels = ['gradle', 'plugin', 'jooq']
+        publicDownloadNumbers = true
     }
 
     dryRun = true
-    // publish = false
+    publish = false
 }
 
 project.afterEvaluate {
