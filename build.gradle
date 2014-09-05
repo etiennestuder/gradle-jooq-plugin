@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         jcenter()
-        // mavenLocal()
+        mavenLocal()
     }
     dependencies {
         classpath "nu.studer:gradle-plugindev-plugin:$plugindevPluginVersion"
