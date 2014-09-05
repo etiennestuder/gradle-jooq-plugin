@@ -4,14 +4,12 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        // of bintray plugin and plugin dev plugin
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayPluginVersion"
+        // of plugin dev plugin
         classpath "nu.studer:gradle-plugindev-plugin:$plugindevPluginVersion"
     }
 }
 
 apply plugin: 'groovy'
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'nu.studer.plugindev'
 
 dependencies {
@@ -84,7 +82,4 @@ project.afterEvaluate {
     }
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
-    description = 'Generates the Gradle wrapper files.'
-}
+wrapper.gradleVersion = '1.12'
