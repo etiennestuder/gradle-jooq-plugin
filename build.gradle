@@ -24,35 +24,16 @@ dependencies {
 group = 'nu.studer'
 version = '1.0.6'
 
-def pomConfig = {
-    name project.plugindev.pluginTitle
-    description 'Gradle plugin that integrates jOOQ. Adds a task for each source set to generate the sources from a given database schema. The tasks fully participate in the Gradle uptodate checks.'
-    url project.plugindev.projectUrl
-    inceptionYear '2014'
-    developers {
-        developer {
-            id 'etiennestuder'
-            name project.plugindev.authorName
-            email 'etienne@studer.nu'
-        }
-    }
-    licenses {
-        license {
-            name 'Apache License, Version 2.0'
-            url 'http://www.apache.org/licenses/LICENSE-2.0.html'
-        }
-    }
-}
-
 plugindev {
     pluginTitle = 'Gradle jOOQ plugin'
+    pluginDescription = 'Gradle plugin that integrates jOOQ. Adds a task for each source set to generate the sources from a given database schema. The tasks fully participate in the Gradle uptodate checks.'
+    authorId = 'etiennestuder'
     authorName = 'Etienne Studer'
+    authorEmail = 'etienne@studer.nu'
     projectUrl = 'https://github.com/etiennestuder/gradle-jooq-plugin'
+    projectInceptionYear = '2014'
+    // pomConfiguration = pomConfig
     done()
-}
-
-publishing.publications['mavenJava'].pom.withXml {
-    asNode().children().last() + pomConfig
 }
 
 bintray {
