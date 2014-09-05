@@ -4,7 +4,6 @@ buildscript {
         // mavenLocal()
     }
     dependencies {
-        // of plugin dev plugin
         classpath "nu.studer:gradle-plugindev-plugin:$plugindevPluginVersion"
     }
 }
