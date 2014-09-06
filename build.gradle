@@ -27,6 +27,7 @@ plugindev {
     pluginId = 'nu.studer.jooq'
     pluginTitle = 'Gradle jOOQ plugin'
     pluginDescription = 'Gradle plugin that integrates jOOQ. Adds a task for each source set to generate the sources from a given database schema. The tasks fully participate in the Gradle uptodate checks.'
+    pluginImplementationClass = 'nu.studer.gradle.plugindev.PluginDevPlugin'
     authorId = 'etiennestuder'
     authorName = 'Etienne Studer'
     authorEmail = 'etienne@studer.nu'
