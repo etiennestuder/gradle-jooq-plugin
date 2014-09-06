@@ -50,7 +50,6 @@ bintray {
     }
 
     dryRun = true
-    publish = false
 }
 
 wrapper.gradleVersion = '1.12'
