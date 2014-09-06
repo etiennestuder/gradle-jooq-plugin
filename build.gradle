@@ -53,12 +53,4 @@ bintray {
     publish = false
 }
 
-project.afterEvaluate {
-    bintray.publications.each { pub ->
-        bintrayUpload.inputs.files { ->
-            project.publishing.publications.getByName(pub).publishableFiles
-        }
-    }
-}
-
 wrapper.gradleVersion = '1.12'
