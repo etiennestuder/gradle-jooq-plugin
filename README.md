@@ -19,7 +19,7 @@ your build script when using the jOOQ plugin.
 Depending on the type of database that is accessed to derive the jOOQ Java sources, the corresponding driver must
 be put on the plugin classpath.
 
-The jOOQ plugin is hosted at [JCenter](https://bintray.com/etienne/gradle-plugins/gradle-jooq-plugin).
+The jOOQ plugin is hosted at [Bintray's JCenter](https://bintray.com/etienne/gradle-plugins/gradle-jooq-plugin).
 
 ## Gradle 1.x and 2.x
 To use the jOOQ plugin with versions of Gradle 1.x and 2.x, apply the plugin in your `build.gradle` script:
