@@ -28,7 +28,8 @@ plugindev {
     pluginTitle 'Gradle jOOQ plugin'
     pluginDescription 'Gradle plugin that integrates jOOQ. Adds a task for each source set to generate the sources from a given database schema. The tasks fully participate in the Gradle uptodate checks.'
     pluginImplementationClass 'nu.studer.gradle.plugindev.PluginDevPlugin'
-    pluginLicense 'Apache-2.0'
+    pluginLicenses 'Apache-2.0'
+    pluginTags 'gradle', 'plugin', 'jooq'
     authorId 'etiennestuder'
     authorName 'Etienne Studer'
     authorEmail 'etienne@studer.nu'
@@ -45,7 +46,6 @@ bintray {
     pkg {
         repo = 'gradle-plugins'
         name = 'nu.studer.jooq'
-        labels = ['gradle', 'plugin', 'jooq']
     }
 
     dryRun = true
