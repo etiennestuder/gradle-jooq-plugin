@@ -24,15 +24,16 @@ group = 'nu.studer'
 version = '1.0.6'
 
 plugindev {
-    pluginId = 'nu.studer.jooq'
-    pluginTitle = 'Gradle jOOQ plugin'
-    pluginDescription = 'Gradle plugin that integrates jOOQ. Adds a task for each source set to generate the sources from a given database schema. The tasks fully participate in the Gradle uptodate checks.'
-    pluginImplementationClass = 'nu.studer.gradle.plugindev.PluginDevPlugin'
-    authorId = 'etiennestuder'
-    authorName = 'Etienne Studer'
-    authorEmail = 'etienne@studer.nu'
-    projectUrl = 'https://github.com/etiennestuder/gradle-jooq-plugin'
-    projectInceptionYear = '2014'
+    pluginId 'nu.studer.jooq'
+    pluginTitle 'Gradle jOOQ plugin'
+    pluginDescription 'Gradle plugin that integrates jOOQ. Adds a task for each source set to generate the sources from a given database schema. The tasks fully participate in the Gradle uptodate checks.'
+    pluginImplementationClass 'nu.studer.gradle.plugindev.PluginDevPlugin'
+    pluginLicense 'Apache-2.0'
+    authorId 'etiennestuder'
+    authorName 'Etienne Studer'
+    authorEmail 'etienne@studer.nu'
+    projectUrl 'https://github.com/etiennestuder/gradle-jooq-plugin'
+    projectInceptionYear '2014'
     // pomConfiguration = pomConfig
     done()
 }
@@ -44,9 +45,7 @@ bintray {
     pkg {
         repo = 'gradle-plugins'
         name = 'nu.studer.jooq'
-        licenses = ['Apache-2.0']
         labels = ['gradle', 'plugin', 'jooq']
-        publicDownloadNumbers = true
     }
 
     dryRun = true
