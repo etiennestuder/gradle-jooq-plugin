@@ -36,6 +36,9 @@ import java.util.TreeMap;
  */
 public final class Objects {
 
+    private Objects() {
+    }
+
     /**
      * Applies the given closure to the given delegate.
      *
