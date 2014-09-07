@@ -45,7 +45,6 @@ bintray {
 
     pkg {
         repo = 'gradle-plugins'
-        name = 'gradle-jooq-plugin'
     }
 
     dryRun = true
