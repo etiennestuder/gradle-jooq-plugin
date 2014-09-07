@@ -25,7 +25,7 @@ version = '1.0.6'
 
 plugindev {
     pluginId 'nu.studer.jooq'
-    pluginTitle 'Gradle jOOQ plugin'
+    pluginName 'gradle-jooq-plugin'
     pluginDescription 'Gradle plugin that integrates jOOQ. For each configuration, the plugin adds a task to generate the sources from a given database schema and includes the generated sources in the specified source set. Multiple configurations are supported. The code generation tasks fully participate in the Gradle uptodate checks.'
     pluginImplementationClass 'nu.studer.gradle.plugindev.PluginDevPlugin'
     pluginLicenses 'Apache-2.0'
