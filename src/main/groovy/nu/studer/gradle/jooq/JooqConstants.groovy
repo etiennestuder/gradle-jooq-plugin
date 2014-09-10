@@ -23,7 +23,7 @@ class JooqConstants {
     private JooqConstants() {
     }
 
-    public static final String JOOQ_CONFIGURATION_NAME = "jooq"
-    public static final String JOOQ_EXTENSION_NAME = "jooq"
+    static final String JOOQ_CONFIGURATION_NAME = "jooq"
+    static final String JOOQ_EXTENSION_NAME = "jooq"
 
 }
