@@ -37,6 +37,9 @@ import org.slf4j.LoggerFactory
  */
 class JooqPlugin implements Plugin<Project> {
 
+    static final String JOOQ_CONFIGURATION_NAME = "jooq"
+    static final String JOOQ_EXTENSION_NAME = "jooq"
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JooqPlugin.class);
 
     @SuppressWarnings("GroovyAssignabilityCheck")
@@ -46,12 +49,12 @@ class JooqPlugin implements Plugin<Project> {
         LOGGER.debug("Applied plugin 'JavaPlugin'")
 
         // add a new 'jooq' configuration that the Java compile configuration will inherit from
-        Configuration configuration = project.configurations.create(JooqConstants.JOOQ_CONFIGURATION_NAME).
+        Configuration configuration = project.configurations.create(JOOQ_CONFIGURATION_NAME).
                 setVisible(false).
                 setTransitive(false).
                 setDescription("Compile classpath for generated jOOQ sources.")
         project.configurations.getByName(JavaPlugin.COMPILE_CONFIGURATION_NAME).extendsFrom(configuration)
-        LOGGER.debug("Registered configuration '$JooqConstants.JOOQ_CONFIGURATION_NAME'")
+        LOGGER.debug("Registered configuration '$JOOQ_CONFIGURATION_NAME'")
 
         // define the logic of what to do when a new jOOQ configuration is declared in the 'jooq' extension
         Closure<TaskOutputs> configHandler = { String jooqConfigName, JooqConfiguration jooqConfiguration ->
@@ -83,9 +86,9 @@ class JooqPlugin implements Plugin<Project> {
         }
 
         // register the 'jooq' extension
-        project.extensions.create(JooqConstants.JOOQ_EXTENSION_NAME,
-                JooqExtension.class, project, configHandler, JooqConstants.JOOQ_EXTENSION_NAME)
-        LOGGER.debug("Registered extension '$JooqConstants.JOOQ_EXTENSION_NAME'")
+        project.extensions.create(JOOQ_EXTENSION_NAME,
+                JooqExtension.class, project, configHandler, JOOQ_EXTENSION_NAME)
+        LOGGER.debug("Registered extension '$JOOQ_EXTENSION_NAME'")
     }
 
 }
