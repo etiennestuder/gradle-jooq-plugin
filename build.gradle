@@ -4,11 +4,13 @@ buildscript {
     }
     dependencies {
         classpath "nu.studer:gradle-plugindev-plugin:$plugindevPluginVersion"
+        classpath "nu.studer:gradle-credentials-plugin:$credentialsPluginVersion"
     }
 }
 
 apply plugin: 'groovy'
 apply plugin: 'nu.studer.plugindev'
+apply plugin: 'nu.studer.credentials'
 
 dependencies {
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
@@ -36,8 +38,8 @@ plugindev {
 }
 
 bintray {
-    user = "$BINTRAY_USER"
-    key = "$BINTRAY_API_KEY"
+    user = credentials.BINTRAY_USER
+    key = credentials.BINTRAY_API_KEY
     pkg.repo = 'gradle-plugins'
     dryRun = true
 }
