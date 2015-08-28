@@ -135,6 +135,9 @@ jooq {
 }
 ```
 
+# Changelog
++ 1.0.6 - Upgrade to jOOQ 3.6.2
+
 # Acknowledgements
 
 + [jamespedwards42](https://github.com/jamespedwards42) (idea)
