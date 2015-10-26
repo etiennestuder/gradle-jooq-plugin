@@ -24,8 +24,7 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskOutputs
-import org.jooq.util.jaxb.Generator
-import org.jooq.util.jaxb.Target
+import org.jooq.util.jaxb.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -73,7 +72,12 @@ class JooqPlugin implements Plugin<Project> {
 
             // add the default directory where the jOOQ sources are generated to the jOOQ configuration and to the source set
             String outputDirectoryName = "${project.buildDir}/generated-src/jooq/${sourceSet.name}/$jooqConfigName"
-            config.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName)))
+            config.withGenerator(new Generator()
+                    .withTarget(new Target().withDirectory(outputDirectoryName))
+                    .withStrategy(new Strategy())
+                    .withDatabase(new Database())
+                    .withGenerate(new Generate())
+            )
             sourceSet.java.srcDir { project.file(config.generator.target.directory) }
 
             // add a task dependency to generate the sources before the compilation takes place
