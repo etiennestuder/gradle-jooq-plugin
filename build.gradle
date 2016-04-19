@@ -14,7 +14,6 @@ apply plugin: 'nu.studer.plugindev'
 apply plugin: 'nu.studer.credentials'
 
 dependencies {
-    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
     compile "commons-lang:commons-lang:$comonsLangVersion"
 
     compile("org.jooq:jooq:$jooqVersion")
