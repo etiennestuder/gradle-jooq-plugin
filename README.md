@@ -10,55 +10,64 @@ participate in the Gradle uptodate checks.
 You can find out more details about the actual jOOQ source code generation in the
 [jOOQ documentation](http://www.jooq.org/doc/latest/manual/code-generation).
 
-# Plugin
+The plugin is hosted on the [Gradle Plugin portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
 
-## General
-The jOOQ plugin automatically applies the Java plugin. Thus, there is no need to explicitly apply the Java plugin in
-your build script when using the jOOQ plugin.
+# Applying the plugin
 
-Depending on the type of database that is accessed to derive the jOOQ Java sources, the corresponding driver must
-be put on the plugin classpath.
-
-The jOOQ plugin is hosted at [Bintray's JCenter](https://bintray.com/etienne/gradle-plugins/gradle-jooq-plugin).
-
-## Gradle 1.x and 2.x
-To use the jOOQ plugin with versions of Gradle 1.x and 2.x, apply the plugin in your `build.gradle` script:
+You can apply the plugin using the plugins DSL
 
 ```groovy
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'nu.studer:gradle-jooq-plugin:1.0.5'
-        classpath 'postgresql:postgresql:9.1-901.jdbc4' // database-specific JDBC driver
-    }
+plugins {
+    id 'nu.studer.jooq' version '1.0.6'
 }
-apply plugin: 'nu.studer.jooq'
 ```
 
-## Custom jOOQ Version
-You can use the jOOQ plugin with any current, previous, or future version of jOOQ. Simply enforce the required version of the jOOQ libraries in your `build.gradle` script:
+Or using the buildscript block
+
 ```groovy
 buildscript {
-    repositories {
-        jcenter()
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
     }
-    dependencies {
-        classpath 'nu.studer:gradle-jooq-plugin:1.0.5'
-        classpath 'postgresql:postgresql:9.1-901.jdbc4' // database-specific JDBC driver
-    }
-    configurations.classpath {
-        resolutionStrategy {                            // enforce a specific jOOQ version
-            forcedModules = [
-                'org.jooq:jooq:3.4.1',
-                'org.jooq:jooq-meta:3.4.1',
-                'org.jooq:jooq-codegen:3.4.1'
-            ]     
-        }
-    }
+  }
+  dependencies {
+    classpath "nu.studer:gradle-jooq-plugin:1.0.6"
+  }
 }
-apply plugin: 'nu.studer.jooq'
+
+apply plugin: "nu.studer.jooq"
+```
+
+# Defining your database drivers
+
+Depending on which database you are connecting to, you'll need to put the corresponding driver on the generator's classpath.
+
+```groovy
+dependencies {
+    jooqGeneratorClasspath 'postgresql:postgresql:9.1-901.jdbc4'
+}
+```
+
+# Specifying the jOOQ version and edition
+
+This plugin supports existing and future jOOQ versions. It also supports the different editions like open source, pro and trial.
+
+```groovy
+jooq {
+  version = '3.8.2' //the default, can be omitted
+  edition = 'OSS'   //the default, can be omitted. Other values are PRO, PRO_JAVA_6 and TRIAL
+}
+```
+
+The plugin will ensure that all your dependencies use the version and edition
+specified in the jooq configuration. So when you declare a compile dependency
+on jOOQ, you can omit the version:
+
+```groovy
+dependencies {
+  compile 'org.jooq:jooq'
+}
 ```
 
 # Tasks
@@ -86,7 +95,7 @@ gradle build -i
 The example below shows a jOOQ configuration that creates the jOOQ Java sources from a PostgreSQL database schema and 
 includes them in the `main` source set.
 
-By default, the generated sources are written to `build/generated-src/jooq/<sourceSet>/<configurationName>`. The 
+By default, the generated sources are written to `build/generated-src/jooq/<configurationName>`. The
 output directory can be configured by explicitly setting the `directory` attribute of the `target` configuration.
 
 See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.3.0.xsd) for the full set of configuration options.

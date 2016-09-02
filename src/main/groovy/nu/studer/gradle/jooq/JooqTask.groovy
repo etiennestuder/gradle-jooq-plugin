@@ -17,11 +17,21 @@ package nu.studer.gradle.jooq
 
 import nu.studer.gradle.util.Objects
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.gradle.process.ExecResult
+import org.jooq.Constants
 import org.jooq.util.GenerationTool
 import org.jooq.util.jaxb.Configuration
+
+import javax.xml.XMLConstants
+import javax.xml.bind.JAXBContext
+import javax.xml.bind.Marshaller
+import javax.xml.validation.Schema
+import javax.xml.validation.SchemaFactory
 
 /**
  * Gradle Task that runs the jOOQ source code generation.
@@ -30,18 +40,44 @@ class JooqTask extends DefaultTask {
 
     def Configuration configuration
 
+    @InputFiles
+    def FileCollection jooqClasspath
+
     @Input
-    def getConfigHash() {
+    int getConfigHash() {
         Objects.deepHashCode(configuration)
     }
 
     @OutputDirectory
-    def getOutputDirectory () {
-        configuration.generator.target.directory
+    File getOutputDirectory () {
+        project.file(configuration.generator.target.directory)
     }
 
     @TaskAction
     public void generate() {
-        new GenerationTool().run(configuration)
+        def configFile = new File(project.buildDir, "tmp/jooq/config.xml")
+        writeConfig(configFile)
+        executeJooq(configFile)
+    }
+
+    private ExecResult executeJooq(configFile) {
+        project.javaexec {
+            main = "org.jooq.util.GenerationTool"
+            classpath = jooqClasspath
+            args configFile
+        }
+    }
+
+    private void writeConfig(File configFile) {
+        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+        Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
+
+        JAXBContext ctx = JAXBContext.newInstance(Configuration.class);
+        Marshaller marshaller = ctx.createMarshaller()
+        marshaller.setSchema(schema)
+
+        configFile.parentFile.mkdirs()
+        marshaller.marshal(configuration, configFile)
+
     }
 }

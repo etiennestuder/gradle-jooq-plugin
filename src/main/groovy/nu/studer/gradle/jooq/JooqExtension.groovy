@@ -28,6 +28,8 @@ class JooqExtension {
     final Closure whenConfigAdded
     final String path
     final Map<String, JooqConfiguration> configs
+    String version = "3.8.4"
+    JooqEdition edition = JooqEdition.OSS
 
     JooqExtension(Closure jooqConfigurationHandler, String path) {
         this.whenConfigAdded = jooqConfigurationHandler

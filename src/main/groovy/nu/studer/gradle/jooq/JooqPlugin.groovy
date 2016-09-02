@@ -18,51 +18,72 @@ package nu.studer.gradle.jooq
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.plugins.JavaPlugin
+import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.SourceSet
 import org.jooq.util.jaxb.Generator
 import org.jooq.util.jaxb.Target
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 /**
- * Plugin that extends the Java plugin, adds an empty 'jooq' configuration inherited by the compile configuration, and
- * registers a {@link JooqTask} for each defined jOOQ configuration. Each task generates the jOOQ source code from the
- * configured database. The tasks properly participate in the Gradle uptodate checks. The tasks are wired as dependencies
- * of the compilation tasks of the Java plugin.
+ * Plugin that extends the java-base plugin and registers a {@link JooqTask} for each defined jOOQ configuration.
+ * Each task generates the jOOQ source code from the configured database. The tasks properly participate in the Gradle
+ * up-to-date checks. The tasks are wired as dependencies of the compilation tasks of the Java plugin.
  */
 class JooqPlugin implements Plugin<Project> {
 
-    static final String JOOQ_CONFIGURATION_NAME = "jooq"
     static final String JOOQ_EXTENSION_NAME = "jooq"
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JooqPlugin.class);
-
     Project project
+    JooqExtension extension
+    Configuration jooqGeneratorClasspath
 
     public void apply(Project project) {
         this.project = project
 
-        // apply the Java plugin since jOOQ generates Java source code
-        project.plugins.apply(JavaPlugin.class)
-        LOGGER.debug("Applied plugin 'JavaPlugin'")
+        project.plugins.apply(JavaBasePlugin.class)
+        addJooqExtension(project)
+        addJooqConfiguration(project)
+        forceJooqVersionAndEdition(project)
+    }
 
-        // add a new 'jooq' configuration that the Java compile configuration will inherit from
-        Configuration configuration = project.configurations.create(JOOQ_CONFIGURATION_NAME).
-                setVisible(false).
-                setTransitive(false).
-                setDescription("Compile classpath for generated jOOQ sources.")
-        project.configurations.getByName(JavaPlugin.COMPILE_CONFIGURATION_NAME).extendsFrom(configuration)
-        LOGGER.debug("Registered configuration '$JOOQ_CONFIGURATION_NAME'")
 
+    /*
+     * Adds the DSL extensions that allows the user to configure key aspects of
+     * this plugin.
+     */
+    private void addJooqExtension(Project project) {
         def whenConfigurationAdded = { JooqConfiguration jooqConfiguration ->
             createJooqTask(jooqConfiguration)
             configureDefaultOutput(jooqConfiguration)
             configureSourceSet(jooqConfiguration)
         }
 
-        project.extensions.create(JOOQ_EXTENSION_NAME, JooqExtension.class, whenConfigurationAdded, JOOQ_EXTENSION_NAME)
-        LOGGER.debug("Registered extension '$JOOQ_EXTENSION_NAME'")
+        extension = project.extensions.create(JOOQ_EXTENSION_NAME, JooqExtension.class, whenConfigurationAdded, JOOQ_EXTENSION_NAME)
+    }
+
+    /*
+     * Adds the configuration that holds the classpath to use for invoking jOOQ.
+     * Users can add their JDBC drivers or any generator extensions they might have.
+     */
+    private void addJooqConfiguration(Project project) {
+        jooqGeneratorClasspath = project.configurations.create("jooqGeneratorClasspath")
+        jooqGeneratorClasspath.setDescription("The classpath used to invoke the jOOQ generator. Add your JDBC drivers or generator extensions here.")
+        project.dependencies.add(jooqGeneratorClasspath.name, "org.jooq:jooq-codegen")
+    }
+
+    /*
+     * Forces the jOOQ version and edition selected by the user throughout all
+     * dependency configurations.
+     */
+    private void forceJooqVersionAndEdition(Project project) {
+        def jooqGroupIds = JooqEdition.values().collect { it.groupId }.toSet()
+        project.configurations.all {
+            resolutionStrategy.eachDependency { details ->
+                def requested = details.requested
+                if (jooqGroupIds.contains(requested.group)) {
+                    details.useTarget("$extension.edition.groupId:$requested.name:$extension.version")
+                }
+            }
+        }
     }
 
     private void createJooqTask(JooqConfiguration jooqConfiguration) {
@@ -70,13 +91,20 @@ class JooqPlugin implements Plugin<Project> {
         jooqTask.description = "Generates the jOOQ sources from the '$jooqConfiguration.name' jOOQ configuration."
         jooqTask.group = "jOOQ"
         jooqTask.configuration = jooqConfiguration.configuration
+        jooqTask.jooqClasspath = jooqGeneratorClasspath
     }
 
+    /*
+     * Configures a sensible default output directory
+     */
     private void configureDefaultOutput(JooqConfiguration jooqConfiguration) {
         String outputDirectoryName = "${project.buildDir}/generated-src/jooq/$jooqConfiguration.name"
         jooqConfiguration.configuration.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName)))
     }
 
+    /*
+     * Ensures the Java compiler will pick up the generated sources
+     */
     private void configureSourceSet(JooqConfiguration jooqConfiguration) {
         SourceSet sourceSet = jooqConfiguration.sourceSet
         sourceSet.java.srcDir { jooqConfiguration.configuration.generator.target.directory }
