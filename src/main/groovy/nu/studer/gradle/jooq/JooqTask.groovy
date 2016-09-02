@@ -14,30 +14,34 @@
  limitations under the License.
  */
 package nu.studer.gradle.jooq
+
+import nu.studer.gradle.util.Objects
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.jooq.util.GenerationTool
 import org.jooq.util.jaxb.Configuration
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+
 /**
  * Gradle Task that runs the jOOQ source code generation.
  */
 class JooqTask extends DefaultTask {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JooqTask.class);
+    def Configuration configuration
 
-    def JooqConfiguration jooqConfiguration
-
-    @SuppressWarnings(["GroovyUnusedDeclaration", "GroovyAssignabilityCheck"])
-    @TaskAction
-    public void generate() {
-        // generate the jOOQ schema sources for the given configuration
-        Configuration config = jooqConfiguration.configBridge.target
-        config.generator.target.directory = project.file(config.generator.target.directory).absolutePath
-        new GenerationTool().run config;
-        LOGGER.debug("Performed jOOQ source code generation.");
-
+    @Input
+    def getConfigHash() {
+        Objects.deepHashCode(configuration)
     }
 
+    @OutputDirectory
+    def getOutputDirectory () {
+        configuration.generator.target.directory
+    }
+
+    @TaskAction
+    public void generate() {
+        new GenerationTool().run(configuration)
+    }
 }
