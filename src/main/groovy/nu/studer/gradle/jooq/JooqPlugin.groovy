@@ -34,7 +34,7 @@ class JooqPlugin implements Plugin<Project> {
 
     Project project
     JooqExtension extension
-    Configuration jooqGeneratorClasspath
+    Configuration jooqRuntime
 
     public void apply(Project project) {
         this.project = project
@@ -65,9 +65,9 @@ class JooqPlugin implements Plugin<Project> {
      * Users can add their JDBC drivers or any generator extensions they might have.
      */
     private void addJooqConfiguration(Project project) {
-        jooqGeneratorClasspath = project.configurations.create("jooqGeneratorClasspath")
-        jooqGeneratorClasspath.setDescription("The classpath used to invoke the jOOQ generator. Add your JDBC drivers or generator extensions here.")
-        project.dependencies.add(jooqGeneratorClasspath.name, "org.jooq:jooq-codegen")
+        jooqRuntime = project.configurations.create("jooqRuntime")
+        jooqRuntime.setDescription("The classpath used to invoke the jOOQ generator. Add your JDBC drivers or generator extensions here.")
+        project.dependencies.add(jooqRuntime.name, "org.jooq:jooq-codegen")
     }
 
     /*
@@ -91,7 +91,7 @@ class JooqPlugin implements Plugin<Project> {
         jooqTask.description = "Generates the jOOQ sources from the '$jooqConfiguration.name' jOOQ configuration."
         jooqTask.group = "jOOQ"
         jooqTask.configuration = jooqConfiguration.configuration
-        jooqTask.jooqClasspath = jooqGeneratorClasspath
+        jooqTask.jooqClasspath = jooqRuntime
     }
 
     /*

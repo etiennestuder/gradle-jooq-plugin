@@ -2,9 +2,9 @@ gradle-jooq-plugin
 ==================
 
 # Overview
-[Gradle](http://www.gradle.org) plugin that integrates [jOOQ](http://www.jooq.org). For each jOOQ configuration declared 
+[Gradle](http://www.gradle.org) plugin that integrates [jOOQ](http://www.jooq.org). For each jOOQ configuration declared
 in the build, the plugin adds a task to generate the jOOQ Java sources from a given database schema and includes the
-generated sources in the specified source set. Multiple configurations are supported. The code generation tasks fully 
+generated sources in the specified source set. Multiple configurations are supported. The code generation tasks fully
 participate in the Gradle uptodate checks.
 
 You can find out more details about the actual jOOQ source code generation in the
@@ -45,7 +45,7 @@ Depending on which database you are connecting to, you'll need to put the corres
 
 ```groovy
 dependencies {
-    jooqGeneratorClasspath 'postgresql:postgresql:9.1-901.jdbc4'
+    jooqRuntime 'postgresql:postgresql:9.1-901.jdbc4'
 }
 ```
 
@@ -71,9 +71,9 @@ dependencies {
 ```
 
 # Tasks
-For each jOOQ configuration declared in the build, the plugin adds a new `generate[ConfigurationName]JooqSchemaSource` 
+For each jOOQ configuration declared in the build, the plugin adds a new `generate[ConfigurationName]JooqSchemaSource`
 task to your project. Each task generates the jOOQ Java sources from the configured database schema and includes these
-sources in the specified source set. For example, a jOOQ configuration named `sample` will cause the plugin to add a 
+sources in the specified source set. For example, a jOOQ configuration named `sample` will cause the plugin to add a
 new code generation task `generateSampleJooqSchemaSource` to the project.
 
 ```console
@@ -92,7 +92,7 @@ gradle build -i
 
 # Configuration
 
-The example below shows a jOOQ configuration that creates the jOOQ Java sources from a PostgreSQL database schema and 
+The example below shows a jOOQ configuration that creates the jOOQ Java sources from a PostgreSQL database schema and
 includes them in the `main` source set.
 
 By default, the generated sources are written to `build/generated-src/jooq/<configurationName>`. The
