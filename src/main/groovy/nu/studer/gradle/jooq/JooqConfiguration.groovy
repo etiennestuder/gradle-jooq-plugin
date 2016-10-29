@@ -15,21 +15,29 @@
  */
 package nu.studer.gradle.jooq
 
-import nu.studer.gradle.util.JaxbConfigurationBridge
+import org.apache.commons.lang.StringUtils
+import org.gradle.api.Named
 import org.gradle.api.tasks.SourceSet
+import org.jooq.util.jaxb.Configuration
 
 /**
  * Represents a jOOQ configuration which consists of the actual jOOQ source code generation configuration and
  * the source set in which to include the generated sources.
  */
-class JooqConfiguration {
+class JooqConfiguration implements Named {
 
+    final String name
     final SourceSet sourceSet
-    final JaxbConfigurationBridge configBridge
+    final Configuration configuration
 
-    JooqConfiguration(SourceSet sourceSet, JaxbConfigurationBridge configBridge) {
+    JooqConfiguration(String name, SourceSet sourceSet, Configuration configuration) {
+        this.name = name
         this.sourceSet = sourceSet
-        this.configBridge = configBridge
+        this.configuration = configuration
+    }
+
+    def getJooqTaskName() {
+        "generate${StringUtils.capitalize(name)}JooqSchemaSource"
     }
 
 }

@@ -16,7 +16,6 @@
 package nu.studer.gradle.jooq
 
 import nu.studer.gradle.util.JaxbConfigurationBridge
-import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
 import org.jooq.util.jaxb.Configuration
 
@@ -26,14 +25,14 @@ import org.jooq.util.jaxb.Configuration
  */
 class JooqExtension {
 
-    final Project project
-    final Closure jooqConfigurationHandler
+    final Closure whenConfigAdded
     final String path
     final Map<String, JooqConfiguration> configs
+    String version = "3.8.4"
+    JooqEdition edition = JooqEdition.OSS
 
-    JooqExtension(Project project, Closure jooqConfigurationHandler, String path) {
-        this.project = project
-        this.jooqConfigurationHandler = jooqConfigurationHandler
+    JooqExtension(Closure jooqConfigurationHandler, String path) {
+        this.whenConfigAdded = jooqConfigurationHandler
         this.path = path
         this.configs = [:]
     }
@@ -57,7 +56,7 @@ class JooqExtension {
         }
 
         // apply the given closure to the configuration bridge, i.e. its contained JAXB Configuration object
-        def delegate = jooqConfig.configBridge
+        def delegate = new JaxbConfigurationBridge(jooqConfig.configuration, "${path}.${configName}")
         Closure copy = (Closure) closure.clone();
         copy.resolveStrategy = Closure.DELEGATE_FIRST;
         copy.delegate = delegate;
@@ -73,14 +72,8 @@ class JooqExtension {
     private JooqConfiguration findOrCreateConfig(String configName, SourceSet sourceSet) {
         JooqConfiguration jooqConfig = configs[configName]
         if (!jooqConfig) {
-            // create jOOQ configuration
-            def configBridge = new JaxbConfigurationBridge(new Configuration(), "${path}.${configName}")
-            jooqConfig = new JooqConfiguration(sourceSet, configBridge)
-
-            // pre-configure jOOQ configuration and create task derived from the configuration
-            jooqConfigurationHandler configName, jooqConfig
-
-            // register jOOQ configuration
+            jooqConfig = new JooqConfiguration(configName, sourceSet, new Configuration())
+            whenConfigAdded(jooqConfig)
             configs[configName] = jooqConfig
         }
         jooqConfig

@@ -14,30 +14,70 @@
  limitations under the License.
  */
 package nu.studer.gradle.jooq
+
+import nu.studer.gradle.util.Objects
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.FileCollection
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.gradle.process.ExecResult
+import org.jooq.Constants
 import org.jooq.util.GenerationTool
 import org.jooq.util.jaxb.Configuration
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+
+import javax.xml.XMLConstants
+import javax.xml.bind.JAXBContext
+import javax.xml.bind.Marshaller
+import javax.xml.validation.Schema
+import javax.xml.validation.SchemaFactory
+
 /**
  * Gradle Task that runs the jOOQ source code generation.
  */
 class JooqTask extends DefaultTask {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JooqTask.class);
+    def Configuration configuration
 
-    def JooqConfiguration jooqConfiguration
+    @InputFiles
+    def FileCollection jooqClasspath
 
-    @SuppressWarnings(["GroovyUnusedDeclaration", "GroovyAssignabilityCheck"])
-    @TaskAction
-    public void generate() {
-        // generate the jOOQ schema sources for the given configuration
-        Configuration config = jooqConfiguration.configBridge.target
-        config.generator.target.directory = project.file(config.generator.target.directory).absolutePath
-        new GenerationTool().run config;
-        LOGGER.debug("Performed jOOQ source code generation.");
-
+    @Input
+    int getConfigHash() {
+        Objects.deepHashCode(configuration)
     }
 
+    @OutputDirectory
+    File getOutputDirectory () {
+        project.file(configuration.generator.target.directory)
+    }
+
+    @TaskAction
+    public void generate() {
+        def configFile = new File(project.buildDir, "tmp/jooq/config.xml")
+        writeConfig(configFile)
+        executeJooq(configFile)
+    }
+
+    private ExecResult executeJooq(configFile) {
+        project.javaexec {
+            main = "org.jooq.util.GenerationTool"
+            classpath = jooqClasspath
+            args configFile
+        }
+    }
+
+    private void writeConfig(File configFile) {
+        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+        Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
+
+        JAXBContext ctx = JAXBContext.newInstance(Configuration.class);
+        Marshaller marshaller = ctx.createMarshaller()
+        marshaller.setSchema(schema)
+
+        configFile.parentFile.mkdirs()
+        marshaller.marshal(configuration, configFile)
+
+    }
 }
