@@ -14,34 +14,34 @@ The plugin is hosted on the [Gradle Plugin portal](https://plugins.gradle.org/pl
 
 # Applying the plugin
 
-You can apply the plugin using the plugins DSL
+You can apply the plugin using the `plugins` DSL
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '1.0.6'
+    id 'nu.studer.jooq' version '2.0.0'
 }
 ```
 
-Or using the buildscript block
+Or using the `buildscript` block
 
 ```groovy
 buildscript {
   repositories {
     maven {
-      url "https://plugins.gradle.org/m2/"
+      url 'https://plugins.gradle.org/m2/'
     }
   }
   dependencies {
-    classpath "nu.studer:gradle-jooq-plugin:1.0.6"
+    classpath 'nu.studer:gradle-jooq-plugin:2.0.0'
   }
 }
 
-apply plugin: "nu.studer.jooq"
+apply plugin: 'nu.studer.jooq'
 ```
 
 # Defining your database drivers
 
-Depending on which database you are connecting to, you'll need to put the corresponding driver on the generator's classpath.
+Depending on which database you are connecting to, you will need to put the corresponding driver on the generator's classpath.
 
 ```groovy
 dependencies {
@@ -51,17 +51,17 @@ dependencies {
 
 # Specifying the jOOQ version and edition
 
-This plugin supports existing and future jOOQ versions. It also supports the different editions like open source, pro and trial.
+This plugin supports existing and future jOOQ versions. It also supports the different editions like open source, pro, and trial.
 
 ```groovy
 jooq {
-  version = '3.8.2' //the default, can be omitted
-  edition = 'OSS'   //the default, can be omitted. Other values are PRO, PRO_JAVA_6 and TRIAL
+  version = '3.8.5' // the default (can be omitted)
+  edition = 'OSS'   // the default (can be omitted), other values are PRO, PRO_JAVA_6 and TRIAL
 }
 ```
 
 The plugin will ensure that all your dependencies use the version and edition
-specified in the jooq configuration. So when you declare a compile dependency
+specified in the `jooq` configuration. So when you declare a compile dependency
 on jOOQ, you can omit the version:
 
 ```groovy
