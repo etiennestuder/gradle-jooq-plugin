@@ -23,7 +23,7 @@ dependencies {
 }
 
 group = 'nu.studer'
-version = '1.0.7.DEV'
+version = '2.0.0'
 
 plugindev {
     pluginImplementationClass 'nu.studer.gradle.jooq.JooqPlugin'
@@ -43,4 +43,5 @@ bintray {
     key = credentials.BINTRAY_API_KEY
     pkg.repo = 'gradle-plugins'
     dryRun = true
+    publish = false
 }
