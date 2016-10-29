@@ -5,7 +5,6 @@ buildscript {
     dependencies {
         classpath "nu.studer:gradle-plugindev-plugin:$plugindevPluginVersion"
         classpath "nu.studer:gradle-credentials-plugin:$credentialsPluginVersion"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintrayPluginVersion"
     }
 }
 
