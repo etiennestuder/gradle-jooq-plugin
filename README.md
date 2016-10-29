@@ -41,7 +41,7 @@ apply plugin: 'nu.studer.jooq'
 
 # Defining your database drivers
 
-Depending on which database you are connecting to, you will need to put the corresponding driver on the generator's classpath.
+Depending on which database you are connecting to, you need to put the corresponding driver on the generator's classpath.
 
 ```groovy
 dependencies {
@@ -60,7 +60,7 @@ jooq {
 }
 ```
 
-The plugin will ensure that all your dependencies use the version and edition
+The plugin ensures that all your dependencies use the version and edition
 specified in the `jooq` configuration. So when you declare a compile dependency
 on jOOQ, you can omit the version:
 
@@ -145,10 +145,12 @@ jooq {
 ```
 
 # Changelog
++ 2.0.0 - jOOQ version used for the code generation is independent from the jOOQ version used by the gradle-jooq plugin
 + 1.0.6 - Upgrade to jOOQ 3.6.2
 
 # Acknowledgements
 
++ [oehme](https://github.com/oehme) (pr)
 + [jamespedwards42](https://github.com/jamespedwards42) (idea)
 + [dubacher](https://github.com/dubacher) (patch)
 + [lukaseder](https://github.com/lukaseder) (patch)

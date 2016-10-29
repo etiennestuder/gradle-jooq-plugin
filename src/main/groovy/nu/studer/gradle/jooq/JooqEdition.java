@@ -6,18 +6,20 @@ package nu.studer.gradle.jooq;
  * are the same for all editions.
  */
 public enum JooqEdition {
+
     OSS("org.jooq"),
     PRO("org.jooq.pro"),
     PRO_JAVA_6("org.jooq.pro-java-6"),
     TRIAL("org.jooq.trial");
 
-    String groupId;
+    private final String groupId;
 
-    private JooqEdition(String groupId) {
+    JooqEdition(String groupId) {
         this.groupId = groupId;
     }
 
     public String getGroupId() {
         return groupId;
     }
+
 }
