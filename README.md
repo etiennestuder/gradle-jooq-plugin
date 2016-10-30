@@ -104,7 +104,7 @@ See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.3.0.xsd) for the full 
 jooq {
    version = '3.8.5'
    edition = nu.studer.gradle.jooq.JooqEdition.OSS // or use 'OSS' for brevity
-   sample(sourceSets.main) {
+   sample(sourceSets.main) { // assumes the presence of the 'main' sourceSet
        jdbc {
            driver = 'org.postgresql.Driver'
            url = 'jdbc:postgresql://localhost:5432/sample'
