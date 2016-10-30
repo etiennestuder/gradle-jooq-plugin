@@ -103,7 +103,7 @@ See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.3.0.xsd) for the full 
 ```groovy
 jooq {
    version = '3.8.5'
-   edition = nu.studer.gradle.jooq.JooqEdition.OSS
+   edition = nu.studer.gradle.jooq.JooqEdition.OSS // or use 'OSS' for brevity
    sample(sourceSets.main) {
        jdbc {
            driver = 'org.postgresql.Driver'
