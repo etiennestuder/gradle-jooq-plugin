@@ -28,6 +28,7 @@ import org.jooq.util.jaxb.Target
  * Each task generates the jOOQ source code from the configured database. The tasks properly participate in the Gradle
  * up-to-date checks. The tasks are wired as dependencies of the compilation tasks of the Java plugin.
  */
+@SuppressWarnings("GroovyUnusedDeclaration")
 class JooqPlugin implements Plugin<Project> {
 
     static final String JOOQ_EXTENSION_NAME = "jooq"
@@ -45,8 +46,7 @@ class JooqPlugin implements Plugin<Project> {
         forceJooqVersionAndEdition(project)
     }
 
-
-    /*
+    /**
      * Adds the DSL extensions that allows the user to configure key aspects of
      * this plugin.
      */
@@ -60,7 +60,7 @@ class JooqPlugin implements Plugin<Project> {
         extension = project.extensions.create(JOOQ_EXTENSION_NAME, JooqExtension.class, whenConfigurationAdded, JOOQ_EXTENSION_NAME)
     }
 
-    /*
+    /**
      * Adds the configuration that holds the classpath to use for invoking jOOQ.
      * Users can add their JDBC drivers or any generator extensions they might have.
      */
@@ -70,7 +70,7 @@ class JooqPlugin implements Plugin<Project> {
         project.dependencies.add(jooqRuntime.name, "org.jooq:jooq-codegen")
     }
 
-    /*
+    /**
      * Forces the jOOQ version and edition selected by the user throughout all
      * dependency configurations.
      */
@@ -86,6 +86,9 @@ class JooqPlugin implements Plugin<Project> {
         }
     }
 
+    /**
+     * Adds the task that runs the jOOQ code generator in a separate process.
+     */
     private void createJooqTask(JooqConfiguration jooqConfiguration) {
         JooqTask jooqTask = project.tasks.create(jooqConfiguration.jooqTaskName, JooqTask.class)
         jooqTask.description = "Generates the jOOQ sources from the '$jooqConfiguration.name' jOOQ configuration."
@@ -94,16 +97,16 @@ class JooqPlugin implements Plugin<Project> {
         jooqTask.jooqClasspath = jooqRuntime
     }
 
-    /*
-     * Configures a sensible default output directory
+    /**
+     * Configures a sensible default output directory.
      */
     private void configureDefaultOutput(JooqConfiguration jooqConfiguration) {
         String outputDirectoryName = "${project.buildDir}/generated-src/jooq/$jooqConfiguration.name"
         jooqConfiguration.configuration.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName)))
     }
 
-    /*
-     * Ensures the Java compiler will pick up the generated sources
+    /**
+     * Ensures the Java compiler will pick up the generated sources.
      */
     private void configureSourceSet(JooqConfiguration jooqConfiguration) {
         SourceSet sourceSet = jooqConfiguration.sourceSet

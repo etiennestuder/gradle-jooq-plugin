@@ -25,14 +25,18 @@ import org.jooq.util.jaxb.Configuration
  */
 class JooqExtension {
 
+    private static final String DEFAULT_JOOQ_VERSION = "3.8.5"
+    private static final JooqEdition DEFAULT_JOOQ_EDITION = JooqEdition.OSS
+
     final Closure whenConfigAdded
     final String path
     final Map<String, JooqConfiguration> configs
-    String version = "3.8.5"
-    JooqEdition edition = JooqEdition.OSS
 
-    JooqExtension(Closure jooqConfigurationHandler, String path) {
-        this.whenConfigAdded = jooqConfigurationHandler
+    String version = DEFAULT_JOOQ_VERSION
+    JooqEdition edition = DEFAULT_JOOQ_EDITION
+
+    JooqExtension(Closure whenConfigAdded, String path) {
+        this.whenConfigAdded = whenConfigAdded
         this.path = path
         this.configs = [:]
     }

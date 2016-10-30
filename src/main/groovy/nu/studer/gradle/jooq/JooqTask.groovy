@@ -60,14 +60,6 @@ class JooqTask extends DefaultTask {
         executeJooq(configFile)
     }
 
-    private ExecResult executeJooq(configFile) {
-        project.javaexec {
-            main = "org.jooq.util.GenerationTool"
-            classpath = jooqClasspath
-            args configFile
-        }
-    }
-
     private void writeConfig(File configFile) {
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
         Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
@@ -78,6 +70,14 @@ class JooqTask extends DefaultTask {
 
         configFile.parentFile.mkdirs()
         marshaller.marshal(configuration, configFile)
-
     }
+
+    private ExecResult executeJooq(configFile) {
+        project.javaexec {
+            main = "org.jooq.util.GenerationTool"
+            classpath = jooqClasspath
+            args configFile
+        }
+    }
+
 }
