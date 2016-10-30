@@ -56,7 +56,7 @@ This plugin supports existing and future jOOQ versions. It also supports the dif
 ```groovy
 jooq {
   version = '3.8.5' // the default (can be omitted)
-  edition = 'OSS'   // the default (can be omitted), other values are PRO, PRO_JAVA_6 and TRIAL
+  edition = 'OSS'   // the default (can be omitted), other allowed values are PRO, PRO_JAVA_6, and TRIAL
 }
 ```
 
@@ -103,8 +103,8 @@ See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.3.0.xsd) for the full 
 ```groovy
 jooq {
    version = '3.8.5'
-   edition = nu.studer.gradle.jooq.JooqEdition.OSS // or use 'OSS' for brevity
-   sample(sourceSets.main) { // assumes the presence of the 'main' sourceSet
+   edition = 'OSS'
+   sample(sourceSets.main) {
        jdbc {
            driver = 'org.postgresql.Driver'
            url = 'jdbc:postgresql://localhost:5432/sample'
