@@ -5,7 +5,7 @@ gradle-jooq-plugin
 [Gradle](http://www.gradle.org) plugin that integrates [jOOQ](http://www.jooq.org). For each jOOQ configuration declared
 in the build, the plugin adds a task to generate the jOOQ Java sources from a given database schema and includes the
 generated sources in the specified source set. Multiple configurations are supported. The code generation tasks fully
-participate in the Gradle uptodate checks.
+participate in the Gradle uptodate checks. The plugin can be applied on both Java projects and Android projects.
 
 You can find out more details about the actual jOOQ source code generation in the
 [jOOQ documentation](http://www.jooq.org/doc/latest/manual/code-generation).
