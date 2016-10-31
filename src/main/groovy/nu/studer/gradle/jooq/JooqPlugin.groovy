@@ -26,12 +26,22 @@ import org.jooq.util.jaxb.Target
 /**
  * Plugin that extends the java-base plugin and registers a {@link JooqTask} for each defined jOOQ configuration.
  * Each task generates the jOOQ source code from the configured database. The tasks properly participate in the Gradle
- * up-to-date checks. The tasks are wired as dependencies of the compilation tasks of the Java plugin.
+ * up-to-date checks. The tasks are wired as dependencies of the compilation tasks of the JavaBasePlugin plugin.
  */
 @SuppressWarnings("GroovyUnusedDeclaration")
 class JooqPlugin implements Plugin<Project> {
 
-    static final String JOOQ_EXTENSION_NAME = "jooq"
+    private static final String JOOQ_EXTENSION_NAME = "jooq"
+
+    private static final List<String> WELL_VERSIONED_ARTIFACTS = [
+        "jooq-meta-extensions",
+        "jooq-meta",
+        "jooq-codegen-maven",
+        "jooq-codegen",
+        "jooq-parent",
+        "jooq-scala",
+        "jooq"
+    ]
 
     Project project
     JooqExtension extension
@@ -79,7 +89,7 @@ class JooqPlugin implements Plugin<Project> {
         project.configurations.all {
             resolutionStrategy.eachDependency { details ->
                 def requested = details.requested
-                if (jooqGroupIds.contains(requested.group)) {
+                if (jooqGroupIds.contains(requested.group) && WELL_VERSIONED_ARTIFACTS.contains(requested.name)) {
                     details.useTarget("$extension.edition.groupId:$requested.name:$extension.version")
                 }
             }
