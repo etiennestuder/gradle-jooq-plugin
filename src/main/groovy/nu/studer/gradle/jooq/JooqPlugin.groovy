@@ -33,16 +33,6 @@ class JooqPlugin implements Plugin<Project> {
 
     private static final String JOOQ_EXTENSION_NAME = "jooq"
 
-    private static final List<String> WELL_VERSIONED_ARTIFACTS = [
-        "jooq-meta-extensions",
-        "jooq-meta",
-        "jooq-codegen-maven",
-        "jooq-codegen",
-        "jooq-parent",
-        "jooq-scala",
-        "jooq"
-    ]
-
     Project project
     JooqExtension extension
     Configuration jooqRuntime
@@ -89,7 +79,7 @@ class JooqPlugin implements Plugin<Project> {
         project.configurations.all {
             resolutionStrategy.eachDependency { details ->
                 def requested = details.requested
-                if (jooqGroupIds.contains(requested.group) && WELL_VERSIONED_ARTIFACTS.contains(requested.name)) {
+                if (jooqGroupIds.contains(requested.group) && requested.name.startsWith('jooq')) {
                     details.useTarget("$extension.edition.groupId:$requested.name:$extension.version")
                 }
             }
