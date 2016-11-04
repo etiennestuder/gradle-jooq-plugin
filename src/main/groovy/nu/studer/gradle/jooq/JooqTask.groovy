@@ -16,6 +16,7 @@
 package nu.studer.gradle.jooq
 
 import nu.studer.gradle.util.Objects
+import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.Input
@@ -23,6 +24,7 @@ import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecResult
+import org.gradle.process.JavaExecSpec
 import org.jooq.Constants
 import org.jooq.util.GenerationTool
 import org.jooq.util.jaxb.Configuration
@@ -40,6 +42,9 @@ class JooqTask extends DefaultTask {
 
     def Configuration configuration
 
+    def Action<? super JavaExecSpec> javaExecSpec
+    def Action<? super ExecResult> execResultHandler
+
     @InputFiles
     def FileCollection jooqClasspath
 
@@ -49,7 +54,7 @@ class JooqTask extends DefaultTask {
     }
 
     @OutputDirectory
-    File getOutputDirectory () {
+    File getOutputDirectory() {
         project.file(configuration.generator.target.directory)
     }
 
@@ -57,7 +62,10 @@ class JooqTask extends DefaultTask {
     public void generate() {
         def configFile = new File(project.buildDir, "tmp/jooq/config.xml")
         writeConfig(configFile)
-        executeJooq(configFile)
+        def execResult = executeJooq(configFile)
+        if (execResultHandler) {
+            execResultHandler.execute(execResult)
+        }
     }
 
     private void writeConfig(File configFile) {
@@ -72,12 +80,20 @@ class JooqTask extends DefaultTask {
         marshaller.marshal(configuration, configFile)
     }
 
-    private ExecResult executeJooq(configFile) {
-        project.javaexec {
-            main = "org.jooq.util.GenerationTool"
-            classpath = jooqClasspath
-            args configFile
-        }
+    private ExecResult executeJooq(File configFile) {
+        project.javaexec(new Action<JavaExecSpec>() {
+
+            @Override
+            void execute(JavaExecSpec spec) {
+                spec.main = "org.jooq.util.GenerationTool"
+                spec.classpath = jooqClasspath
+                spec.args configFile
+                if (javaExecSpec) {
+                    javaExecSpec.execute(spec)
+                }
+            }
+
+        })
     }
 
 }
