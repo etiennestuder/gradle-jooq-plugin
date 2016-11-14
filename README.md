@@ -147,6 +147,8 @@ jooq {
 ```
 
 # Changelog
++ 2.0.2 - Configuration of call-backs for code generation java execution process
++ 2.0.1 - Bug fixes 
 + 2.0.0 - jOOQ version used for the code generation is independent from the jOOQ version used by the gradle-jooq plugin
 + 1.0.6 - Upgrade to jOOQ 3.6.2
 
