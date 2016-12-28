@@ -110,7 +110,6 @@ jooq {
            url = 'jdbc:postgresql://localhost:5432/sample'
            user = 'some_user'
            password = 'secret'
-           schema = 'public'
            properties {
                property {
                    key = 'ssl'
