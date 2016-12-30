@@ -98,7 +98,7 @@ includes them in the `main` source set.
 By default, the generated sources are written to `build/generated-src/jooq/<configurationName>`. The
 output directory can be configured by explicitly setting the `directory` attribute of the `target` configuration.
 
-See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.3.0.xsd) for the full set of configuration options.
+See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.9.0.xsd) for the full set of configuration options.
 
 ```groovy
 jooq {
