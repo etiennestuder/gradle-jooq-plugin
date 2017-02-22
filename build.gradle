@@ -9,6 +9,7 @@ buildscript {
 }
 
 apply plugin: 'groovy'
+apply plugin: 'java-gradle-plugin'
 apply plugin: 'nu.studer.plugindev'
 apply plugin: 'nu.studer.credentials'
 
@@ -19,7 +20,9 @@ dependencies {
     compile("org.jooq:jooq-meta:$jooqVersion")
     compile("org.jooq:jooq-codegen:$jooqVersion")
 
-    testCompile "junit:junit:$junitVersion"
+    testCompile("org.spockframework:spock-core:$spockVersion-groovy-2.4") {
+        exclude module: 'groovy-all'
+    }
 }
 
 group = 'nu.studer'
