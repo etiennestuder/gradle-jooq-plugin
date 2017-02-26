@@ -24,7 +24,7 @@ dependencies {
         exclude module: 'groovy-all'
     }
 
-    testCompile "com.opentable.components:otj-pg-embedded:$pgEmbeddedVersion"
+    testCompile "com.h2database:h2:$h2Version"
 }
 
 group = 'nu.studer'

@@ -1,48 +1,38 @@
 package nu.studer.gradle.jooq
 
-import com.opentable.db.postgres.junit.EmbeddedPostgresRules
-import com.opentable.db.postgres.junit.SingleInstancePostgresRule
 import groovy.sql.Sql
 import org.gradle.testkit.runner.TaskOutcome
-import org.junit.ClassRule
 import spock.lang.AutoCleanup
 import spock.lang.Ignore
 import spock.lang.Shared
-import spock.lang.Unroll
 
-@Unroll
+import java.sql.DriverManager
+
 class JooqFuncTest extends BaseFuncTest {
-
-    @ClassRule
-    @Shared
-    SingleInstancePostgresRule pgRule = EmbeddedPostgresRules.singleInstance()
 
     @AutoCleanup
     @Shared
     Sql sql
 
     void setupSpec() {
-        sql = new Sql(pgRule.embeddedPostgres.postgresDatabase)
+        sql = new Sql(DriverManager.getConnection('jdbc:h2:~/test;AUTO_SERVER=TRUE', 'sa', ''))
+        sql.execute('CREATE SCHEMA IF NOT EXISTS jooq_test')
+        sql.execute('CREATE TABLE IF NOT EXISTS jooq_test.foo (a INT);')
     }
 
-    void setup() {
-        sql.execute("CREATE SCHEMA IF NOT EXISTS public;")
-    }
-
-    void cleanup() {
-        sql.execute('DROP SCHEMA public CASCADE;')
+    void cleanupSpec() {
+        sql.execute('DROP SCHEMA jooq_test')
     }
 
     void "successfully applies jooq plugin"() {
         given:
         buildFile << buildWithJooqPluginDSL()
-        sql.execute('CREATE TABLE public.foo (a INTEGER);')
 
         when:
         def result = runWithArguments('build')
 
         then:
-        new File(workspaceDir, "build/generated-src/jooq/sample/nu/studer/sample/tables/Foo.java").exists()
+        new File(workspaceDir, 'build/generated-src/jooq/sample/nu/studer/sample/jooq_test/tables/Foo.java').exists()
 
         and:
         result.task(':generateSampleJooqSchemaSource')
@@ -101,7 +91,7 @@ repositories {
 
 dependencies {
     compile 'org.jooq:jooq'
-    jooqRuntime 'postgresql:postgresql:9.1-901.jdbc4'
+    jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
 jooq {
@@ -109,9 +99,9 @@ jooq {
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
-           driver = 'org.postgresql.Driver'
-           url = 'jdbc:postgresql://localhost:${pgRule.embeddedPostgres.port}/postgres'
-           user = 'postgres'
+           driver = 'org.h2.Driver'
+           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+           user = 'sa'
            password = ''
        }
        generator {
@@ -120,15 +110,11 @@ jooq {
                name = 'org.jooq.util.DefaultGeneratorStrategy'
            }
            database {
-               name = 'org.jooq.util.postgres.PostgresDatabase'
-               inputSchema = 'public'
+               name = 'org.jooq.util.h2.H2Database'
+               includes = '.*'
+               excludes = ''
            }
            generate {
-               relations = true
-               deprecated = false
-               records = true
-               immutablePojos = true
-               fluentSetters = true
            }
            target {
                packageName = '$targetPackageName'
@@ -153,7 +139,7 @@ repositories {
 
 dependencies {
     compile 'org.jooq:jooq'
-    jooqRuntime 'postgresql:postgresql:9.1-901.jdbc4'
+    jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
 jooq {
@@ -161,9 +147,9 @@ jooq {
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
-           driver = 'org.postgresql.Driver'
-           url = 'jdbc:postgresql://localhost:${pgRule.embeddedPostgres.port}/postgres'
-           user = 'postgres'
+           driver = 'org.h2.Driver'
+           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+           user = 'sa'
            password = ''
        }
        generator {
@@ -172,30 +158,25 @@ jooq {
                name = 'org.jooq.util.DefaultGeneratorStrategy'
            }
            database {
-               name = 'org.jooq.util.postgres.PostgresDatabase'
-               inputSchema = 'public'
+               name = 'org.jooq.util.h2.H2Database'
+               includes = '.*'
+               excludes = ''
                forcedTypes = [
-                    {
-                        userType = 'java.time.LocalDateTime'
-                        converter = 'com.company.dao.LocalDateTimeConverter'
-                        expression = '.*\\\\.DATE_TIME.*'
-                    }
-               ]
+                   {
+                       userType = 'java.time.LocalDateTime'
+                       converter = 'com.company.dao.LocalDateTimeConverter'
+                       expression = '.*\\\\.DATE_TIME.*'
+                   }
+              ]
            }
            generate {
-               relations = true
-               deprecated = false
-               records = true
-               immutablePojos = true
-               fluentSetters = true
            }
            target {
-               packageName = 'nu.studer.sample'
+               packageName = '$targetPackageName'
            }
        }
    }
 }
 """
     }
-
 }
