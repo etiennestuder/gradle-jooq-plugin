@@ -126,6 +126,18 @@ jooq {
            database {
                name = 'org.jooq.util.postgres.PostgresDatabase'
                inputSchema = 'public'
+               forcedTypes {
+                 forcedType {
+                     name = 'varchar'
+                     expression = '.*'
+                     types = 'JSONB?'
+                 }
+                 forcedType {
+                     name = 'varchar'
+                     expression = '.*'
+                     types = 'INET'
+                 }
+               }
                // ...
            }
            generate {
@@ -143,6 +155,38 @@ jooq {
        }
    }
 }
+```
+
+## Typical Pitfalls
+
+- Bear in mind that the DSL resemblance with the Groovy language is just apparent. Complex types that include sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.9.0.xsd)
+must be defined in the DSL nesting style:
+
+```groovy
+forcedTypes {
+  forcedType {
+    name = 'varchar'
+    expression = '.*'
+    types = 'JSONB?'
+  }
+  forcedType {
+    name = 'varchar'
+    expression = '.*'
+    types = 'INET'
+  }
+}
+```
+
+This Groovy list style is not supported:
+
+```groovy
+forcedTypes = [
+  {
+    name = 'varchar'
+    expression = '.*'
+    types = 'JSONB?'
+  }
+]
 ```
 
 # Changelog
