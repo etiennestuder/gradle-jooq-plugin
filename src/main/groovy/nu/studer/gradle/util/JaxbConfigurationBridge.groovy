@@ -16,6 +16,7 @@
 package nu.studer.gradle.util
 
 import org.gradle.api.InvalidUserDataException
+import org.jooq.Constants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -42,6 +43,9 @@ class JaxbConfigurationBridge {
         if (args.length == 1 && args[0] instanceof Closure) {
             // invoke the bean getter method
             def targetMethod = target.class.methods.find { it.name == "get${methodName.capitalize()}" }
+            if (targetMethod == null) {
+                throw new InvalidUserDataException("Invalid configuration container element: '$methodName' on extension '$path'. Please, check current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}")
+            }
             def methodInvocationResult = targetMethod.invoke(target)
 
             // apply special handling if the defined return type is of type List
@@ -85,7 +89,7 @@ class JaxbConfigurationBridge {
         if (target.hasProperty(name)) {
             target."$name" = value
         } else {
-            throw new InvalidUserDataException("Invalid property: '$name' on extension '$path', value: $value")
+            throw new InvalidUserDataException("Invalid property: '$name' on extension '$path', value: $value. Please, check current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}")
         }
     }
 
