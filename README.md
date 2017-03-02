@@ -197,6 +197,7 @@ forcedTypes = [
 
 # Acknowledgements
 
++ [felipefzdz](https://github.com/felipefzdz) (commits)
 + [oehme](https://github.com/oehme) (pr)
 + [jamespedwards42](https://github.com/jamespedwards42) (idea)
 + [dubacher](https://github.com/dubacher) (patch)
