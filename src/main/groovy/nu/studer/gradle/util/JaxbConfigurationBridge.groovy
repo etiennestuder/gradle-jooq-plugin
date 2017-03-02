@@ -30,6 +30,8 @@ class JaxbConfigurationBridge {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JaxbConfigurationBridge.class);
 
+    private static final GString XSD_REFERENCE = "Please check the current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}."
+
     final Object target
     final String path
 
@@ -44,8 +46,9 @@ class JaxbConfigurationBridge {
             // invoke the bean getter method
             def targetMethod = target.class.methods.find { it.name == "get${methodName.capitalize()}" }
             if (targetMethod == null) {
-                throw new InvalidUserDataException("Invalid configuration container element: '$methodName' on extension '$path'. Please, check current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}")
+                throw new InvalidUserDataException("Invalid configuration container element: '$methodName' on extension '$path'. " + XSD_REFERENCE)
             }
+
             def methodInvocationResult = targetMethod.invoke(target)
 
             // apply special handling if the defined return type is of type List
@@ -89,7 +92,7 @@ class JaxbConfigurationBridge {
         if (target.hasProperty(name)) {
             target."$name" = value
         } else {
-            throw new InvalidUserDataException("Invalid property: '$name' on extension '$path', value: $value. Please, check current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}")
+            throw new InvalidUserDataException("Invalid property: '$name' on extension '$path', value: $value. " + XSD_REFERENCE)
         }
     }
 
