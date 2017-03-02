@@ -82,7 +82,7 @@ class JaxbConfigurationBridge {
 
             target
         } else {
-            LOGGER.error("Cannot find configuration container element '$methodName' on '$path'. " +
+            LOGGER.warn("Cannot find configuration container element '$methodName' on '$path'. " +
                     "Make sure to use the equal sign to set simple configuration property values.")
             throw new MissingMethodException(methodName, getClass(), args)
         }
