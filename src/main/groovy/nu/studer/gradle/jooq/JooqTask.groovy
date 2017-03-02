@@ -40,13 +40,13 @@ import javax.xml.validation.SchemaFactory
  */
 class JooqTask extends DefaultTask {
 
-    def Configuration configuration
+    Configuration configuration
 
-    def Action<? super JavaExecSpec> javaExecSpec
-    def Action<? super ExecResult> execResultHandler
+    Action<? super JavaExecSpec> javaExecSpec
+    Action<? super ExecResult> execResultHandler
 
     @InputFiles
-    def FileCollection jooqClasspath
+    FileCollection jooqClasspath
 
     @Input
     int getConfigHash() {
@@ -59,7 +59,7 @@ class JooqTask extends DefaultTask {
     }
 
     @TaskAction
-    public void generate() {
+    void generate() {
         def configFile = new File(project.buildDir, "tmp/jooq/config.xml")
         writeConfig(configFile)
         def execResult = executeJooq(configFile)
@@ -72,7 +72,7 @@ class JooqTask extends DefaultTask {
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
         Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
 
-        JAXBContext ctx = JAXBContext.newInstance(Configuration.class);
+        JAXBContext ctx = JAXBContext.newInstance(Configuration.class)
         Marshaller marshaller = ctx.createMarshaller()
         marshaller.setSchema(schema)
 
