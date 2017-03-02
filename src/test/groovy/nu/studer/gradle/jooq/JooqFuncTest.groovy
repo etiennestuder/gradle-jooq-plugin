@@ -16,7 +16,7 @@ class JooqFuncTest extends BaseFuncTest {
 
     void setupSpec() {
         sql = new Sql(DriverManager.getConnection('jdbc:h2:~/test;AUTO_SERVER=TRUE', 'sa', ''))
-        sql.execute('CREATE SCHEMA IF NOT EXISTS jooq_test')
+        sql.execute('CREATE SCHEMA IF NOT EXISTS jooq_test;')
         sql.execute('CREATE TABLE IF NOT EXISTS jooq_test.foo (a INT);')
     }
 
@@ -73,7 +73,7 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runAndFailWithArguments('build')
 
         then:
-        result.output.contains "Invalid property: 'missing' on extension 'jooq.sample.generator.generate', value: true. Please, check current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}"
+        result.output.contains "Invalid property: 'missing' on extension 'jooq.sample.generator.generate', value: true. Please check the current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}"
     }
 
     void "shows an error message with a link to the current XSD when a configuration container element is missing"() {
@@ -84,7 +84,7 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runAndFailWithArguments('build')
 
         then:
-        result.output.contains "Invalid configuration container element: 'missing' on extension 'jooq.sample'. Please, check current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}"
+        result.output.contains "Invalid configuration container element: 'missing' on extension 'jooq.sample'. Please check the current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}"
     }
 
     void "successfully applies custom strategies when the proper classes are added to the jooqRuntime configuration"() {
@@ -98,55 +98,10 @@ class JooqFuncTest extends BaseFuncTest {
         result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
     }
 
-    private String buildWithCustomStrategies() {
+    private static String buildWithJooqPluginDSL(String targetPackageName = 'nu.studer.sample') {
         """
 plugins {
-    id 'nu.studer.jooq' version '2.0.2'
-}
-
-apply plugin: 'java'
-
-repositories {
-    jcenter()
-}
-
-dependencies {
-    compile 'org.jooq:jooq'
-    jooqRuntime 'com.h2database:h2:1.4.193'
-    jooqRuntime 'io.github.jklingsporn:vertx-jooq:1.0.0'
-}
-
-jooq {
-   version = '3.9.0'
-   edition = 'OSS'
-   sample(sourceSets.main) {
-       jdbc {
-           driver = 'org.h2.Driver'
-           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-           user = 'sa'
-           password = ''
-       }
-       generator {
-           name = 'org.jooq.util.DefaultGenerator'
-           strategy {
-               name = 'io.github.jklingsporn.vertx.impl.VertxGeneratorStrategy'
-           }
-           database {
-               name = 'org.jooq.util.h2.H2Database'
-           }
-           generate {
-               javaTimeTypes = true
-           }
-       }
-   }
-}
-"""
-    }
-
-    private String buildWithJooqPluginDSL(String targetPackageName = 'nu.studer.sample') {
-        """
-plugins {
-    id 'nu.studer.jooq' version '2.0.2'
+    id 'nu.studer.jooq'
 }
 
 apply plugin: 'java'
@@ -204,10 +159,10 @@ jooq {
 """
     }
 
-    private String buildWithMissingProperty() {
+    private static String buildWithMissingProperty() {
         """
 plugins {
-    id 'nu.studer.jooq' version '2.0.2'
+    id 'nu.studer.jooq'
 }
 
 apply plugin: 'java'
@@ -242,10 +197,10 @@ jooq {
 """
     }
 
-    private String buildWithMissingConfigurationContainerElement() {
+    private static String buildWithMissingConfigurationContainerElement() {
         """
 plugins {
-    id 'nu.studer.jooq' version '2.0.2'
+    id 'nu.studer.jooq'
 }
 
 apply plugin: 'java'
@@ -275,4 +230,50 @@ jooq {
 }
 """
     }
+
+    private static String buildWithCustomStrategies() {
+        """
+plugins {
+    id 'nu.studer.jooq'
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.jooq:jooq'
+    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqRuntime 'io.github.jklingsporn:vertx-jooq:1.0.0'
+}
+
+jooq {
+   version = '3.9.0'
+   edition = 'OSS'
+   sample(sourceSets.main) {
+       jdbc {
+           driver = 'org.h2.Driver'
+           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+           user = 'sa'
+           password = ''
+       }
+       generator {
+           name = 'org.jooq.util.DefaultGenerator'
+           strategy {
+               name = 'io.github.jklingsporn.vertx.impl.VertxGeneratorStrategy'
+           }
+           database {
+               name = 'org.jooq.util.h2.H2Database'
+           }
+           generate {
+               javaTimeTypes = true
+           }
+       }
+   }
+}
+"""
+    }
+
 }
