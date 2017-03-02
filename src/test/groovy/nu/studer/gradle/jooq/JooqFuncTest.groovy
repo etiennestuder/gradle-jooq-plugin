@@ -122,6 +122,17 @@ class JooqFuncTest extends BaseFuncTest {
         result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
     }
 
+    void "parses DSL with variables and methods references"() {
+        given:
+        buildFile << buildWithVariablesAndMethods()
+
+        when:
+        def result = runWithArguments('build')
+
+        then:
+        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+    }
+
     private static String buildWithJooqPluginDSL(String targetPackageName = 'nu.studer.sample') {
         """
 plugins {
@@ -348,6 +359,58 @@ jooq {
                javaTimeTypes = true
             }
         }
+   }
+}
+"""
+    }
+
+    private static String buildWithVariablesAndMethods() {
+        """
+plugins {
+    id 'nu.studer.jooq'
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.jooq:jooq'
+    jooqRuntime 'com.h2database:h2:1.4.193'
+}
+
+def userSA = 'sa'
+
+def calculateDriver() {
+    'org.h2.Driver'
+}
+
+jooq {
+   version = '3.9.0'
+   edition = 'OSS'
+   sample(sourceSets.main) {
+       jdbc {
+           driver = calculateDriver()
+           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+           user = userSA
+           password = ''
+       }
+       generator {
+           name = 'org.jooq.util.DefaultGenerator'
+           strategy {
+               name = 'org.jooq.util.DefaultGeneratorStrategy'
+           }
+           database {
+               name = 'org.jooq.util.h2.H2Database'
+               includes = '.*'
+               excludes = ''
+           }
+           generate {
+               javaTimeTypes = true
+           }
+       }
    }
 }
 """
