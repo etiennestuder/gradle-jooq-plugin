@@ -159,8 +159,8 @@ jooq {
 
 ## Typical Pitfalls
 
-- Bear in mind that the DSL resemblance with the Groovy language is just apparent. Complex types that include sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.9.0.xsd)
-must be defined in the DSL nesting style:
+- Resemblance of the jOOQ configuration DSL with the Groovy language is coincidental. Complex types that include 
+sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.9.0.xsd) must be defined in the DSL's nesting style:
 
 ```groovy
 forcedTypes {
@@ -177,7 +177,7 @@ forcedTypes {
 }
 ```
 
-This Groovy list style is not supported:
+The Groovy list style is *not* supported:
 
 ```groovy
 forcedTypes = [
@@ -185,6 +185,11 @@ forcedTypes = [
     name = 'varchar'
     expression = '.*'
     types = 'JSONB?'
+  },
+  {
+    name = 'varchar'
+    expression = '.*'
+    types = 'INET'
   }
 ]
 ```
