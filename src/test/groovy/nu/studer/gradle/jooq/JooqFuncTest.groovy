@@ -98,6 +98,19 @@ class JooqFuncTest extends BaseFuncTest {
         result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
     }
 
+    void "can remove auto-wired task dependency"() {
+        given:
+        buildFile << buildWithJooqPluginDSL() << """
+            project.tasks.getByName('compileJava').dependsOn -= 'generateSampleJooqSchemaSource'
+        """
+
+        when:
+        def result = runWithArguments('build')
+
+        then:
+        !result.task(':generateSampleJooqSchemaSource')
+    }
+
     private static String buildWithJooqPluginDSL(String targetPackageName = 'nu.studer.sample') {
         """
 plugins {
