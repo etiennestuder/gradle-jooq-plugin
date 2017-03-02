@@ -111,6 +111,17 @@ class JooqFuncTest extends BaseFuncTest {
         !result.task(':generateSampleJooqSchemaSource')
     }
 
+    void "accepts matcher strategies when name is explicitly set to null"() {
+        given:
+        buildFile << buildWithMatcherStrategies()
+
+        when:
+        def result = runWithArguments('build')
+
+        then:
+        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+    }
+
     private static String buildWithJooqPluginDSL(String targetPackageName = 'nu.studer.sample') {
         """
 plugins {
@@ -284,6 +295,59 @@ jooq {
                javaTimeTypes = true
            }
        }
+   }
+}
+"""
+    }
+
+    private String buildWithMatcherStrategies() {
+        """
+plugins {
+    id 'nu.studer.jooq' version '2.0.2'
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.jooq:jooq'
+    jooqRuntime 'com.h2database:h2:1.4.193'
+}
+
+jooq {
+   version = '3.9.0'
+   edition = 'OSS'
+   sample(sourceSets.main) {
+       jdbc {
+           driver = 'org.h2.Driver'
+           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+           user = 'sa'
+           password = ''
+       }
+       generator {
+            strategy {
+                name = null
+                matchers {
+                  tables {
+                    table {
+                        pojoClass {
+                            transform = 'PASCAL'
+                            expression = '\$0_POJO'
+                        }
+                    }
+                  }
+                }
+            }
+            database {
+               name = 'org.jooq.util.h2.H2Database'
+            }
+            generate {
+               javaTimeTypes = true
+            }
+        }
    }
 }
 """
