@@ -40,17 +40,14 @@ abstract class BaseFuncTest extends Specification {
     }
 
     protected BuildResult runWithArguments(String... args) {
-        GradleRunner.create()
-            .withPluginClasspath()
-            .withTestKitDir(testKitDir)
-            .withProjectDir(workspaceDir)
-            .withArguments(args)
-            .withGradleVersion(gradleVersion.version)
-            .withDebug(isDebuggerAttached())
-            .build()
+        gradleRunner(args).build()
     }
 
     protected BuildResult runAndFailWithArguments(String... args) {
+        gradleRunner(args).buildAndFail()
+    }
+
+    private GradleRunner gradleRunner(String... args) {
         GradleRunner.create()
             .withPluginClasspath()
             .withTestKitDir(testKitDir)
@@ -58,8 +55,8 @@ abstract class BaseFuncTest extends Specification {
             .withArguments(args)
             .withGradleVersion(gradleVersion.version)
             .withDebug(isDebuggerAttached())
-            .buildAndFail()
     }
+
     protected File getBuildFile() {
         file('build.gradle')
     }
