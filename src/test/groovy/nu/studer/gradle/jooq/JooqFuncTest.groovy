@@ -98,6 +98,25 @@ class JooqFuncTest extends BaseFuncTest {
         result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
     }
 
+    void "correctly writes out boolean default values"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+
+        when:
+        def result = runWithArguments('build')
+
+        then:
+        def configXml = new File(workspaceDir, 'build/tmp/jooq/config.xml')
+        configXml.exists()
+
+        def rootNode = new XmlSlurper().parse(configXml)
+        rootNode.generator.generate.globalTableReferences == true
+        rootNode.generator.generate.emptySchemas == false
+
+        and:
+        result.task(':generateSampleJooqSchemaSource')
+    }
+
     void "successfully applies custom strategies when a submodule is added to the jooqRuntime configuration"() {
         given:
         buildFile << buildWithCustomStrategiesOnSubmodule()
