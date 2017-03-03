@@ -216,7 +216,7 @@ strategy {
 }
 ```
 
-Background: the plugin consumes JAXB classes generated from this [XSD](https://www.jooq.org/xsd/jooq-codegen-3.9.0.xsd). The `name` on the `Strategy` element 
+Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.9.0.xsd). The `name` on the `Strategy` element 
 has a default value and that's an issue since is part of an XSD `choice` element, i.e. only one element can be present. This is the only `choice` element 
 in the whole XSD, so this workaround only needs to be applied here.
 
