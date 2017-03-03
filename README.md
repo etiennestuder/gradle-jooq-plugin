@@ -18,7 +18,7 @@ You can apply the plugin using the `plugins` DSL
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '2.0.3'
+    id 'nu.studer.jooq' version '2.0.4'
 }
 ```
 
@@ -32,7 +32,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'nu.studer:gradle-jooq-plugin:2.0.3'
+    classpath 'nu.studer:gradle-jooq-plugin:2.0.4'
   }
 }
 
@@ -226,6 +226,7 @@ in the whole XSD, so this workaround only needs to be applied here.
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).  
 
 # Changelog
++ 2.0.4 - Upgrade to jOOQ 3.9.1 and better configuration error messages
 + 2.0.3 - Upgrade to jOOQ 3.9.0
 + 2.0.2 - Configuration of call-backs for code generation java execution process
 + 2.0.1 - Bug fixes 

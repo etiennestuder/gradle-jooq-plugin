@@ -1,5 +1,5 @@
 plugins {
-    id 'nu.studer.jooq' version '2.0.3'
+    id 'nu.studer.jooq' version '2.0.4'
 }
 
 apply plugin: 'java'
