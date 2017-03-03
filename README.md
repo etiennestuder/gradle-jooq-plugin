@@ -55,7 +55,7 @@ This plugin supports existing and future jOOQ versions. It also supports the dif
 
 ```groovy
 jooq {
-  version = '3.9.0' // the default (can be omitted)
+  version = '3.9.1' // the default (can be omitted)
   edition = 'OSS'   // the default (can be omitted), other allowed values are PRO, PRO_JAVA_6, and TRIAL
 }
 ```
@@ -102,7 +102,7 @@ See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.9.0.xsd) for the full 
 
 ```groovy
 jooq {
-   version = '3.9.0'
+   version = '3.9.1'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {

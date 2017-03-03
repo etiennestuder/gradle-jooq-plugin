@@ -151,7 +151,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.9.0'
+   version = '3.9.1'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -212,7 +212,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.9.0'
+   version = '3.9.1'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -250,7 +250,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.9.0'
+   version = '3.9.1'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -285,7 +285,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.9.0'
+   version = '3.9.1'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -329,7 +329,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.9.0'
+   version = '3.9.1'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -388,7 +388,7 @@ def calculateDriver() {
 }
 
 jooq {
-   version = '3.9.0'
+   version = '3.9.1'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
