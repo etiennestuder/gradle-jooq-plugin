@@ -285,8 +285,6 @@ dependencies {
 }
 
 jooq {
-   version = '3.9.1'
-   edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
            driver = 'org.h2.Driver'
@@ -329,8 +327,6 @@ dependencies {
 }
 
 jooq {
-   version = '3.9.1'
-   edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
            driver = 'org.h2.Driver'
@@ -388,8 +384,6 @@ def calculateDriver() {
 }
 
 jooq {
-   version = '3.9.1'
-   edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
            driver = calculateDriver()
