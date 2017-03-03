@@ -179,7 +179,7 @@ forcedTypes {
 }
 ```
 
-The Groovy list style is *not* supported:
+The Groovy list style is **not** supported:
 
 ```groovy
 forcedTypes = [
