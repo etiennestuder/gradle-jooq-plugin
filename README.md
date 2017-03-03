@@ -157,7 +157,7 @@ jooq {
 }
 ```
 
-## Typical Pitfalls
+## Configuration pitfalls
 
 ### Configuring a sequence of elements
 
