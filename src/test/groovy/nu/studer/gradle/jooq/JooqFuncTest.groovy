@@ -87,15 +87,34 @@ class JooqFuncTest extends BaseFuncTest {
         result.output.contains "Invalid configuration container element: 'missing' on extension 'jooq.sample'. Please check the current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}"
     }
 
-    void "successfully applies custom strategies when the proper classes are added to the jooqRuntime configuration"() {
+    void "successfully applies custom strategies when an external library is added to the jooqRuntime configuration"() {
         given:
-        buildFile << buildWithCustomStrategies()
+        buildFile << buildWithCustomStrategiesOnExternalLibrary()
 
         when:
         def result = runWithArguments('build')
 
         then:
         result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+    }
+
+    void "successfully applies custom strategies when a submodule is added to the jooqRuntime configuration"() {
+        given:
+        buildFile << buildWithCustomStrategiesOnSubmodule()
+        file('settings.gradle') << settingsGradle()
+        file('custom-generator/build.gradle') << customGeneratorBuildGradle()
+        file('custom-generator/src/main/java/nu/studer/sample/SampleGeneratorStrategy.java') << sampleGeneratorStrategy()
+
+        when:
+        def result = runWithArguments('build')
+
+        then:
+        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+
+        and:
+        def foo = new File(workspaceDir, 'build/generated-src/jooq/sample/org/jooq/generated/jooq_test/tables/records/FooRecord.java')
+        foo.exists()
+        foo.text.contains("public Integer A() {") // instead of getA, as the sample generator strategy removed the get prefix
     }
 
     void "accepts matcher strategies when name is explicitly set to null"() {
@@ -266,7 +285,7 @@ jooq {
 """
     }
 
-    private static String buildWithCustomStrategies() {
+    private static String buildWithCustomStrategiesOnExternalLibrary() {
         """
 plugins {
     id 'nu.studer.jooq'
@@ -299,6 +318,51 @@ jooq {
            }
            database {
                name = 'org.jooq.util.h2.H2Database'
+           }
+           generate {
+               javaTimeTypes = true
+           }
+       }
+   }
+}
+"""
+    }
+
+    private static String buildWithCustomStrategiesOnSubmodule() {
+        """
+plugins {
+    id 'nu.studer.jooq'
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.jooq:jooq'
+    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqRuntime project(':custom-generator')  // include sub-project that contains the custom generator strategy
+}
+
+jooq {
+   sample(sourceSets.main) {
+       jdbc {
+           driver = 'org.h2.Driver'
+           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+           user = 'sa'
+           password = ''
+       }
+       generator {
+           name = 'org.jooq.util.DefaultGenerator'
+           strategy {
+                name = 'nu.studer.sample.SampleGeneratorStrategy'  // use the custom generator strategy
+           }
+           database {
+               name = 'org.jooq.util.h2.H2Database'
+               includes = '.*'
+               excludes = ''
            }
            generate {
                javaTimeTypes = true
@@ -406,6 +470,45 @@ jooq {
            }
        }
    }
+}
+"""
+    }
+
+    private static String settingsGradle() {
+        """
+include 'custom-generator'
+"""
+    }
+
+    private static String sampleGeneratorStrategy() {
+        """
+package nu.studer.sample;
+
+import org.jooq.util.DefaultGeneratorStrategy;
+import org.jooq.util.Definition;
+
+public final class SampleGeneratorStrategy extends DefaultGeneratorStrategy {
+
+    @Override
+    public String getJavaGetterName(Definition definition, Mode mode) {
+        // do not prefix getters with 'get'
+        return super.getJavaGetterName(definition, mode).substring("get".length());
+    }
+
+}
+"""
+    }
+
+    private static String customGeneratorBuildGradle() {
+        """
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile("org.jooq:jooq-codegen:3.9.1")
 }
 """
     }
