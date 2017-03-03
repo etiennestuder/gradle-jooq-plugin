@@ -31,7 +31,7 @@ jooq {
                 excludes = ''
             }
             target {
-                packageName = 'nu.studer.sample.'
+                packageName = 'nu.studer.sample'
             }
         }
     }
