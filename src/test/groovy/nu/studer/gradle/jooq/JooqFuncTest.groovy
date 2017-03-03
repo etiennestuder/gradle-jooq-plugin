@@ -311,10 +311,10 @@ jooq {
 """
     }
 
-    private String buildWithMatcherStrategies() {
+    private static String buildWithMatcherStrategies() {
         """
 plugins {
-    id 'nu.studer.jooq' version '2.0.2'
+    id 'nu.studer.jooq'
 }
 
 apply plugin: 'java'
