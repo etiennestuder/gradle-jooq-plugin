@@ -221,6 +221,7 @@ has a default value and that's an issue since is part of an XSD `choice` element
 in the whole XSD, so this workaround only needs to be applied here.
 
 # Changelog
++ 2.0.3 - Upgrade to jOOQ 3.9.0
 + 2.0.2 - Configuration of call-backs for code generation java execution process
 + 2.0.1 - Bug fixes 
 + 2.0.0 - jOOQ version used for the code generation is independent from the jOOQ version used by the gradle-jooq plugin
