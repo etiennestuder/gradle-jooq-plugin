@@ -222,8 +222,8 @@ in the whole XSD, so this workaround only needs to be applied here.
 
 # Samples
 
-+ Removing the implicit task dependency between the compile task and the jOOQ source generation task: [exhere](example/remove_task_dependency).  
-+ Using a custom generator defined in the same Gradle project: [here](example/use_custom_generator).  
++ Removing the implicit task dependency between the compile task and the jOOQ source generation task: [here](example/remove_task_dependency).  
++ Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).  
 
 # Changelog
 + 2.0.3 - Upgrade to jOOQ 3.9.0
