@@ -11,7 +11,7 @@ repositories {
 dependencies {
     compile 'org.jooq:jooq'
     jooqRuntime 'com.h2database:h2:1.4.193'
-    jooqRuntime project(':custom-generator')
+    jooqRuntime project(':custom-generator')  // include sub-project that contains the custom generator strategy
 }
 
 jooq {
@@ -27,7 +27,7 @@ jooq {
         generator {
             name = 'org.jooq.util.DefaultGenerator'
             strategy {
-                name = 'nu.studer.sample.SampleGeneratorStrategy'
+                name = 'nu.studer.sample.SampleGeneratorStrategy'  // use the custom generator strategy
             }
             database {
                 name = 'org.jooq.util.h2.H2Database'
