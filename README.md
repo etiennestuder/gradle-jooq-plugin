@@ -220,6 +220,11 @@ Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](https
 has a default value and that's an issue since is part of an XSD `choice` element, i.e. only one element can be present. This is the only `choice` element 
 in the whole XSD, so this workaround only needs to be applied here.
 
+# Samples
+
++ Removing the implicit task dependency between the compile task and the jOOQ source generation task: [here](remove_task_dependency).  
++ Using a custom generator defined in the same Gradle project: [here](use_custom_generator).  
+
 # Changelog
 + 2.0.3 - Upgrade to jOOQ 3.9.0
 + 2.0.2 - Configuration of call-backs for code generation java execution process
