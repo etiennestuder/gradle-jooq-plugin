@@ -101,9 +101,9 @@ class JooqFuncTest extends BaseFuncTest {
     void "successfully applies custom strategies when a submodule is added to the jooqRuntime configuration"() {
         given:
         buildFile << buildWithCustomStrategiesOnSubmodule()
-        file('settings.gradle') << settingsGradle()
-        file('custom-generator/build.gradle') << customGeneratorBuildGradle()
-        file('custom-generator/src/main/java/nu/studer/sample/SampleGeneratorStrategy.java') << sampleGeneratorStrategy()
+        file('settings.gradle') << "include 'custom-generator'"
+        file('custom-generator/build.gradle') << sampleGeneratorStrategyBuild()
+        file('custom-generator/src/main/java/nu/studer/sample/SampleGeneratorStrategy.java') << sampleGeneratorStrategyClass()
 
         when:
         def result = runWithArguments('build')
@@ -373,6 +373,39 @@ jooq {
 """
     }
 
+    private static String sampleGeneratorStrategyBuild() {
+        """
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile("org.jooq:jooq-codegen:3.9.1")
+}
+"""
+    }
+
+    private static String sampleGeneratorStrategyClass() {
+        """
+package nu.studer.sample;
+
+import org.jooq.util.DefaultGeneratorStrategy;
+import org.jooq.util.Definition;
+
+public final class SampleGeneratorStrategy extends DefaultGeneratorStrategy {
+
+    @Override
+    public String getJavaGetterName(Definition definition, Mode mode) {
+        // do not prefix getters with 'get'
+        return super.getJavaGetterName(definition, mode).substring("get".length());
+    }
+
+}
+"""
+    }
+
     private static String buildWithMatcherStrategies() {
         """
 plugins {
@@ -470,45 +503,6 @@ jooq {
            }
        }
    }
-}
-"""
-    }
-
-    private static String settingsGradle() {
-        """
-include 'custom-generator'
-"""
-    }
-
-    private static String sampleGeneratorStrategy() {
-        """
-package nu.studer.sample;
-
-import org.jooq.util.DefaultGeneratorStrategy;
-import org.jooq.util.Definition;
-
-public final class SampleGeneratorStrategy extends DefaultGeneratorStrategy {
-
-    @Override
-    public String getJavaGetterName(Definition definition, Mode mode) {
-        // do not prefix getters with 'get'
-        return super.getJavaGetterName(definition, mode).substring("get".length());
-    }
-
-}
-"""
-    }
-
-    private static String customGeneratorBuildGradle() {
-        """
-apply plugin: 'java'
-
-repositories {
-    jcenter()
-}
-
-dependencies {
-    compile("org.jooq:jooq-codegen:3.9.1")
 }
 """
     }
