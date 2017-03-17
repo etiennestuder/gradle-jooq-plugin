@@ -19,6 +19,7 @@ import nu.studer.gradle.util.Objects
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
+import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputDirectory
@@ -46,6 +47,7 @@ class JooqTask extends DefaultTask {
     Action<? super ExecResult> execResultHandler
 
     @InputFiles
+    @Classpath
     FileCollection jooqClasspath
 
     @Input
