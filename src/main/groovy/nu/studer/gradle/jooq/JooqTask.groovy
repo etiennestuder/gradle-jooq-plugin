@@ -22,6 +22,7 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecResult
@@ -41,9 +42,13 @@ import javax.xml.validation.SchemaFactory
  */
 class JooqTask extends DefaultTask {
 
+    @Internal
     Configuration configuration
 
+    @Internal
     Action<? super JavaExecSpec> javaExecSpec
+
+    @Internal
     Action<? super ExecResult> execResultHandler
 
     @InputFiles
