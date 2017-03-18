@@ -28,7 +28,7 @@ dependencies {
 }
 
 group = 'nu.studer'
-version = '2.0.5'
+version = '2.0.6'
 
 plugindev {
     pluginImplementationClass 'nu.studer.gradle.jooq.JooqPlugin'
