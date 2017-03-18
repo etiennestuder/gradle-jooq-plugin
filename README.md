@@ -235,6 +235,7 @@ in the whole XSD, so this workaround only needs to be applied here.
 
 # Acknowledgements
 
++ [mark-vieira](https://github.com/mark-vieira) (pr)
 + [felipefzdz](https://github.com/felipefzdz) (commits)
 + [oehme](https://github.com/oehme) (pr)
 + [jamespedwards42](https://github.com/jamespedwards42) (idea)
