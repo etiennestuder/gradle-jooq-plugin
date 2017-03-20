@@ -49,3 +49,21 @@ bintray {
     pkg.repo = 'gradle-plugins'
     dryRun = false
 }
+
+def testAll = tasks.create('testAll') {
+    group = 'Gradle cross-version test'
+}
+
+List<String> testedGradleVersions = []
+(8..14).each { testedGradleVersions << "2.$it" }
+(0..04).each { testedGradleVersions << "3.$it" }
+testedGradleVersions << "2.14.1"
+testedGradleVersions << "3.2.1"
+testedGradleVersions << "3.4.1"
+
+testedGradleVersions.each { version ->
+    project.tasks.create("test_" + version.replaceAll("[^a-zA-Z0-9]", "_"), Test).with {
+        systemProperty 'testContext.gradleVersion', version
+        testAll.dependsOn(it)
+    }
+}
