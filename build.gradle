@@ -14,8 +14,6 @@ apply plugin: 'nu.studer.plugindev'
 apply plugin: 'nu.studer.credentials'
 
 dependencies {
-    compile "commons-lang:commons-lang:$commonsLangVersion"
-
     compile("org.jooq:jooq:$jooqVersion")
     compile("org.jooq:jooq-meta:$jooqVersion")
     compile("org.jooq:jooq-codegen:$jooqVersion")

@@ -15,7 +15,6 @@
  */
 package nu.studer.gradle.jooq
 
-import org.apache.commons.lang.StringUtils
 import org.gradle.api.Named
 import org.gradle.api.tasks.SourceSet
 import org.jooq.util.jaxb.Configuration
@@ -37,7 +36,7 @@ class JooqConfiguration implements Named {
     }
 
     def getJooqTaskName() {
-        "generate${StringUtils.capitalize(name)}JooqSchemaSource"
+        "generate${name.capitalize()}JooqSchemaSource"
     }
 
 }
