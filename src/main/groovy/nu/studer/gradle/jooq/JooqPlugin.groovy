@@ -17,7 +17,9 @@ package nu.studer.gradle.jooq
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
+import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.SourceSet
 import org.jooq.util.jaxb.Generator
@@ -52,7 +54,8 @@ class JooqPlugin implements Plugin<Project> {
      */
     private void addJooqExtension(Project project) {
         def whenConfigurationAdded = { JooqConfiguration jooqConfiguration ->
-            createJooqTask(jooqConfiguration)
+            def jooqTask = createJooqTask(jooqConfiguration)
+            cleanJooqSourcesWhenRunningCleanTak(jooqTask)
             configureDefaultOutput(jooqConfiguration)
             configureSourceSet(jooqConfiguration)
         }
@@ -89,12 +92,23 @@ class JooqPlugin implements Plugin<Project> {
     /**
      * Adds the task that runs the jOOQ code generator in a separate process.
      */
-    private void createJooqTask(JooqConfiguration jooqConfiguration) {
+    private Task createJooqTask(JooqConfiguration jooqConfiguration) {
         JooqTask jooqTask = project.tasks.create(jooqConfiguration.jooqTaskName, JooqTask.class)
         jooqTask.description = "Generates the jOOQ sources from the '$jooqConfiguration.name' jOOQ configuration."
         jooqTask.group = "jOOQ"
         jooqTask.configuration = jooqConfiguration.configuration
         jooqTask.jooqClasspath = jooqRuntime
+        jooqTask
+    }
+
+    /**
+     * Wires the task that deletes the jOOQ sources as a dependency of the pre-existing 'clean' task, and
+     * makes sure the task execution ordering is such that the deletion happens before regenerating the jOOQ sources.
+     */
+    private void cleanJooqSourcesWhenRunningCleanTak(Task task) {
+        String cleanJooqSources = "clean" + task.name.capitalize()
+        project.getTasks().getByName(BasePlugin.CLEAN_TASK_NAME).dependsOn(cleanJooqSources)
+        task.mustRunAfter(cleanJooqSources)
     }
 
     /**
