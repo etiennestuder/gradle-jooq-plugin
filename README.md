@@ -226,7 +226,8 @@ in the whole XSD, so this workaround only needs to be applied here.
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).  
 
 # Changelog
-+ 2.0.5 - Make the jOOQ task cacheable by the Gradle build cache
++ 2.0.6 - Upgrade to jOOQ 3.9.3
++ 2.0.5 - Make the jOOQ task parallelizable
 + 2.0.4 - Upgrade to jOOQ 3.9.1 and better configuration error messages
 + 2.0.3 - Upgrade to jOOQ 3.9.0
 + 2.0.2 - Configuration of call-backs for code generation java execution process
