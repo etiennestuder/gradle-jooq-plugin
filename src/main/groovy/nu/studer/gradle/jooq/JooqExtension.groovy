@@ -25,7 +25,7 @@ import org.jooq.util.jaxb.Configuration
  */
 class JooqExtension {
 
-    private static final String DEFAULT_JOOQ_VERSION = "3.9.1"
+    private static final String DEFAULT_JOOQ_VERSION = "3.9.2"
     private static final JooqEdition DEFAULT_JOOQ_EDITION = JooqEdition.OSS
 
     final Closure whenConfigAdded
