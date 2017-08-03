@@ -226,6 +226,7 @@ in the whole XSD, so this workaround only needs to be applied here.
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).  
 
 # Changelog
++ 2.0.7 - Upgrade to jOOQ 3.9.5
 + 2.0.6 - Upgrade to jOOQ 3.9.3
 + 2.0.5 - Make the jOOQ task parallelizable
 + 2.0.4 - Upgrade to jOOQ 3.9.1 and better configuration error messages
