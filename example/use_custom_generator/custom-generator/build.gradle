@@ -5,5 +5,5 @@ repositories {
 }
 
 dependencies {
-    compile("org.jooq:jooq-codegen:3.9.2")
+    compile("org.jooq:jooq-codegen:3.9.5")
 }
