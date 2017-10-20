@@ -18,7 +18,7 @@ You can apply the plugin using the `plugins` DSL
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '2.0.7'
+    id 'nu.studer.jooq' version '2.0.9'
 }
 ```
 
@@ -32,7 +32,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'nu.studer:gradle-jooq-plugin:2.0.7'
+    classpath 'nu.studer:gradle-jooq-plugin:2.0.9'
   }
 }
 
@@ -55,8 +55,8 @@ This plugin supports existing and future jOOQ versions. It also supports the dif
 
 ```groovy
 jooq {
-  version = '3.9.5' // the default (can be omitted)
-  edition = 'OSS'   // the default (can be omitted), other allowed values are PRO, PRO_JAVA_6, and TRIAL
+  version = '3.10.1' // the default (can be omitted)
+  edition = 'OSS'    // the default (can be omitted), other allowed values are PRO, PRO_JAVA_6, and TRIAL
 }
 ```
 
@@ -102,7 +102,7 @@ See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.9.2.xsd) for the full
 
 ```groovy
 jooq {
-   version = '3.9.5'
+   version = '3.10.1'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -226,6 +226,8 @@ in the whole XSD, so this workaround only needs to be applied here.
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).  
 
 # Changelog
++ 2.0.9 - Make jOOQ 3.10.1 the default applied version
++ 2.0.8 - Upgrade to jOOQ 3.10.1
 + 2.0.7 - Upgrade to jOOQ 3.9.5
 + 2.0.6 - Upgrade to jOOQ 3.9.3
 + 2.0.5 - Make the jOOQ task parallelizable

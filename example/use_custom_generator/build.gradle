@@ -1,5 +1,5 @@
 plugins {
-    id 'nu.studer.jooq' version '2.0.7'
+    id 'nu.studer.jooq' version '2.0.9'
 }
 
 apply plugin: 'java'
@@ -15,7 +15,7 @@ dependencies {
 }
 
 jooq {
-    version = '3.9.5'
+    version = '3.10.1'
     edition = 'OSS'
     sample(sourceSets.main) {
         jdbc {
