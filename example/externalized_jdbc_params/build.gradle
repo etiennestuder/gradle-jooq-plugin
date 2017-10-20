@@ -1,0 +1,43 @@
+plugins {
+    id 'nu.studer.jooq' version '2.0.7'
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.jooq:jooq'
+    jooqRuntime 'org.mariadb.jdbc:mariadb-java-client:2.1.2'
+}
+
+def jdbcParams = {
+  def jdbc = new Properties()
+  new File(it).withInputStream { jdbc.load(it) }
+  return {
+    driver = jdbc['jdbc.driver']
+    url =  jdbc['jdbc.url']
+    user = jdbc['jdbc.user']
+    password = jdbc['jdbc.password']
+  }
+}
+
+jooq {
+    sample(sourceSets.main) {
+        jdbc jdbcParams('application.properties')
+        generator {
+            name = 'org.jooq.util.DefaultGenerator'
+            database {
+                name =  'org.jooq.util.mariadb.MariaDBDatabase'
+                inputSchema = 'public'
+                includes = '.*'
+                excludes = ''
+            }
+            target {
+                packageName = 'nu.studer.sample'
+            }
+        }
+    }
+}
