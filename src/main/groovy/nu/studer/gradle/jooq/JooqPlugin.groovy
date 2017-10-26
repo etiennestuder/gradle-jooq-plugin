@@ -55,7 +55,7 @@ class JooqPlugin implements Plugin<Project> {
     private void addJooqExtension(Project project) {
         def whenConfigurationAdded = { JooqConfiguration jooqConfiguration ->
             def jooqTask = createJooqTask(jooqConfiguration)
-            cleanJooqSourcesWhenRunningCleanTak(jooqTask)
+            cleanJooqSourcesWhenRunningCleanTask(jooqTask)
             configureDefaultOutput(jooqConfiguration)
             configureSourceSet(jooqConfiguration)
         }
@@ -105,7 +105,7 @@ class JooqPlugin implements Plugin<Project> {
      * Wires the task that deletes the jOOQ sources as a dependency of the pre-existing 'clean' task, and
      * makes sure the task execution ordering is such that the deletion happens before regenerating the jOOQ sources.
      */
-    private void cleanJooqSourcesWhenRunningCleanTak(Task task) {
+    private void cleanJooqSourcesWhenRunningCleanTask(Task task) {
         String cleanJooqSources = "clean" + task.name.capitalize()
         project.getTasks().getByName(BasePlugin.CLEAN_TASK_NAME).dependsOn(cleanJooqSources)
         task.mustRunAfter(cleanJooqSources)
