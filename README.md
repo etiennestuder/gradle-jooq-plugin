@@ -222,8 +222,9 @@ in the whole XSD, so this workaround only needs to be applied here.
 
 # Samples
 
++ Avoiding the deletion of the generated jOOQ sources when invoking the `clean` task: [here](example/uncouple_clean_task_from_cleaning_jooq_sources).
 + Removing the implicit task dependency between the compile task and the jOOQ source generation task: [here](example/remove_task_dependency).  
-+ Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).  
++ Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).    
 
 # Changelog
 + 2.0.9 - Make jOOQ 3.10.1 the default applied version
