@@ -225,7 +225,7 @@ in the whole XSD, so this workaround only needs to be applied here.
 Some people have complained that when they specify the `targetDirectory` as _src/main/java_, all generated sources get deleted when calling `gradlew clean`. This is 
 to be expected, since the gradle-jooq plugin wires the deletion of the specified target directory into the Gradle built-in `clean` task.
 
-The jOOQ source generation tasks assume that the `targetDirectory` specified in the jOOQ configuration is not shared with any other sources, neither generated 
+The jOOQ source generation tasks assume that the `targetDirectory` specified in the jOOQ configuration does not contain other sources, neither generated 
 sources nor sources under version control. Or more generally speaking, in Gradle, tasks should not have overlapping outputs. The rationale is explained very 
 well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
 
