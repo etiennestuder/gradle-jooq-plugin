@@ -220,6 +220,21 @@ Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](https
 has a default value and that's an issue since is part of an XSD `choice` element, i.e. only one element can be present. This is the only `choice` element 
 in the whole XSD, so this workaround only needs to be applied here.
 
+### Generating sources into shared folders, e.g. src/main/java 
+
+Some people have complained that when they specify the `targetDirectory` as _src/main/java_, all generated sources get deleted when calling `gradlew clean`. This is 
+to be expected, since the gradle-jooq plugin wires the deletion of the specified target directory into the Gradle built-in `clean` task.
+
+The jOOQ source generation tasks assume that the `targetDirectory` specified in the jOOQ configuration is not shared with any other sources, neither generated 
+sources nor sources under version control. Or more generally speaking, in Gradle, tasks should not have overlapping outputs. The rationale is explained very 
+well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
+
+My recommendation is to generate the sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_. This will avoid overlapping outputs, and
+it also keeps the door open to let Gradle cache the generated source code.
+
+If for any reason, you don't want to delete the generated sources when calling the Gradle built-in `clean` task, you can take a look at the provided samples on how to 
+achieve this with a one-liner in your build script.
+ 
 # Samples
 
 + Avoiding the deletion of the generated jOOQ sources when invoking the `clean` task: [here](example/uncouple_clean_task_from_cleaning_jooq_sources).
