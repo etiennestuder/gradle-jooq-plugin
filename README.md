@@ -229,8 +229,8 @@ The jOOQ source generation tasks assume that the `targetDirectory` specified in 
 sources nor sources under version control. Or more generally speaking, in Gradle, tasks should not have overlapping outputs. The rationale is explained very 
 well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
 
-My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This will avoid overlapping 
-outputs, and it also keeps the door open to let Gradle cache the generated source code.
+My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This avoids overlapping 
+outputs, and it also keeps the door open to let Gradle cache the generated sources.
 
 If for any reason, you don't want to delete the generated sources when calling the Gradle built-in `clean` task, you can take a look at the provided samples on how to 
 achieve this with a one-liner in your build script.
