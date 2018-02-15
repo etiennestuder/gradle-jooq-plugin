@@ -228,6 +228,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
  
 # Samples
 
++ Passing JVM args to the jOOQ code generation process: [here](example/add_jvm_args).  
 + Removing the implicit task dependency between the compile task and the jOOQ source generation task: [here](example/remove_task_dependency).  
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).    
 
