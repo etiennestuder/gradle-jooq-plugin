@@ -55,7 +55,7 @@ This plugin supports existing and future jOOQ versions. It also supports the dif
 
 ```groovy
 jooq {
-  version = '3.10.1' // the default (can be omitted)
+  version = '3.10.4' // the default (can be omitted)
   edition = 'OSS'    // the default (can be omitted), other allowed values are PRO, PRO_JAVA_6, and TRIAL
 }
 ```
@@ -102,7 +102,7 @@ See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.9.2.xsd) for the full
 
 ```groovy
 jooq {
-   version = '3.10.1'
+   version = '3.10.4'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -232,6 +232,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).    
 
 # Changelog
++ 2.0.10 - Removal of wiring between clean task and deleting generated jOOQ sources
 + 2.0.9 - Make jOOQ 3.10.1 the default applied version
 + 2.0.8 - Upgrade to jOOQ 3.10.1
 + 2.0.7 - Upgrade to jOOQ 3.9.5
