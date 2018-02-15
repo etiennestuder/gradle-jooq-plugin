@@ -222,22 +222,12 @@ in the whole XSD, so this workaround only needs to be applied here.
 
 ### Generating sources into shared folders, e.g. src/main/java 
 
-Some people have complained that when they specify the `targetDirectory` as _src/main/java_, all generated sources get deleted when calling `gradlew clean`. This is 
-to be expected, since the gradle-jooq plugin wires the deletion of the specified target directory into the Gradle built-in `clean` task.
-
-The jOOQ source generation tasks assume that the `targetDirectory` specified in the jOOQ configuration does not contain other sources, neither generated 
-sources nor sources under version control. Or more generally speaking, in Gradle, tasks should not have overlapping outputs. The rationale is explained very 
-well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
-
 My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This avoids overlapping 
-outputs, and it also keeps the door open to let Gradle cache the generated sources.
-
-If for any reason, you don't want to delete the generated sources when calling the Gradle built-in `clean` task, you can take a look at the provided samples on how to 
-achieve this with a one-liner in your build script.
+outputs, and it also keeps the door open to let Gradle cache the generated sources which can be a significant build performance gain. The rationale is explained very 
+well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
  
 # Samples
 
-+ Avoiding the deletion of the generated jOOQ sources when invoking the `clean` task: [here](example/uncouple_clean_task_from_cleaning_jooq_sources).
 + Removing the implicit task dependency between the compile task and the jOOQ source generation task: [here](example/remove_task_dependency).  
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).    
 

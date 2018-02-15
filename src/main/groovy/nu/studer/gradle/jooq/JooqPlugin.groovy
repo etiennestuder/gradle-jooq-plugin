@@ -17,9 +17,7 @@ package nu.studer.gradle.jooq
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.Task
 import org.gradle.api.artifacts.Configuration
-import org.gradle.api.plugins.BasePlugin
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.SourceSet
 import org.jooq.util.jaxb.Generator
@@ -39,7 +37,7 @@ class JooqPlugin implements Plugin<Project> {
     JooqExtension extension
     Configuration jooqRuntime
 
-    public void apply(Project project) {
+    void apply(Project project) {
         this.project = project
 
         project.plugins.apply(JavaBasePlugin.class)
@@ -54,8 +52,7 @@ class JooqPlugin implements Plugin<Project> {
      */
     private void addJooqExtension(Project project) {
         def whenConfigurationAdded = { JooqConfiguration jooqConfiguration ->
-            def jooqTask = createJooqTask(jooqConfiguration)
-            cleanJooqSourcesWhenRunningCleanTask(jooqTask)
+            createJooqTask(jooqConfiguration)
             configureDefaultOutput(jooqConfiguration)
             configureSourceSet(jooqConfiguration)
         }
@@ -92,23 +89,12 @@ class JooqPlugin implements Plugin<Project> {
     /**
      * Adds the task that runs the jOOQ code generator in a separate process.
      */
-    private Task createJooqTask(JooqConfiguration jooqConfiguration) {
+    private void createJooqTask(JooqConfiguration jooqConfiguration) {
         JooqTask jooqTask = project.tasks.create(jooqConfiguration.jooqTaskName, JooqTask.class)
         jooqTask.description = "Generates the jOOQ sources from the '$jooqConfiguration.name' jOOQ configuration."
         jooqTask.group = "jOOQ"
         jooqTask.configuration = jooqConfiguration.configuration
         jooqTask.jooqClasspath = jooqRuntime
-        jooqTask
-    }
-
-    /**
-     * Wires the task that deletes the jOOQ sources as a dependency of the pre-existing 'clean' task, and
-     * makes sure the task execution ordering is such that the deletion happens before regenerating the jOOQ sources.
-     */
-    private void cleanJooqSourcesWhenRunningCleanTask(Task task) {
-        String cleanJooqSources = "clean" + task.name.capitalize()
-        project.getTasks().getByName(BasePlugin.CLEAN_TASK_NAME).dependsOn(cleanJooqSources)
-        task.mustRunAfter(cleanJooqSources)
     }
 
     /**
