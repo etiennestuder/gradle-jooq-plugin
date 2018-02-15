@@ -233,6 +233,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).    
 
 # Changelog
++ 2.0.11 - Upgrade to jOOQ 3.10.4
 + 2.0.10 - Removal of wiring between clean task and deleting generated jOOQ sources
 + 2.0.9 - Make jOOQ 3.10.1 the default applied version
 + 2.0.8 - Upgrade to jOOQ 3.10.1
