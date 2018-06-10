@@ -17,7 +17,7 @@ package nu.studer.gradle.jooq
 
 import org.gradle.api.Named
 import org.gradle.api.tasks.SourceSet
-import org.jooq.util.jaxb.Configuration
+import org.jooq.meta.jaxb.Configuration
 
 /**
  * Represents a jOOQ configuration which consists of the actual jOOQ source code generation configuration and

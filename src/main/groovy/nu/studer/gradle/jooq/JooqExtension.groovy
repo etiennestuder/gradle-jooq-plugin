@@ -17,7 +17,7 @@ package nu.studer.gradle.jooq
 
 import nu.studer.gradle.util.JaxbConfigurationBridge
 import org.gradle.api.tasks.SourceSet
-import org.jooq.util.jaxb.Configuration
+import org.jooq.meta.jaxb.Configuration
 
 /**
  * Extension point to configure the jOOQ source code generation and the source set in which to include
@@ -25,7 +25,7 @@ import org.jooq.util.jaxb.Configuration
  */
 class JooqExtension {
 
-    private static final String DEFAULT_JOOQ_VERSION = "3.10.4"
+    private static final String DEFAULT_JOOQ_VERSION = "3.11.0"
     private static final JooqEdition DEFAULT_JOOQ_EDITION = JooqEdition.OSS
 
     final Closure whenConfigAdded
