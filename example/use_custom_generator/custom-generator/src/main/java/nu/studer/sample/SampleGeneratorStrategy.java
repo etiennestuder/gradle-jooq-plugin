@@ -1,7 +1,7 @@
 package nu.studer.sample;
 
-import org.jooq.util.DefaultGeneratorStrategy;
-import org.jooq.util.Definition;
+import org.jooq.codegen.DefaultGeneratorStrategy;
+import org.jooq.meta.Definition;
 
 public final class SampleGeneratorStrategy extends DefaultGeneratorStrategy {
 

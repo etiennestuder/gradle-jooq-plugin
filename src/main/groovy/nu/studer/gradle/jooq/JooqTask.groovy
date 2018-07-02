@@ -29,8 +29,8 @@ import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
 import org.jooq.Constants
-import org.jooq.util.GenerationTool
-import org.jooq.util.jaxb.Configuration
+import org.jooq.meta.jaxb.Configuration
+import org.jooq.codegen.GenerationTool
 
 import javax.xml.XMLConstants
 import javax.xml.bind.JAXBContext
@@ -94,7 +94,7 @@ class JooqTask extends DefaultTask {
 
             @Override
             void execute(JavaExecSpec spec) {
-                spec.main = "org.jooq.util.GenerationTool"
+                spec.main = "org.jooq.codegen.GenerationTool"
                 spec.classpath = jooqClasspath
                 spec.args configFile
                 if (javaExecSpec) {

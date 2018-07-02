@@ -20,8 +20,8 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.SourceSet
-import org.jooq.util.jaxb.Generator
-import org.jooq.util.jaxb.Target
+import org.jooq.meta.jaxb.Generator
+import org.jooq.meta.jaxb.Target
 
 /**
  * Plugin that extends the java-base plugin and registers a {@link JooqTask} for each defined jOOQ configuration.

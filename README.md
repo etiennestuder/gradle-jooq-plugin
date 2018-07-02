@@ -55,7 +55,7 @@ This plugin supports existing and future jOOQ versions. It also supports the dif
 
 ```groovy
 jooq {
-  version = '3.10.4' // the default (can be omitted)
+  version = '3.11.0' // the default (can be omitted)
   edition = 'OSS'    // the default (can be omitted), other allowed values are PRO, PRO_JAVA_6, and TRIAL
 }
 ```
@@ -118,13 +118,13 @@ jooq {
            }
        }
        generator {
-           name = 'org.jooq.util.DefaultGenerator'
+           name = 'org.jooq.codegen.DefaultGenerator'
            strategy {
-               name = 'org.jooq.util.DefaultGeneratorStrategy'
+               name = 'org.jooq.codegen.DefaultGeneratorStrategy'
                // ...
            }
            database {
-               name = 'org.jooq.util.postgres.PostgresDatabase'
+               name = 'org.jooq.meta.postgres.PostgresDatabase'
                inputSchema = 'public'
                forcedTypes {
                  forcedType {

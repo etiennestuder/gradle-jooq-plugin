@@ -207,7 +207,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.10.4'
+   version = '3.11.0'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -217,12 +217,12 @@ jooq {
            password = ''
        }
        generator {
-           name = 'org.jooq.util.DefaultGenerator'
+           name = 'org.jooq.codegen.DefaultGenerator'
            strategy {
-               name = 'org.jooq.util.DefaultGeneratorStrategy'
+               name = 'org.jooq.codegen.DefaultGeneratorStrategy'
            }
            database {
-               name = 'org.jooq.util.h2.H2Database'
+               name = 'org.jooq.meta.h2.H2Database'
                includes = '.*'
                excludes = ''
                forcedTypes {
@@ -269,7 +269,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.10.4'
+   version = '3.11.0'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -279,7 +279,7 @@ jooq {
            password = ''
        }
        generator {
-           name = 'org.jooq.util.DefaultGenerator'
+           name = 'org.jooq.codegen.DefaultGenerator'
            generate {
                missing = true
            }
@@ -307,7 +307,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.10.4'
+   version = '3.11.0'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -323,6 +323,7 @@ jooq {
 """
     }
 
+    // TODO: requires a jooq-3.11 compliant external library to complete successfully.
     private static String buildWithCustomStrategiesOnExternalLibrary() {
         """
 plugins {
@@ -350,12 +351,12 @@ jooq {
            password = ''
        }
        generator {
-           name = 'org.jooq.util.DefaultGenerator'
+           name = 'org.jooq.codegen.DefaultGenerator'
            strategy {
                name = 'io.github.jklingsporn.vertx.impl.VertxGeneratorStrategy'
            }
            database {
-               name = 'org.jooq.util.h2.H2Database'
+               name = 'org.jooq.meta.h2.H2Database'
            }
            generate {
                javaTimeTypes = true
@@ -393,12 +394,12 @@ jooq {
            password = ''
        }
        generator {
-           name = 'org.jooq.util.DefaultGenerator'
+           name = 'org.jooq.codegen.DefaultGenerator'
            strategy {
                 name = 'nu.studer.sample.SampleGeneratorStrategy'  // use the custom generator strategy
            }
            database {
-               name = 'org.jooq.util.h2.H2Database'
+               name = 'org.jooq.meta.h2.H2Database'
                includes = '.*'
                excludes = ''
            }
@@ -420,7 +421,7 @@ repositories {
 }
 
 dependencies {
-    compile("org.jooq:jooq-codegen:3.10.4")
+    compile("org.jooq:jooq-codegen:3.11.0")
 }
 """
     }
@@ -429,8 +430,8 @@ dependencies {
         """
 package nu.studer.sample;
 
-import org.jooq.util.DefaultGeneratorStrategy;
-import org.jooq.util.Definition;
+import org.jooq.codegen.DefaultGeneratorStrategy;
+import org.jooq.meta.Definition;
 
 public final class SampleGeneratorStrategy extends DefaultGeneratorStrategy {
 
@@ -484,7 +485,7 @@ jooq {
                 }
             }
             database {
-               name = 'org.jooq.util.h2.H2Database'
+               name = 'org.jooq.meta.h2.H2Database'
             }
             generate {
                javaTimeTypes = true
@@ -527,12 +528,12 @@ jooq {
            password = ''
        }
        generator {
-           name = 'org.jooq.util.DefaultGenerator'
+           name = 'org.jooq.codegen.DefaultGenerator'
            strategy {
-               name = 'org.jooq.util.DefaultGeneratorStrategy'
+               name = 'org.jooq.codegen.DefaultGeneratorStrategy'
            }
            database {
-               name = 'org.jooq.util.h2.H2Database'
+               name = 'org.jooq.meta.h2.H2Database'
                includes = '.*'
                excludes = ''
            }
