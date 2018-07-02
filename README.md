@@ -41,7 +41,7 @@ apply plugin: 'nu.studer.jooq'
 
 **Please note that due to non-backward compatible API changes in jOOQ between 3.10.x and 3.11.x, you must apply the following plugin version in your Gradle build:**
 * **jOOQ library <= 3.10.x: gradle-jooq plugin 2.0.11** 
-* **jOOQ library >= 3.11.x: gradle-jooq plugin 3.0.0**
+* **jOOQ library >= 3.11.x: gradle-jooq plugin 3.0.0 or higher**
 
 </aside>  
 
