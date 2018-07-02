@@ -108,58 +108,58 @@ See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.9.2.xsd) for the full
 
 ```groovy
 jooq {
-   version = '3.11.2'
-   edition = 'OSS'
-   sample(sourceSets.main) {
-       jdbc {
-           driver = 'org.postgresql.Driver'
-           url = 'jdbc:postgresql://localhost:5432/sample'
-           user = 'some_user'
-           password = 'secret'
-           properties {
-               property {
-                   key = 'ssl'
-                   value = 'true'
-               }
-           }
-       }
-       generator {
-           name = 'org.jooq.codegen.DefaultGenerator'
-           strategy {
-               name = 'org.jooq.codegen.DefaultGeneratorStrategy'
-               // ...
-           }
-           database {
-               name = 'org.jooq.meta.postgres.PostgresDatabase'
-               inputSchema = 'public'
-               forcedTypes {
-                 forcedType {
-                     name = 'varchar'
-                     expression = '.*'
-                     types = 'JSONB?'
-                 }
-                 forcedType {
-                     name = 'varchar'
-                     expression = '.*'
-                     types = 'INET'
-                 }
-               }
-               // ...
-           }
-           generate {
-               relations = true
-               deprecated = false
-               records = true
-               immutablePojos = true
-               fluentSetters = true
-               // ...
-           }
-           target {
-               packageName = 'nu.studer.sample'
-               // directory = ...
-           }
-       }
-   }
+  version = '3.11.2'
+  edition = 'OSS'
+  sample(sourceSets.main) {
+    jdbc {
+      driver = 'org.postgresql.Driver'
+      url = 'jdbc:postgresql://localhost:5432/sample'
+      user = 'some_user'
+      password = 'secret'
+      properties {
+        property {
+          key = 'ssl'
+          value = 'true'
+        }
+      }
+    }
+    generator {
+      name = 'org.jooq.codegen.DefaultGenerator'
+      strategy {
+        name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+        // ...
+      }
+      database {
+        name = 'org.jooq.meta.postgres.PostgresDatabase'
+        inputSchema = 'public'
+        forcedTypes {
+          forcedType {
+            name = 'varchar'
+            expression = '.*'
+            types = 'JSONB?'
+          }
+          forcedType {
+            name = 'varchar'
+            expression = '.*'
+            types = 'INET'
+          }
+        }
+        // ...
+      }
+      generate {
+        relations = true
+        deprecated = false
+        records = true
+        immutablePojos = true
+        fluentSetters = true
+        // ...
+      }
+      target {
+        packageName = 'nu.studer.sample'
+        // directory = ...
+      }
+    }
+  }
 }
 ```
 
@@ -208,17 +208,17 @@ When using `matchers`, the `name` element must be set to `null` explicitly:
 
 ```groovy
 strategy {
-    name = null
-    matchers {
-      tables {
-        table {
-            pojoClass {
-                transform = 'PASCAL'
-                expression = '\$0_POJO'
-            }
+  name = null
+  matchers {
+    tables {
+      table {
+        pojoClass {
+          transform = 'PASCAL'
+          expression = '\$0_POJO' 
         }
       }
     }
+  }
 }
 ```
 
