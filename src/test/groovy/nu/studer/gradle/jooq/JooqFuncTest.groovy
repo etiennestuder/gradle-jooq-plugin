@@ -4,7 +4,6 @@ import groovy.sql.Sql
 import org.gradle.testkit.runner.TaskOutcome
 import org.jooq.Constants
 import spock.lang.AutoCleanup
-import spock.lang.Ignore
 import spock.lang.Shared
 
 import java.sql.DriverManager
@@ -88,10 +87,11 @@ class JooqFuncTest extends BaseFuncTest {
         result.output.contains "Invalid configuration container element: 'missing' on extension 'jooq.sample'. Please check the current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}"
     }
 
-    @Ignore("Requires a jOOQ-3.11 compliant external library to complete successfully - or we define a custom generator in a separate project of the build like we do in the examples.")
-    void "successfully applies custom strategies when an external library is added to the jooqRuntime configuration"() {
+    void "successfully applies custom strategies when a sub project is added to the jooqRuntime configuration"() {
         given:
-        buildFile << buildWithCustomStrategiesOnExternalLibrary()
+        buildFile << buildWithCustomStrategiesOnSubProject()
+        createCustomGeneratorSubProject()
+        settingsFile << "include 'custom-generator'"
 
         when:
         def result = runWithArguments('build')
@@ -325,7 +325,7 @@ jooq {
 """
     }
 
-    private static String buildWithCustomStrategiesOnExternalLibrary() {
+    private static String buildWithCustomStrategiesOnSubProject() {
         """
 plugins {
     id 'nu.studer.jooq'
@@ -340,7 +340,7 @@ repositories {
 dependencies {
     compile 'org.jooq:jooq'
     jooqRuntime 'com.h2database:h2:1.4.193'
-    jooqRuntime 'io.github.jklingsporn:vertx-jooq:1.0.0'
+    jooqRuntime project(':custom-generator')  // include sub-project that contains the custom generator strategy
 }
 
 jooq {
@@ -354,7 +354,7 @@ jooq {
        generator {
            name = 'org.jooq.codegen.DefaultGenerator'
            strategy {
-               name = 'io.github.jklingsporn.vertx.impl.VertxGeneratorStrategy'
+               name = 'nu.studer.sample.SampleGeneratorStrategy'
            }
            database {
                name = 'org.jooq.meta.h2.H2Database'
@@ -364,6 +364,47 @@ jooq {
            }
        }
    }
+}
+"""
+    }
+
+    def createCustomGeneratorSubProject() {
+        dir("custom-generator/src/main/java/java/nu/studer/sample")
+        def buildFile = file("custom-generator/build.gradle")
+        buildFile << customGeneratorBuildFile()
+        def strategy = file("custom-generator/src/main/java/java/nu/studer/sample/SampleGeneratorStrategy.java")
+        strategy << sampleGeneratorStrategy()
+
+    }
+
+    def customGeneratorBuildFile() {
+        """apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile("org.jooq:jooq-codegen:3.11.2")
+}
+
+"""
+    }
+
+    def sampleGeneratorStrategy() {
+        """package nu.studer.sample;
+
+import org.jooq.codegen.DefaultGeneratorStrategy;
+import org.jooq.meta.Definition;
+
+public final class SampleGeneratorStrategy extends DefaultGeneratorStrategy {
+
+    @Override
+    public String getJavaGetterName(Definition definition, Mode mode) {
+        // do not prefix getters with 'get'
+        return super.getJavaGetterName(definition, mode).substring("get".length());
+    }
+
 }
 """
     }

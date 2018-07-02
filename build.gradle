@@ -62,8 +62,8 @@ def testAll = tasks.create('testAll') {
 
 List<String> testedGradleVersions = []
 (8..14).each { testedGradleVersions << "2.$it" }
-(0..05).each { testedGradleVersions << "3.$it" }
-(0..08).each { testedGradleVersions << "4.$it" }
+(0..5).each { testedGradleVersions << "3.$it" }
+(0..8).each { testedGradleVersions << "4.$it" }
 testedGradleVersions << "2.14.1"
 testedGradleVersions << "3.2.1"
 testedGradleVersions << "3.4.1"

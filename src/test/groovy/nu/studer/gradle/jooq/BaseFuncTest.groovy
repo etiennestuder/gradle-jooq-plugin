@@ -61,6 +61,21 @@ abstract class BaseFuncTest extends Specification {
         file('build.gradle')
     }
 
+    protected File getSettingsFile() {
+        file("settings.gradle")
+    }
+
+    File dir(String path) {
+        def file = new File(workspaceDir, path)
+        assert file.parentFile.mkdirs() || file.parentFile.directory
+        if (file.exists()) {
+            assert file.directory
+        } else {
+            assert file.mkdir()
+        }
+        file
+    }
+
     protected File file(String path) {
         file(workspaceDir, path)
     }
