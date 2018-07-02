@@ -39,6 +39,14 @@ buildscript {
 apply plugin: 'nu.studer.jooq'
 ```
 
+## Ensuring compatibility with jOOQ library
+
+**Please note that due to non-backward compatible API changes in jOOQ between 3.10.x and 3.11.x, you must apply the following plugin version in your Gradle build:**
+* **jOOQ library <= 3.10.x --> gradle-jooq plugin 2.0.11** 
+* **jOOQ library >= 3.11.x --> gradle-jooq plugin 3.0.0**
+
+</aside>  
+
 # Defining your database drivers
 
 Depending on which database you are connecting to, you need to put the corresponding driver on the generator's classpath.
