@@ -15,22 +15,15 @@
  */
 package nu.studer.gradle.jooq
 
-import nu.studer.gradle.util.Objects
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
-import org.gradle.api.tasks.Classpath
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.ParallelizableTask
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
 import org.jooq.Constants
-import org.jooq.meta.jaxb.Configuration
 import org.jooq.codegen.GenerationTool
+import org.jooq.meta.jaxb.Configuration
 
 import javax.xml.XMLConstants
 import javax.xml.bind.JAXBContext
@@ -57,9 +50,44 @@ class JooqTask extends DefaultTask {
     @Classpath
     FileCollection jooqClasspath
 
+    private byte[] configBytes
+
+    @Internal
+    private byte[] getConfigBytes() {
+        if (configBytes == null) {
+            configBytes = generateConfigBytes(relativizeTo(configuration, project.projectDir))
+        }
+
+        configBytes
+    }
+
     @Input
-    int getConfigHash() {
-        Objects.deepHashCode(configuration)
+    @SuppressWarnings("GroovyUnusedDeclaration")
+    BigInteger getConfigHash() {
+        // Gradle does not serialize byte[] in a stable manner, so expose as a stable number 
+        new BigInteger(getConfigBytes())
+    }
+
+    static Configuration relativizeTo(Configuration configuration, File dir) {
+        def directoryValue = configuration.generator.target.directory
+        if (directoryValue == null) {
+            configuration
+        } else {
+            def file = new File(directoryValue)
+            if (file.absolute) {
+                String relativized = dir.toURI().relativize(file.toURI()).path
+                if (relativized.endsWith(File.separator)) {
+                    relativized = relativized[0..-2]
+                }
+                configuration.withGenerator(
+                        configuration.generator.withTarget(
+                                configuration.generator.target.withDirectory(relativized)
+                        )
+                )
+            } else {
+                configuration
+            }
+        }
     }
 
     @OutputDirectory
@@ -69,15 +97,14 @@ class JooqTask extends DefaultTask {
 
     @TaskAction
     void generate() {
-        def configFile = new File(project.buildDir, "tmp/jooq/config.xml")
-        writeConfig(configFile)
+        def configFile = new File(temporaryDir, "config.xml")
         def execResult = executeJooq(configFile)
         if (execResultHandler) {
             execResultHandler.execute(execResult)
         }
     }
 
-    private void writeConfig(File configFile) {
+    private static byte[] generateConfigBytes(Configuration configuration) {
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
         Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
 
@@ -85,8 +112,9 @@ class JooqTask extends DefaultTask {
         Marshaller marshaller = ctx.createMarshaller()
         marshaller.setSchema(schema)
 
-        configFile.parentFile.mkdirs()
-        marshaller.marshal(configuration, configFile)
+        def byteStream = new ByteArrayOutputStream()
+        marshaller.marshal(configuration, byteStream)
+        byteStream.toByteArray()
     }
 
     private ExecResult executeJooq(File configFile) {
@@ -100,6 +128,12 @@ class JooqTask extends DefaultTask {
                 if (javaExecSpec) {
                     javaExecSpec.execute(spec)
                 }
+
+                // Required in order to ensure correct interpretation of destination
+                spec.workingDir = project.projectDir
+
+                configFile.parentFile.mkdirs()
+                configFile.bytes = getConfigBytes()
             }
 
         })
