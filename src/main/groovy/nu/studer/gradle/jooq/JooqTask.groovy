@@ -18,7 +18,13 @@ package nu.studer.gradle.jooq
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
-import org.gradle.api.tasks.*
+import org.gradle.api.tasks.Classpath
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.ParallelizableTask
+import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
 import org.jooq.Constants
@@ -38,9 +44,6 @@ import javax.xml.validation.SchemaFactory
 class JooqTask extends DefaultTask {
 
     @Internal
-    Configuration configuration
-
-    @Internal
     Action<? super JavaExecSpec> javaExecSpec
 
     @Internal
@@ -50,7 +53,18 @@ class JooqTask extends DefaultTask {
     @Classpath
     FileCollection jooqClasspath
 
+    @Internal
+    Configuration configuration
+
+    @Internal
     private byte[] configBytes
+
+    @Input
+    @SuppressWarnings("GroovyUnusedDeclaration")
+    BigInteger getConfigHash() {
+        // Gradle does not serialize byte[] in a stable manner, so expose as a stable number
+        new BigInteger(getConfigBytes())
+    }
 
     @Internal
     private byte[] getConfigBytes() {
@@ -59,13 +73,6 @@ class JooqTask extends DefaultTask {
         }
 
         configBytes
-    }
-
-    @Input
-    @SuppressWarnings("GroovyUnusedDeclaration")
-    BigInteger getConfigHash() {
-        // Gradle does not serialize byte[] in a stable manner, so expose as a stable number 
-        new BigInteger(getConfigBytes())
     }
 
     static Configuration relativizeTo(Configuration configuration, File dir) {
@@ -80,27 +87,13 @@ class JooqTask extends DefaultTask {
                     relativized = relativized[0..-2]
                 }
                 configuration.withGenerator(
-                        configuration.generator.withTarget(
-                                configuration.generator.target.withDirectory(relativized)
-                        )
+                    configuration.generator.withTarget(
+                        configuration.generator.target.withDirectory(relativized)
+                    )
                 )
             } else {
                 configuration
             }
-        }
-    }
-
-    @OutputDirectory
-    File getOutputDirectory() {
-        project.file(configuration.generator.target.directory)
-    }
-
-    @TaskAction
-    void generate() {
-        def configFile = new File(temporaryDir, "config.xml")
-        def execResult = executeJooq(configFile)
-        if (execResultHandler) {
-            execResultHandler.execute(execResult)
         }
     }
 
@@ -115,6 +108,22 @@ class JooqTask extends DefaultTask {
         def byteStream = new ByteArrayOutputStream()
         marshaller.marshal(configuration, byteStream)
         byteStream.toByteArray()
+    }
+
+    @OutputDirectory
+    @SuppressWarnings("GroovyUnusedDeclaration")
+    File getOutputDirectory() {
+        project.file(configuration.generator.target.directory)
+    }
+
+    @TaskAction
+    @SuppressWarnings("GroovyUnusedDeclaration")
+    void generate() {
+        def configFile = new File(temporaryDir, "config.xml")
+        def execResult = executeJooq(configFile)
+        if (execResultHandler) {
+            execResultHandler.execute(execResult)
+        }
     }
 
     private ExecResult executeJooq(File configFile) {
