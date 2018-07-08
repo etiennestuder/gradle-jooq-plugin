@@ -57,22 +57,23 @@ class JooqTask extends DefaultTask {
     Configuration configuration
 
     @Internal
-    private byte[] configBytes
+    private byte[] configurationBytes
 
     @Input
     @SuppressWarnings("GroovyUnusedDeclaration")
-    BigInteger getConfigHash() {
+    BigInteger getConfigurationHash() {
         // Gradle does not serialize byte[] in a stable manner, so expose as a stable number
-        new BigInteger(getConfigBytes())
+        new BigInteger(getConfigurationBytes())
     }
 
     @Internal
-    private byte[] getConfigBytes() {
-        if (configBytes == null) {
-            configBytes = generateConfigBytes(relativizeTo(configuration, project.projectDir))
+    private byte[] getConfigurationBytes() {
+        if (configurationBytes == null) {
+            def configurationWithOutputDirRelativeToProjectDir = relativizeTo(configuration, project.projectDir)
+            configurationBytes = generateConfigurationBytes(configurationWithOutputDirRelativeToProjectDir)
         }
 
-        configBytes
+        configurationBytes
     }
 
     static Configuration relativizeTo(Configuration configuration, File dir) {
@@ -97,7 +98,7 @@ class JooqTask extends DefaultTask {
         }
     }
 
-    private static byte[] generateConfigBytes(Configuration configuration) {
+    private static byte[] generateConfigurationBytes(Configuration configuration) {
         SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
         Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
 
@@ -142,7 +143,7 @@ class JooqTask extends DefaultTask {
                 spec.workingDir = project.projectDir
 
                 configFile.parentFile.mkdirs()
-                configFile.bytes = getConfigBytes()
+                configFile.bytes = getConfigurationBytes()
             }
 
         })
