@@ -108,7 +108,7 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build')
 
         then:
-        def configXml = new File(workspaceDir, 'build/tmp/jooq/config.xml')
+        def configXml = new File(workspaceDir, 'build/tmp/generateSampleJooqSchemaSource/config.xml')
         configXml.exists()
 
         def rootNode = new XmlSlurper().parse(configXml)

@@ -53,6 +53,7 @@ abstract class BaseFuncTest extends Specification {
             .withTestKitDir(testKitDir)
             .withProjectDir(workspaceDir)
             .withArguments(args)
+            .forwardOutput()
             .withGradleVersion(gradleVersion.version)
             .withDebug(isDebuggerAttached())
     }
