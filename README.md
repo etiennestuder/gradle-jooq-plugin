@@ -18,7 +18,7 @@ You can apply the plugin using the `plugins` DSL
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '3.0.0'
+    id 'nu.studer.jooq' version '3.0.1'
 }
 ```
 
@@ -32,7 +32,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'nu.studer:gradle-jooq-plugin:3.0.0'
+    classpath 'nu.studer:gradle-jooq-plugin:3.0.1'
   }
 }
 
