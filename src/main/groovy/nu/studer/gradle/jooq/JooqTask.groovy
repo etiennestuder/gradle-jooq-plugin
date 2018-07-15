@@ -62,7 +62,7 @@ class JooqTask extends DefaultTask {
     @Input
     @SuppressWarnings("GroovyUnusedDeclaration")
     Configuration getConfigurationHash() {
-        return relativizeTo(configuration, project.projectDir)
+        relativizeTo(configuration, project.projectDir)
     }
 
     @Internal
