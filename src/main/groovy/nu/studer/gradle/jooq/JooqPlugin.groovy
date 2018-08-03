@@ -111,7 +111,7 @@ class JooqPlugin implements Plugin<Project> {
     private void configureSourceSet(JooqConfiguration jooqConfiguration) {
         SourceSet sourceSet = jooqConfiguration.sourceSet
         sourceSet.java.srcDir { jooqConfiguration.configuration.generator.target.directory }
-        project.tasks.getByName(sourceSet.compileJavaTaskName).dependsOn jooqConfiguration.jooqTaskName
+        project.tasks.getByName(sourceSet.compileJavaTaskName).dependsOn jooqConfiguration.jooqTaskName.toString()
     }
 
 }
