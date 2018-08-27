@@ -61,9 +61,8 @@ class JooqTask extends DefaultTask {
 
     @Input
     @SuppressWarnings("GroovyUnusedDeclaration")
-    BigInteger getConfigurationHash() {
-        // Gradle does not serialize byte[] in a stable manner, so expose as a stable number
-        new BigInteger(getConfigurationBytes())
+    Configuration getConfigurationHash() {
+        relativizeTo(configuration, project.projectDir)
     }
 
     @Internal
