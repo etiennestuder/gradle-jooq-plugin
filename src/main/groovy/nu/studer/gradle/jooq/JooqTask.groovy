@@ -99,16 +99,22 @@ class JooqTask extends DefaultTask {
     }
 
     private static byte[] generateConfigurationBytes(Configuration configuration) {
-        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-        Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
+        def previousContextClassLoader = Thread.currentThread().getContextClassLoader()
+        Thread.currentThread().setContextClassLoader(getClass().getClassLoader())
+        try {
+            SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+            Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
 
-        JAXBContext ctx = JAXBContext.newInstance(Configuration.class)
-        Marshaller marshaller = ctx.createMarshaller()
-        marshaller.setSchema(schema)
+            JAXBContext ctx = JAXBContext.newInstance(Configuration.class)
+            Marshaller marshaller = ctx.createMarshaller()
+            marshaller.setSchema(schema)
 
-        def byteStream = new ByteArrayOutputStream()
-        marshaller.marshal(configuration, byteStream)
-        byteStream.toByteArray()
+            def byteStream = new ByteArrayOutputStream()
+            marshaller.marshal(configuration, byteStream)
+            byteStream.toByteArray()
+        } finally {
+            Thread.currentThread().setContextClassLoader(previousContextClassLoader)
+        }
     }
 
     @OutputDirectory
