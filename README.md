@@ -18,7 +18,7 @@ You can apply the plugin using the `plugins` DSL
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '3.0.1'
+    id 'nu.studer.jooq' version '3.0.2'
 }
 ```
 
@@ -32,7 +32,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'nu.studer:gradle-jooq-plugin:3.0.1'
+    classpath 'nu.studer:gradle-jooq-plugin:3.0.2'
   }
 }
 
@@ -239,6 +239,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).    
 
 # Changelog
++ 3.0.2 - Bug fix when running on JDK 9+
 + 3.0.1 - Improve Gradle build cache effectiveness of the jOOQ task
 + 3.0.0 - Upgrade to jOOQ 3.11.2 (jOOQ 3.11.x breaks compatibility with jOOQ 3.10.x)
 + 2.0.11 - Upgrade to jOOQ 3.10.4
@@ -257,6 +258,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 
 # Acknowledgements
 
++ [anuraaga](https://github.com/anuraaga) (pr)
 + [ldaley](https://github.com/ldaley) (pr)
 + [masc3d](https://github.com/masc3d) (pr)
 + [mark-vieira](https://github.com/mark-vieira) (pr)
