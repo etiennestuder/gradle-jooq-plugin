@@ -117,10 +117,10 @@ class JooqTask extends DefaultTask {
                 spec.workingDir = project.projectDir
 
                 configFile.parentFile.mkdirs()
-                configFile.bytes = generateConfigurationBytes()
+                writeConfiguration(configFile)
             }
 
-            private byte[] generateConfigurationBytes() {
+            private byte[] writeConfiguration(File file) {
                 SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
                 Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
 
@@ -128,9 +128,7 @@ class JooqTask extends DefaultTask {
                 Marshaller marshaller = ctx.createMarshaller()
                 marshaller.setSchema(schema)
 
-                def byteStream = new ByteArrayOutputStream()
-                marshaller.marshal(configuration, byteStream)
-                byteStream.toByteArray()
+                new FileOutputStream(file).withCloseable { fs -> marshaller.marshal(configuration, fs) }
             }
 
         })
