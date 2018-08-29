@@ -56,14 +56,19 @@ class JooqTask extends DefaultTask {
     @Internal
     Configuration configuration
 
+    @Internal
+    Configuration normalizedConfiguration
+
     @Input
     @SuppressWarnings("GroovyUnusedDeclaration")
-    Configuration getConfigurationHash() {
-        // Configuration implements Serializable which can be used as an input
-        relativizeTo(configuration, project.projectDir)
+    Configuration getNormalizedConfiguration() {
+        if (normalizedConfiguration == null) {
+            normalizedConfiguration = relativizeTo(configuration, project.projectDir)
+        }
+        normalizedConfiguration
     }
 
-    static Configuration relativizeTo(Configuration configuration, File dir) {
+    private static Configuration relativizeTo(Configuration configuration, File dir) {
         def directoryValue = configuration.generator.target.directory
         if (directoryValue == null) {
             configuration
@@ -117,10 +122,10 @@ class JooqTask extends DefaultTask {
                 spec.workingDir = project.projectDir
 
                 configFile.parentFile.mkdirs()
-                writeConfiguration(configFile)
+                writeConfiguration(getNormalizedConfiguration(), configFile)
             }
 
-            private byte[] writeConfiguration(File file) {
+            private static byte[] writeConfiguration(Configuration config, File file) {
                 SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
                 Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
 
@@ -128,7 +133,7 @@ class JooqTask extends DefaultTask {
                 Marshaller marshaller = ctx.createMarshaller()
                 marshaller.setSchema(schema)
 
-                new FileOutputStream(file).withCloseable { fs -> marshaller.marshal(configuration, fs) }
+                new FileOutputStream(file).withCloseable { fs -> marshaller.marshal(config, fs) }
             }
 
         })
