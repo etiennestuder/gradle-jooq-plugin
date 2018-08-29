@@ -56,24 +56,11 @@ class JooqTask extends DefaultTask {
     @Internal
     Configuration configuration
 
-    @Internal
-    private byte[] configurationBytes
-
     @Input
     @SuppressWarnings("GroovyUnusedDeclaration")
     Configuration getConfigurationHash() {
         // Configuration implements Serializable which can be used as an input
         relativizeTo(configuration, project.projectDir)
-    }
-
-    @Internal
-    private byte[] getConfigurationBytes() {
-        if (configurationBytes == null) {
-            def configurationWithOutputDirRelativeToProjectDir = relativizeTo(configuration, project.projectDir)
-            configurationBytes = generateConfigurationBytes(configurationWithOutputDirRelativeToProjectDir)
-        }
-
-        configurationBytes
     }
 
     static Configuration relativizeTo(Configuration configuration, File dir) {
@@ -95,25 +82,6 @@ class JooqTask extends DefaultTask {
             } else {
                 configuration
             }
-        }
-    }
-
-    private static byte[] generateConfigurationBytes(Configuration configuration) {
-        def previousContextClassLoader = Thread.currentThread().getContextClassLoader()
-        Thread.currentThread().setContextClassLoader(getClass().getClassLoader())
-        try {
-            SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-            Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
-
-            JAXBContext ctx = JAXBContext.newInstance(Configuration.class)
-            Marshaller marshaller = ctx.createMarshaller()
-            marshaller.setSchema(schema)
-
-            def byteStream = new ByteArrayOutputStream()
-            marshaller.marshal(configuration, byteStream)
-            byteStream.toByteArray()
-        } finally {
-            Thread.currentThread().setContextClassLoader(previousContextClassLoader)
         }
     }
 
@@ -149,7 +117,20 @@ class JooqTask extends DefaultTask {
                 spec.workingDir = project.projectDir
 
                 configFile.parentFile.mkdirs()
-                configFile.bytes = getConfigurationBytes()
+                configFile.bytes = generateConfigurationBytes()
+            }
+
+            private byte[] generateConfigurationBytes() {
+                SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+                Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN))
+
+                JAXBContext ctx = JAXBContext.newInstance(Configuration.class)
+                Marshaller marshaller = ctx.createMarshaller()
+                marshaller.setSchema(schema)
+
+                def byteStream = new ByteArrayOutputStream()
+                marshaller.marshal(configuration, byteStream)
+                byteStream.toByteArray()
             }
 
         })
