@@ -70,24 +70,17 @@ class JooqTask extends DefaultTask {
 
     private static Configuration relativizeTo(Configuration configuration, File dir) {
         def directoryValue = configuration.generator.target.directory
-        if (directoryValue == null) {
-            configuration
-        } else {
+        if (directoryValue != null) {
             def file = new File(directoryValue)
             if (file.absolute) {
                 String relativized = dir.toURI().relativize(file.toURI()).path
                 if (relativized.endsWith(File.separator)) {
                     relativized = relativized[0..-2]
                 }
-                configuration.withGenerator(
-                    configuration.generator.withTarget(
-                        configuration.generator.target.withDirectory(relativized)
-                    )
-                )
-            } else {
-                configuration
+                configuration.generator.target.directory = relativized
             }
         }
+        configuration
     }
 
     @OutputDirectory
