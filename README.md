@@ -226,6 +226,12 @@ Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](https
 has a default value and that's an issue since is part of an XSD `choice` element, i.e. only one element can be present. This is the only `choice` element 
 in the whole XSD, so this workaround only needs to be applied here.
 
+### Defining the jOOQ version when the Spring boot plugin is applied
+
+When applying the [spring-boot-gradle-plugin](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin), 
+it is not sufficient to declared the jOOQ version that you want to pull in via `jooq.version = '3.11.2'` since the dependency management rules of the spring-boot-gradle-plugin 
+take precedence. You also have to set `ext['jooq.version'] = '3.11.2'` to pull in your requested version of jOOQ.
+
 ### Generating sources into shared folders, e.g. src/main/java 
 
 My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This avoids overlapping 
