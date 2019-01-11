@@ -1,6 +1,8 @@
 plugins {
+    id 'org.gradle.kotlin.kotlin-dsl' version '1.2.1'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
     id 'com.gradle.build-scan' version '1.16'
-    id 'nu.studer.plugindev' version '1.0.12'
+    id 'nu.studer.plugindev' version '1.0.9'
     id 'nu.studer.credentials' version '1.0.5'
     id 'groovy'
 }
@@ -25,6 +27,7 @@ dependencies {
     testCompile("org.spockframework:spock-core:1.0-groovy-2.4") {
         exclude module: 'groovy-all'
     }
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 plugindev {
@@ -68,6 +71,30 @@ testedGradleVersions.each { version ->
         systemProperty 'testContext.gradleVersion', version
         testAll.dependsOn(it)
     }
+}
+repositories {
+    mavenCentral()
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+// Required in order to support building a mixed kotlin/groovy project. With out this,
+// we would get a cyclic dependency error, since both compileKotlin and compileGroovy
+// depend on compileJava.
+// https://discuss.gradle.org/t/kotlin-groovy-and-java-compilation/14903/10
+project.afterEvaluate {
+    compileGroovy.dependsOn = compileGroovy.taskDependencies.mutableValues - 'compileJava'
+    compileKotlin.dependsOn compileGroovy
+    compileKotlin.classpath += files(compileGroovy.destinationDir)
+    classes.dependsOn compileKotlin
 }
 
 // run tests with Java 9
