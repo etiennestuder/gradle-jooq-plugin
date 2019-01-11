@@ -16,14 +16,22 @@ The plugin is hosted on the [Gradle Plugin portal](https://plugins.gradle.org/pl
 
 You can apply the plugin using the `plugins` DSL
 
+Groovy DSL
 ```groovy
 plugins {
     id 'nu.studer.jooq' version '3.0.3'
 }
 ```
+Kotlin DSL
+```kotlin
+plugins {
+    id("nu.studer.jooq") version "3.0.2"
+}
+```
 
 Or using the `buildscript` block
 
+Groovy DSL
 ```groovy
 buildscript {
   repositories {
@@ -39,6 +47,21 @@ buildscript {
 apply plugin: 'nu.studer.jooq'
 ```
 
+Kotlin DSL
+```kotlin
+buildscript {
+  repositories {
+    maven(url = "https://plugins.gradle.org/m2/")
+  }
+  dependencies {
+    classpath("nu.studer:gradle-jooq-plugin:3.0.2")
+  }
+}
+
+apply(plugin = "nu.studer.jooq")
+```
+
+
 **Please note that due to non-backward compatible API changes in jOOQ between 3.10.x and 3.11.x, you must apply the following plugin version in your Gradle build:**
 * **jOOQ library <= 3.10.x: gradle-jooq plugin 2.0.11** 
 * **jOOQ library >= 3.11.x: gradle-jooq plugin 3.0.0 or higher**
@@ -47,9 +70,17 @@ apply plugin: 'nu.studer.jooq'
 
 Depending on which database you are connecting to, you need to put the corresponding driver on the generator's classpath.
 
+Groovy DSL
 ```groovy
 dependencies {
     jooqRuntime 'postgresql:postgresql:9.1-901.jdbc4'
+}
+```
+
+Kotlin DSL
+```kotlin
+dependencies {
+    jooqRuntime("postgresql:postgresql:9.1-901.jdbc")
 }
 ```
 
@@ -57,6 +88,7 @@ dependencies {
 
 This plugin supports existing and future jOOQ versions. It also supports the different editions like open source, pro, and trial.
 
+Groovy DSL
 ```groovy
 jooq {
   version = '3.11.9' // the default (can be omitted)
@@ -64,13 +96,32 @@ jooq {
 }
 ```
 
+Kotlin DSL
+```kotlin
+import nu.struder.gradle.jooq.*
+import nu.studer.gradle.jooq.JooqEdition
+
+jooq {
+  version = "3.11.2" // the default (can be omitted)
+  edition = JooqEdition.OSS    // the default (can be omitted), other allowed values are PRO, PRO_JAVA_6, and TRIAL
+}
+```
+
 The plugin ensures that all your dependencies use the version and edition
 specified in the `jooq` configuration. So when you declare a compile dependency
 on jOOQ, you can omit the version:
 
+Groovy DSL
 ```groovy
 dependencies {
   compile 'org.jooq:jooq'
+}
+```
+
+Kotlin DSL
+```kotlin
+dependencies {
+  compile("org.jooq:jooq")
 }
 ```
 
@@ -104,6 +155,7 @@ output directory can be configured by explicitly setting the `directory` attribu
 
 See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.0.xsd) for the full set of configuration options.
 
+Groovy DSL
 ```groovy
 jooq {
   version = '3.11.9'
@@ -161,6 +213,67 @@ jooq {
 }
 ```
 
+Kotlin DSL
+```kotlin
+import nu.struder.gradle.jooq.*
+import nu.studer.gradle.jooq.JooqEdition
+
+jooq {
+  version = "3.11.2"
+  edition = JooqEdition.OSS
+  "sample"(sourceSet["main"]) {
+    jdbc {
+      driver = "org.postgresql.Driver"
+      url = "jdbc:postgresql://localhost:5432/sample"
+      user = "some_user"
+      password = "secret"
+      properties {
+        property {
+          key = "ssl"
+          value = "true"
+        }
+      }
+    }
+    generator {
+      name = "org.jooq.codegen.DefaultGenerator"
+      strategy {
+        name = "org.jooq.codegen.DefaultGeneratorStrategy"
+        // ...
+      }
+      database {
+        name = "org.jooq.meta.postgres.PostgresDatabase"
+        inputSchema = "public"
+        forcedTypes {
+          forcedType {
+            name = "varchar"
+            expression = ".*"
+            types = "JSONB?"
+          }
+          forcedType {
+            name = "varchar"
+            expression = ".*"
+            types = "INET"
+          }
+        }
+        // ...
+      }
+      generate {
+        isRelations = true
+        isDeprecated = false
+        isRecords = true
+        isImmutablePojos = true
+        isFluentSetters = true
+        // ...
+      }
+      target {
+        packageName = "nu.studer.sample"
+        // directory = ...
+      }
+    }
+  }
+}
+```
+
 ## Configuration pitfalls
 
 ### Configuring a sequence of elements
@@ -168,6 +281,7 @@ jooq {
 Resemblance of the jOOQ configuration DSL with the Groovy language is coincidental. Complex types that include 
 sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.11.0.xsd) must be defined in the DSL's nesting style:
 
+Groovy DSL
 ```groovy
 forcedTypes {
   forcedType {
@@ -179,6 +293,24 @@ forcedTypes {
     name = 'varchar'
     expression = '.*'
     types = 'INET'
+  }
+}
+```
+
+Kotlin DSL
+```kotlin
+import nu.struder.gradle.jooq.*
+
+forcedTypes {
+  forcedType {
+    name = "varchar"
+    expression = ".*"
+    types = "JSONB?"
+  }
+  forcedType {
+    name = "varchar"
+    expression = ".*"
+    types = "INET"
   }
 }
 ```
@@ -204,6 +336,7 @@ forcedTypes = [
 
 When using `matchers`, the `name` element must be set to `null` explicitly:
 
+Groovy DSL
 ```groovy
 strategy {
   name = null
@@ -212,6 +345,26 @@ strategy {
       table {
         pojoClass {
           transform = 'PASCAL'
+          expression = '\$0_POJO' 
+        }
+      }
+    }
+  }
+}
+```
+
+Kotlin DSL
+```kotlin
+import org.jooq.meta.jaxb.MatcherTransformType
+import nu.struder.gradle.jooq.*
+
+strategy {
+  name = null
+  matchers {
+    tables {
+      table {
+        pojoClass {
+          transform = MatcherTransformType.PASCAL
           expression = '\$0_POJO' 
         }
       }
