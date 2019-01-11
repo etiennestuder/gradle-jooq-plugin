@@ -1,6 +1,7 @@
 package nu.struder.gradle.jooq
 
 import nu.studer.gradle.jooq.JooqConfiguration
+import nu.studer.gradle.jooq.JooqEdition
 import nu.studer.gradle.jooq.JooqExtension
 import org.gradle.api.Project
 import org.gradle.api.tasks.SourceSet
@@ -45,7 +46,7 @@ fun Project.jooq(action: JooqExtensionKotlin.() -> Unit) {
  * @param action A configuration lambda to apply on a receiver of type [Configuration]
  */
 fun Configuration.jdbc(action: Jdbc.() -> Unit) {
-    this.withJdbc(Jdbc().apply(action))
+    this.withJdbc((this.jdbc ?: Jdbc()).apply(action))
 }
 
 /**
@@ -55,7 +56,7 @@ fun Configuration.jdbc(action: Jdbc.() -> Unit) {
  * @param action A configuration lambda to apply on a receiver of type [Configuration]
  */
 fun Configuration.generator(action: Generator.() -> Unit) {
-    this.withGenerator(Generator().apply(action))
+    this.withGenerator((this.generator ?: Generator()).apply(action))
 }
 
 /**
@@ -65,7 +66,7 @@ fun Configuration.generator(action: Generator.() -> Unit) {
  * @param action A configuration lambda to apply on a receiver of type [Generator]
  */
 fun Generator.database(action: Database.() -> Unit) {
-    this.withDatabase(Database().apply(action))
+    this.withDatabase((this.database ?: Database()).apply(action))
 }
 
 /**
@@ -75,13 +76,109 @@ fun Generator.database(action: Database.() -> Unit) {
  * @param action A configuration lambda to apply on a receiver of type [Generator]
  */
 fun Generator.target(action: Target.() -> Unit) {
-    this.withTarget(Target().apply(action))
+    this.withTarget((this.target ?: Target()).apply(action))
+}
+
+/**
+ * Applies strategy configuration to [Generator]
+ *
+ * @receiver the Jooq [Generator]
+ * @param action A configuration lambda to apply on a receiver of type [Generator]
+ */
+fun Generator.strategy(action: Strategy.() -> Unit) {
+    this.withStrategy((this.strategy ?: Strategy()).apply(action))
+}
+
+/**
+ * Applies matchers configuration to [Strategy]
+ *
+ * @receiver the Jooq [Strategy]
+ * @param action A configuration lambda to apply on a receiver of type [Strategy]
+ */
+fun Strategy.matchers(action: Matchers.() -> Unit) {
+    this.withMatchers((this.matchers ?: Matchers()).apply(action))
+}
+
+/**
+ * Applies tables configuration to [Matchers]
+ *
+ * @receiver the Jooq [Matchers]
+ * @param action A configuration lambda to apply on a receiver of type [Matchers]
+ */
+fun Matchers.tables(action: MutableList<MatchersTableType>.() -> Unit) {
+    this.withTables((this.tables ?: mutableListOf()).apply(action))
+}
+
+/**
+ * Applies table configuration to [MutableList] of [MatchersTableType]
+ *
+ * @receiver the Jooq [MutableList] of [MatchersTableType]
+ * @param action A configuration lambda to apply on a receiver of type [MutableList] of [MatchersTableType]
+ */
+fun MutableList<MatchersTableType>.table(action: MatchersTableType.() -> Unit) {
+    this += MatchersTableType().apply(action)
+}
+
+/**
+ * Applies pojoClass configuration to [MatchersTableType]
+ *
+ * @receiver the Jooq [MatchersTableType]
+ * @param action A configuration lambda to apply on a receiver of type [MatchersTableType]
+ */
+fun MatchersTableType.pojoClass(action: MatcherRule.() -> Unit) {
+    this.withPojoClass((this.pojoClass ?: MatcherRule()).apply(action))
+}
+
+/**
+ * Applies generate configuration to [Generator]
+ *
+ * @receiver the Jooq [Generator]
+ * @param action A configuration lambda to apply on a receiver of type [Generator]
+ */
+fun Generator.generate(action: Generate.() -> Unit) {
+    this.withGenerate((this.generate ?: Generate()).apply(action))
+}
+
+/**
+ * Applies forcedTypes configuration to [Database]
+ *
+ * @receiver the Jooq [Database]
+ * @param action A configuration lambda to apply on a receiver of type [Database]
+ */
+fun Database.forcedTypes(action: MutableList<ForcedType>.() -> Unit) {
+    this.withForcedTypes((this.forcedTypes ?: mutableListOf()).apply(action))
+}
+
+/**
+ * Applies forcedType configuration to [MutableList] of [ForcedType]
+ *
+ * @receiver the Jooq [MutableList] of [ForcedType]
+ * @param action A configuration lambda to apply on a receiver of type [MutableList] of [ForcedType]
+ */
+fun MutableList<ForcedType>.forcedType(action: ForcedType.() -> Unit) {
+    this += ForcedType().apply(action)
 }
 
 /**
  * JooqExtension Wrapper that allows us to dynamically create configurations
  */
-class JooqExtensionKotlin(private val jooq: JooqExtension) {
+class JooqExtensionKotlin(
+    private val jooq: JooqExtension
+) {
+
+    var version: String
+        set(value) {
+            jooq.version = value
+        }
+
+        get() = jooq.version
+
+    var edition: JooqEdition
+        set(value) {
+            jooq.edition = value
+        }
+
+        get() = jooq.edition
 
     operator fun String.invoke(sourceSet: SourceSet, action: Configuration.() -> Unit) {
         val jooqConfig = JooqConfiguration(
