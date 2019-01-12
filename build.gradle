@@ -44,23 +44,21 @@ bintray {
     dryRun = false
 }
 
+test {
+    maxParallelForks = 2
+}
+
 def testAll = tasks.create('testAll') {
-    group = 'Gradle cross-version test'
+    description = 'Runs the Gradle cross-version tests.'
+    group = 'Verification'
 }
 
 List<String> testedGradleVersions = []
-(8..14).each { testedGradleVersions << "2.$it" }
-(0..5).each { testedGradleVersions << "3.$it" }
-(0..8).each { testedGradleVersions << "4.$it" }
-testedGradleVersions << "2.14.1"
-testedGradleVersions << "3.2.1"
-testedGradleVersions << "3.4.1"
+testedGradleVersions << "5.1"
+testedGradleVersions << "5.0"
+testedGradleVersions << "4.10.3"
+testedGradleVersions << "4.0.2"
 testedGradleVersions << "3.5.1"
-testedGradleVersions << "4.2.1"
-testedGradleVersions << "4.3.1"
-testedGradleVersions << "4.4.1"
-testedGradleVersions << "4.5.1"
-testedGradleVersions << "4.8.1"
 
 testedGradleVersions.each { version ->
     project.tasks.create("test_" + version.replaceAll("[^a-zA-Z0-9]", "_"), Test).with {
