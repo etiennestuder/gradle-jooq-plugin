@@ -1,20 +1,9 @@
-buildscript {
-    repositories {
-        jcenter()
-        maven { url "https://plugins.gradle.org/m2" }
-    }
-    dependencies {
-        classpath "nu.studer:gradle-plugindev-plugin:$plugindevPluginVersion"
-        classpath "nu.studer:gradle-credentials-plugin:$credentialsPluginVersion"
-        classpath "com.gradle:build-scan-plugin:$buildScanPluginVersion"
-    }
+plugins {
+    id 'com.gradle.build-scan' version '1.16'
+    id 'nu.studer.plugindev' version '1.0.12'
+    id 'nu.studer.credentials' version '1.0.5'
+    id 'groovy'
 }
-
-apply plugin: 'com.gradle.build-scan'
-apply plugin: 'groovy'
-apply plugin: 'java-gradle-plugin'
-apply plugin: 'nu.studer.plugindev'
-apply plugin: 'nu.studer.credentials'
 
 group = 'nu.studer'
 version = '3.0.3-DEV'
@@ -25,15 +14,14 @@ buildScan {
 }
 
 dependencies {
-    compile("org.jooq:jooq:$jooqVersion")
-    compile("org.jooq:jooq-meta:$jooqVersion")
-    compile("org.jooq:jooq-codegen:$jooqVersion")
+    compile("org.jooq:jooq:3.11.9")
+    compile("org.jooq:jooq-meta:3.11.9")
+    compile("org.jooq:jooq-codegen:3.11.9")
 
-    testCompile("org.spockframework:spock-core:$spockVersion-groovy-2.4") {
+    testCompile "com.h2database:h2:1.4.193"
+    testCompile("org.spockframework:spock-core:1.0-groovy-2.4") {
         exclude module: 'groovy-all'
     }
-
-    testCompile "com.h2database:h2:$h2Version"
 }
 
 plugindev {
