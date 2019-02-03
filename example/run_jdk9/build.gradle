@@ -1,12 +1,3 @@
-buildscript {
-    dependencies {
-        classpath 'com.sun.xml.bind:jaxb-core:2.3.0.1'
-        classpath 'com.sun.xml.bind:jaxb-impl:2.3.0.1'
-        classpath 'javax.activation:activation:1.1.1'
-        classpath 'javax.xml.bind:jaxb-api:2.3.0'
-    }
-}
-
 plugins {
     id 'nu.studer.jooq' version '3.0.3'
 }
@@ -20,10 +11,6 @@ repositories {
 dependencies {
     compile 'org.jooq:jooq'
     jooqRuntime 'com.h2database:h2:1.4.193'
-    jooqRuntime 'com.sun.xml.bind:jaxb-core:2.3.0.1'
-    jooqRuntime 'com.sun.xml.bind:jaxb-impl:2.3.0.1'
-    jooqRuntime 'javax.activation:activation:1.1.1'
-    jooqRuntime 'javax.xml.bind:jaxb-api:2.3.0'
 }
 
 jooq {

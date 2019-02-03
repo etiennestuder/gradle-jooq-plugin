@@ -42,9 +42,7 @@ apply plugin: 'nu.studer.jooq'
 **Please note that due to non-backward compatible API changes in jOOQ between 3.10.x and 3.11.x, you must apply the following plugin version in your Gradle build:**
 * **jOOQ library <= 3.10.x: gradle-jooq plugin 2.0.11** 
 * **jOOQ library >= 3.11.x: gradle-jooq plugin 3.0.0 or higher**
-
-</aside>  
-
+  
 # Defining your database drivers
 
 Depending on which database you are connecting to, you need to put the corresponding driver on the generator's classpath.
@@ -232,11 +230,6 @@ When applying the [spring-boot-gradle-plugin](https://github.com/spring-projects
 it is not sufficient to declared the jOOQ version that you want to pull in via `jooq.version = '3.11.9'` since the dependency management rules of the spring-boot-gradle-plugin 
 take precedence. You also have to set `ext['jooq.version'] = '3.11.9'` to pull in your requested version of jOOQ.
 
-### Running on JDK 9 and higher
-
-When running on JDK 9 and higher, the JAXB classes are not included in the JDK anymore and thus the dependencies must be declared explicitly in the build file, both 
-on the `buildscript` classpath and the `jooqRuntime` configuration. See the samples section below for a full example.
-
 ### Generating sources into shared folders, e.g. src/main/java 
 
 My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This avoids overlapping 
@@ -248,7 +241,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Passing JVM args to the jOOQ code generation process: [here](example/add_jvm_args).  
 + Removing the implicit task dependency between the compile task and the jOOQ source generation task: [here](example/remove_task_dependency).  
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).    
-+ Running on JDK 9 and higher with all JAXB dependencies declared explicitly: [here](example/run_jdk9).    
++ Running on JDK 9 and higher with all JAXB dependencies already added by the plugin: [here](example/run_jdk9).    
 
 # Changelog
 + 3.0.3 - Explicitly add JAXB dependencies to run on JDK 9 and higher out-of-the-box. Upgrade to jOOQ 3.11.9.
