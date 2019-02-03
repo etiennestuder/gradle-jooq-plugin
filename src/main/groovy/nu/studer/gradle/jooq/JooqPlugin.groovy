@@ -63,11 +63,17 @@ class JooqPlugin implements Plugin<Project> {
     /**
      * Adds the configuration that holds the classpath to use for invoking jOOQ.
      * Users can add their JDBC drivers or any generator extensions they might have.
+     * Explicitly add JAXB dependencies since they have been removed from JDK 9 and higher.
+     * Explicitly add Activation dependency since it has been removed from JDK 11 and higher.
      */
     private void addJooqConfiguration(Project project) {
         jooqRuntime = project.configurations.create("jooqRuntime")
         jooqRuntime.setDescription("The classpath used to invoke the jOOQ generator. Add your JDBC drivers or generator extensions here.")
         project.dependencies.add(jooqRuntime.name, "org.jooq:jooq-codegen")
+        project.dependencies.add(jooqRuntime.name, "javax.xml.bind:jaxb-api:2.3.1")
+        project.dependencies.add(jooqRuntime.name, "javax.activation:activation:1.1.1")
+        project.dependencies.add(jooqRuntime.name, "com.sun.xml.bind:jaxb-core:2.3.0.1")
+        project.dependencies.add(jooqRuntime.name, "com.sun.xml.bind:jaxb-impl:2.3.0.1")
     }
 
     /**

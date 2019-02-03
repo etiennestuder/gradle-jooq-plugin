@@ -14,9 +14,12 @@ buildScan {
 }
 
 dependencies {
-    compile("org.jooq:jooq:3.11.9")
-    compile("org.jooq:jooq-meta:3.11.9")
     compile("org.jooq:jooq-codegen:3.11.9")
+
+    compile("javax.xml.bind:jaxb-api:2.3.1")
+    compile("javax.activation:activation:1.1.1")
+    compile("com.sun.xml.bind:jaxb-core:2.3.0.1")
+    compile("com.sun.xml.bind:jaxb-impl:2.3.0.1")
 
     testCompile "com.h2database:h2:1.4.193"
     testCompile("org.spockframework:spock-core:1.0-groovy-2.4") {
@@ -66,3 +69,12 @@ testedGradleVersions.each { version ->
         testAll.dependsOn(it)
     }
 }
+
+// run tests with Java 9
+//project.gradle.taskGraph.whenReady { taskGraph ->
+//    project.tasks.withType(Test) { Test testTask ->
+//        if (taskGraph.hasTask(testTask)) {
+//            testTask.executable = new File('/Library/Java/JavaVirtualMachines/jdk-9.0.4.jdk/Contents/Home/bin/java')
+//        }
+//    }
+//}
