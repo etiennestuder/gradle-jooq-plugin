@@ -1,0 +1,69 @@
+buildscript {
+    dependencies {
+        classpath 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+        classpath 'com.sun.xml.bind:jaxb-impl:2.3.0.1'
+        classpath 'javax.activation:activation:1.1.1'
+        classpath 'javax.xml.bind:jaxb-api:2.3.0'
+    }
+}
+
+plugins {
+    id 'nu.studer.jooq' version '3.0.2'
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.jooq:jooq'
+    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqRuntime 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+    jooqRuntime 'com.sun.xml.bind:jaxb-impl:2.3.0.1'
+    jooqRuntime 'javax.activation:activation:1.1.1'
+    jooqRuntime 'javax.xml.bind:jaxb-api:2.3.0'
+}
+
+jooq {
+    version = '3.11.9'
+    edition = 'OSS'
+    sample(sourceSets.main) {
+        jdbc {
+            driver = 'org.h2.Driver'
+            url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+            user = 'sa'
+            password = ''
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            database {
+                name = 'org.jooq.meta.h2.H2Database'
+                includes = '.*'
+                excludes = ''
+            }
+            target {
+                packageName = 'nu.studer.sample'
+            }
+        }
+    }
+}
+
+tasks.generateSampleJooqSchemaSource.with {
+    def out = new ByteArrayOutputStream()
+    javaExecSpec = { JavaExecSpec s ->
+        s.standardOutput = out
+        s.errorOutput = out
+        s.ignoreExitValue = true
+        s.jvmArgs '-Xmx512M'
+    }
+    execResultHandler = { ExecResult r ->
+        if (r.exitValue != 0) {
+            throw new RuntimeException('jOOQ source code generation failed:\n\n' + out.toString())
+        }
+    }
+}
+
+
+
