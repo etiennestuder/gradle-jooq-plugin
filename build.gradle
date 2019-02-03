@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'nu.studer'
-version = '3.0.3-DEV'
+version = '3.0.3'
 
 buildScan {
     licenseAgreementUrl 'https://gradle.com/terms-of-service'
