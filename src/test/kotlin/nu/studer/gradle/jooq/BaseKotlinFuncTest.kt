@@ -1,4 +1,4 @@
-package nu.struder.gradle.jooq
+package nu.studer.gradle.jooq
 
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner

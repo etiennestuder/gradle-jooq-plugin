@@ -98,7 +98,7 @@ jooq {
 
 Kotlin DSL
 ```kotlin
-import nu.struder.gradle.jooq.*
+import nu.studer.gradle.jooq.*
 import nu.studer.gradle.jooq.JooqEdition
 
 jooq {
@@ -215,7 +215,7 @@ jooq {
 
 Kotlin DSL
 ```kotlin
-import nu.struder.gradle.jooq.*
+import nu.studer.gradle.jooq.*
 import nu.studer.gradle.jooq.JooqEdition
 
 jooq {
@@ -299,7 +299,7 @@ forcedTypes {
 
 Kotlin DSL
 ```kotlin
-import nu.struder.gradle.jooq.*
+import nu.studer.gradle.jooq.*
 
 forcedTypes {
   forcedType {
@@ -356,7 +356,7 @@ strategy {
 Kotlin DSL
 ```kotlin
 import org.jooq.meta.jaxb.MatcherTransformType
-import nu.struder.gradle.jooq.*
+import nu.studer.gradle.jooq.*
 
 strategy {
   name = null

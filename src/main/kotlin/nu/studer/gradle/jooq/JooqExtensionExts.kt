@@ -1,4 +1,4 @@
-package nu.struder.gradle.jooq
+package nu.studer.gradle.jooq
 
 import nu.studer.gradle.jooq.JooqConfiguration
 import nu.studer.gradle.jooq.JooqEdition

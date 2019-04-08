@@ -1,4 +1,4 @@
-package nu.struder.gradle.jooq
+package nu.studer.gradle.jooq
 
 import groovy.sql.Sql
 import org.gradle.testkit.runner.TaskOutcome
