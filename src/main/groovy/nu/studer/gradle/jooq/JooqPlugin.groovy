@@ -43,7 +43,9 @@ class JooqPlugin implements Plugin<Project> {
         project.plugins.apply(JavaBasePlugin.class)
         addJooqExtension(project)
         addJooqConfiguration(project)
-        forceJooqVersionAndEdition(project)
+        if (extension.version) {
+            forceJooqVersionAndEdition(project)
+        }
     }
 
     /**
