@@ -244,7 +244,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Running on JDK 9 and higher with all JAXB dependencies already added by the plugin: [here](example/run_jdk9).    
 
 # Changelog
-+ 3.0.4 - Upgrade to jOOQ 3.11.11
++ 3.0.4 pending - Upgrade to jOOQ 3.11.11
 + 3.0.3 - Explicitly add JAXB dependencies to run on JDK 9 and higher out-of-the-box. Upgrade to jOOQ 3.11.9.
 + 3.0.2 - Bug fix when running on JDK 9+
 + 3.0.1 - Improve Gradle build cache effectiveness of the jOOQ task
