@@ -1,0 +1,1 @@
+apply(from = "useJooq.gradle")
