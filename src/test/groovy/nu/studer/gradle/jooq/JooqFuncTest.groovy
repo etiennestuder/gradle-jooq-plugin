@@ -209,7 +209,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.11.9'
+   version = '3.11.11'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -271,7 +271,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.11.9'
+   version = '3.11.11'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -309,7 +309,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.11.9'
+   version = '3.11.11'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -385,7 +385,7 @@ repositories {
 }
 
 dependencies {
-    compile("org.jooq:jooq-codegen:3.11.9")
+    compile("org.jooq:jooq-codegen:3.11.11")
 }
 
 """
@@ -463,7 +463,7 @@ repositories {
 }
 
 dependencies {
-    compile("org.jooq:jooq-codegen:3.11.9")
+    compile("org.jooq:jooq-codegen:3.11.11")
 }
 """
     }

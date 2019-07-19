@@ -59,7 +59,7 @@ This plugin supports existing and future jOOQ versions. It also supports the dif
 
 ```groovy
 jooq {
-  version = '3.11.9' // the default (can be omitted)
+  version = '3.11.11' // the default (can be omitted)
   edition = 'OSS'    // the default (can be omitted), other allowed values are PRO, PRO_JAVA_6, and TRIAL
 }
 ```
@@ -106,7 +106,7 @@ See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.0.xsd) for the ful
 
 ```groovy
 jooq {
-  version = '3.11.9'
+  version = '3.11.11'
   edition = 'OSS'
   sample(sourceSets.main) {
     jdbc {
@@ -227,8 +227,8 @@ in the whole XSD, so this workaround only needs to be applied here.
 ### Defining the jOOQ version when the Spring boot plugin is applied
 
 When applying the [spring-boot-gradle-plugin](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin), 
-it is not sufficient to declared the jOOQ version that you want to pull in via `jooq.version = '3.11.9'` since the dependency management rules of the spring-boot-gradle-plugin 
-take precedence. You also have to set `ext['jooq.version'] = '3.11.9'` to pull in your requested version of jOOQ.
+it is not sufficient to declared the jOOQ version that you want to pull in via `jooq.version = '3.11.11'` since the dependency management rules of the spring-boot-gradle-plugin 
+take precedence. You also have to set `ext['jooq.version'] = '3.11.11'` to pull in your requested version of jOOQ.
 
 ### Generating sources into shared folders, e.g. src/main/java 
 
@@ -244,6 +244,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Running on JDK 9 and higher with all JAXB dependencies already added by the plugin: [here](example/run_jdk9).    
 
 # Changelog
++ 3.0.4 - Upgrade to jOOQ 3.11.11
 + 3.0.3 - Explicitly add JAXB dependencies to run on JDK 9 and higher out-of-the-box. Upgrade to jOOQ 3.11.9.
 + 3.0.2 - Bug fix when running on JDK 9+
 + 3.0.1 - Improve Gradle build cache effectiveness of the jOOQ task
