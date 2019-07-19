@@ -102,7 +102,7 @@ includes them in the `main` source set.
 By default, the generated sources are written to `build/generated-src/jooq/<configurationName>`. The
 output directory can be configured by explicitly setting the `directory` attribute of the `target` configuration.
 
-See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.0.xsd) for the full set of configuration options.
+See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd) for the full set of configuration options.
 
 ```groovy
 jooq {
@@ -166,7 +166,7 @@ jooq {
 ### Configuring a sequence of elements
 
 Resemblance of the jOOQ configuration DSL with the Groovy language is coincidental. Complex types that include 
-sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.11.0.xsd) must be defined in the DSL's nesting style:
+sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd) must be defined in the DSL's nesting style:
 
 ```groovy
 forcedTypes {
@@ -220,7 +220,7 @@ strategy {
 }
 ```
 
-Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.0.xsd). The `name` on the `Strategy` element 
+Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd). The `name` on the `Strategy` element 
 has a default value and that's an issue since is part of an XSD `choice` element, i.e. only one element can be present. This is the only `choice` element 
 in the whole XSD, so this workaround only needs to be applied here.
 
