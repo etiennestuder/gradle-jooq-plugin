@@ -1,5 +1,8 @@
+import nu.studer.gradle.jooq.JooqEdition
+
 plugins {
-    id("nu.studer.jooq") version "3.0.3"
+    id("nu.studer.jooq")
+    id("java-library")
 }
 
 repositories {
@@ -7,7 +10,6 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jooq:jooq:3.11.11")
     jooqRuntime("com.h2database:h2:1.4.193")
 }
 
