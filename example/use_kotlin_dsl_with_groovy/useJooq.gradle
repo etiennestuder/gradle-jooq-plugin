@@ -9,7 +9,7 @@ buildscript {
     }
 }
 
-apply plugin: 'nu.studer.jooq'
+apply plugin: nu.studer.gradle.jooq.JooqPlugin
 apply plugin: 'java'
 
 repositories {
