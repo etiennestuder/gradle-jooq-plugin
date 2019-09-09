@@ -3,3 +3,7 @@
 build
 out
 *.iml
+bin/
+.settings/
+.project
+.classpath

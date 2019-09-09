@@ -14,7 +14,7 @@ buildScan {
 }
 
 dependencies {
-    compile("org.jooq:jooq-codegen:3.11.11")
+    compile("org.jooq:jooq-codegen:3.12.1")
 
     compile("javax.xml.bind:jaxb-api:2.3.1")
     compile("javax.activation:activation:1.1.1")
