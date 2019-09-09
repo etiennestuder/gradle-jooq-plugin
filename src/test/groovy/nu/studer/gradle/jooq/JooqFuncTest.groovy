@@ -62,7 +62,8 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build')
 
         then:
-        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+        def outcome = result.task(':generateSampleJooqSchemaSource').outcome
+        (outcome == TaskOutcome.SUCCESS) || (outcome == TaskOutcome.UP_TO_DATE)
     }
 
     void "shows an error message with a link to the current XSD when a property is missing"() {
