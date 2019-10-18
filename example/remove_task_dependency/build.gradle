@@ -16,6 +16,8 @@ dependencies {
 jooq {
     version = '3.11.11'
     edition = 'OSS'
+    // removes the task dependency from compileJava to generateSampleJooqSchemaSource
+    attachToCompileJava = false
     sample(sourceSets.main) {
         jdbc {
             driver = 'org.h2.Driver'
@@ -36,6 +38,3 @@ jooq {
         }
     }
 }
-
-// removes the task dependency from compileJava to generateSampleJooqSchemaSource
-project.tasks.getByName('compileJava').dependsOn -= 'generateSampleJooqSchemaSource'
