@@ -162,9 +162,7 @@ class JooqFuncTest extends BaseFuncTest {
 
     void "can remove auto-wired task dependency"() {
         given:
-        buildFile << buildWithJooqPluginDSL() << """
-            project.tasks.getByName('compileJava').dependsOn -= 'generateSampleJooqSchemaSource'
-        """
+        buildFile << buildWithRemovedAutoWiredTaskDependency()
 
         when:
         def result = runWithArguments('build')
@@ -588,4 +586,47 @@ jooq {
 """
     }
 
+    private static String buildWithRemovedAutoWiredTaskDependency() {
+        """
+plugins {
+    id 'nu.studer.jooq'
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'org.jooq:jooq'
+    jooqRuntime 'com.h2database:h2:1.4.193'
+}
+
+jooq {
+   version = '3.11.11'
+   edition = 'OSS'
+   attachToCompileJava = false
+   sample(sourceSets.main) {
+       jdbc {
+           driver = 'org.h2.Driver'
+           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+           user = 'sa'
+           password = ''
+       }
+       generator {
+           name = 'org.jooq.codegen.DefaultGenerator'
+           database {
+               name = 'org.jooq.meta.h2.H2Database'
+               includes = '.*'
+               excludes = ''
+           }
+           target {
+               packageName = 'nu.studer.sample'
+           }
+       }
+   }
+}
+"""
+    }
 }
