@@ -1,6 +1,8 @@
 gradle-jooq-plugin
 ==================
 
+> The work on this software project is in no way associated with my employer nor with the role I'm having at my employer. Any requests for changes will be decided upon exclusively by myself based on my personal preferences. I maintain this project as much or as little as my spare time permits.
+
 # Overview
 [Gradle](http://www.gradle.org) plugin that integrates [jOOQ](http://www.jooq.org). For each jOOQ configuration declared
 in the build, the plugin adds a task to generate the jOOQ Java sources from a given database schema and includes the
