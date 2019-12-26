@@ -21,6 +21,7 @@ class JooqFuncTest extends BaseFuncTest {
     }
 
     void cleanupSpec() {
+        sql.execute('DROP TABLE jooq_test.foo')
         sql.execute('DROP SCHEMA jooq_test')
     }
 
