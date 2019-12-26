@@ -1,7 +1,7 @@
 plugins {
-    id 'com.gradle.build-scan' version '1.16'
+    id 'com.gradle.build-scan' version '3.1.1'
     id 'nu.studer.plugindev' version '1.0.12'
-    id 'nu.studer.credentials' version '1.0.5'
+    id 'nu.studer.credentials' version '2.0'
     id 'groovy'
 }
 
@@ -9,8 +9,8 @@ group = 'nu.studer'
 version = '3.0.4-DEV'
 
 buildScan {
-    licenseAgreementUrl 'https://gradle.com/terms-of-service'
-    licenseAgree 'yes'
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
 }
 
 dependencies {
