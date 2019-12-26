@@ -14,8 +14,6 @@ dependencies {
 }
 
 jooq {
-    version = '3.11.11'
-    edition = 'OSS'
     sample(sourceSets.main) {
         jdbc {
             driver = 'org.h2.Driver'
