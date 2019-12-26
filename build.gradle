@@ -9,8 +9,10 @@ group = 'nu.studer'
 version = '3.0.4-DEV'
 
 buildScan {
-    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-    termsOfServiceAgree = 'yes'
+    publishAlways()
+    obfuscation {
+        ipAddresses { addresses -> addresses.collect { address -> '0.0.0.0' } }
+    }
 }
 
 dependencies {
