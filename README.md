@@ -14,6 +14,10 @@ You can find out more details about the actual jOOQ source code generation in th
 
 The plugin is hosted on the [Gradle Plugin portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
 
+## Build scan
+
+Recent build scan: https://gradle.com/s/bkc4davu2dvu4
+
 # Applying the plugin
 
 You can apply the plugin using the `plugins` DSL
