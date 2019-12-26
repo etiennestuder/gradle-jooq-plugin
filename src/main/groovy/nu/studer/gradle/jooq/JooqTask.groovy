@@ -54,8 +54,7 @@ class JooqTask extends DefaultTask {
     @Internal
     Configuration configuration
 
-    @Internal
-    Configuration normalizedConfiguration
+    private Configuration normalizedConfiguration
 
     @Input
     @SuppressWarnings("GroovyUnusedDeclaration")
