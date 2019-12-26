@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'nu.studer'
-version = '3.0.4-DEV'
+version = '4.0'
 
 buildScan {
     publishAlways()
