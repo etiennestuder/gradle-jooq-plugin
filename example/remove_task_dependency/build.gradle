@@ -14,8 +14,6 @@ dependencies {
 }
 
 jooq {
-    version = '3.11.11'
-    edition = 'OSS'
     // removes the task dependency from compileJava to generateSampleJooqSchemaSource
     attachToCompileJava = false
     sample(sourceSets.main) {

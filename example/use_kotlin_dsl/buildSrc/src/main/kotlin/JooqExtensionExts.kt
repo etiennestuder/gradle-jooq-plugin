@@ -172,6 +172,26 @@ fun MutableList<ForcedType>.forcedType(action: ForcedType.() -> Unit) {
 }
 
 /**
+ * Applies schemata configuration to [Database]
+ *
+ * @receiver the Jooq [Database]
+ * @param action A configuration lambda to apply on a receiver of type [Database]
+ */
+fun Database.schemata(action: MutableList<Schema>.() -> Unit) {
+  this.withSchemata((this.schemata ?: mutableListOf()).apply(action))
+}
+
+/**
+ * Applies schema configuration to [MutableList] of [Schema]
+ *
+ * @receiver the Jooq [MutableList] of [Schema]
+ * @param action A configuration lambda to apply on a receiver of type [MutableList] of [Schema]
+ */
+fun MutableList<Schema>.schema(action: Schema.() -> Unit) {
+  this += Schema().apply(action)
+}
+
+/**
  * JooqExtension Wrapper that allows us to dynamically create configurations
  */
 class JooqExtensionKotlin(

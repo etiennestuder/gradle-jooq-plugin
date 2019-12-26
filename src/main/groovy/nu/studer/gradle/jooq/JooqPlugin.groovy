@@ -20,6 +20,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.tasks.SourceSet
+import org.gradle.util.GradleVersion
 import org.jooq.meta.jaxb.Generator
 import org.jooq.meta.jaxb.Target
 
@@ -38,6 +39,11 @@ class JooqPlugin implements Plugin<Project> {
     Configuration jooqRuntime
 
     void apply(Project project) {
+        // abort if old Gradle version is not supported
+        if (GradleVersion.current().baseVersion < GradleVersion.version("5.0")) {
+            throw new IllegalStateException("This version of the jooq plugin is not compatible with Gradle < 5.0");
+        }
+
         this.project = project
 
         project.plugins.apply(JavaBasePlugin.class)
