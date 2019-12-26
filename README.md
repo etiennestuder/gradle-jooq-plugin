@@ -46,9 +46,9 @@ apply plugin: 'nu.studer.jooq'
 ```
 
 **Please note that due to non-backward compatible API changes in jOOQ between 3.10.x and 3.11.x, you must apply the following plugin version in your Gradle build:**
-* **jOOQ library <= 3.10.x: gradle-jooq plugin 2.0.11** 
+* **jOOQ library <= 3.10.x: gradle-jooq plugin 2.0.11**
 * **jOOQ library >= 3.11.x: gradle-jooq plugin 3.0.0 or higher**
-  
+
 # Defining your database drivers
 
 Depending on which database you are connecting to, you need to put the corresponding driver on the generator's classpath.
@@ -65,7 +65,7 @@ This plugin supports existing and future jOOQ versions. It also supports the dif
 
 ```groovy
 jooq {
-  version = '3.11.11' // the default (can be omitted)
+  version = '3.12.3' // the default (can be omitted)
   edition = 'OSS'    // the default (can be omitted), other allowed values are PRO, PRO_JAVA_6, and TRIAL
 }
 ```
@@ -91,7 +91,7 @@ gradle generateSampleJooqSchemaSource
 ```
 
 The code generation tasks are automatically configured as dependencies of the corresponding source compilation tasks
-provided by the `JavaBasePlugin` plugin. Hence, running a build that eventually needs to compile sources will first 
+provided by the `JavaBasePlugin` plugin. Hence, running a build that eventually needs to compile sources will first
 trigger the required jOOQ code generation tasks.
 
 To see the log output of the jOOQ code generation tool, run the Gradle build with log level `info`:
@@ -112,7 +112,7 @@ See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd) for the ful
 
 ```groovy
 jooq {
-  version = '3.11.11'
+  version = '3.12.3'
   edition = 'OSS'
   sample(sourceSets.main) {
     jdbc {
@@ -171,7 +171,7 @@ jooq {
 
 ### Configuring a sequence of elements
 
-Resemblance of the jOOQ configuration DSL with the Groovy language is coincidental. Complex types that include 
+Resemblance of the jOOQ configuration DSL with the Groovy language is coincidental. Complex types that include
 sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd) must be defined in the DSL's nesting style:
 
 ```groovy
@@ -218,7 +218,7 @@ strategy {
       table {
         pojoClass {
           transform = 'PASCAL'
-          expression = '\$0_POJO' 
+          expression = '\$0_POJO'
         }
       }
     }
@@ -226,32 +226,32 @@ strategy {
 }
 ```
 
-Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd). The `name` on the `Strategy` element 
-has a default value and that's an issue since is part of an XSD `choice` element, i.e. only one element can be present. This is the only `choice` element 
+Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd). The `name` on the `Strategy` element
+has a default value and that's an issue since is part of an XSD `choice` element, i.e. only one element can be present. This is the only `choice` element
 in the whole XSD, so this workaround only needs to be applied here.
 
 ### Defining the jOOQ version when the Spring boot plugin is applied
 
-When applying the [spring-boot-gradle-plugin](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin), 
-it is not sufficient to declared the jOOQ version that you want to pull in via `jooq.version = '3.11.11'` since the dependency management rules of the spring-boot-gradle-plugin 
-take precedence. You also have to set `ext['jooq.version'] = '3.11.11'` to pull in your requested version of jOOQ.
+When applying the [spring-boot-gradle-plugin](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin),
+it is not sufficient to declared the jOOQ version that you want to pull in via `jooq.version = '3.12.3'` since the dependency management rules of the spring-boot-gradle-plugin
+take precedence. You also have to set `ext['jooq.version'] = '3.12.3'` to pull in your requested version of jOOQ.
 
-### Generating sources into shared folders, e.g. src/main/java 
+### Generating sources into shared folders, e.g. src/main/java
 
-My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This avoids overlapping 
-outputs, and it also keeps the door open to let Gradle cache the generated sources which can be a significant build performance gain. The rationale is explained very 
+My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This avoids overlapping
+outputs, and it also keeps the door open to let Gradle cache the generated sources which can be a significant build performance gain. The rationale is explained very
 well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
- 
+
 # Samples
 
-+ Passing JVM args to the jOOQ code generation process: [here](example/add_jvm_args).  
-+ Removing the implicit task dependency between the compile task and the jOOQ source generation task: [here](example/remove_task_dependency).  
-+ Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).    
-+ Running on JDK 9 and higher with all JAXB dependencies already added by the plugin: [here](example/run_jdk9).    
++ Passing JVM args to the jOOQ code generation process: [here](example/add_jvm_args).
++ Removing the implicit task dependency between the compile task and the jOOQ source generation task: [here](example/remove_task_dependency).
++ Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).
++ Running on JDK 9 and higher with all JAXB dependencies already added by the plugin: [here](example/run_jdk9).
 + Configuring the jOOQ code generation via Gradle Kotlin DSL: [here](example/use_kotlin_dsl).
 
 # Changelog
-+ 3.0.4 pending - Upgrade to jOOQ 3.11.11
++ 3.0.4 pending - Upgrade to jOOQ 3.12.3
 + 3.0.3 - Explicitly add JAXB dependencies to run on JDK 9 and higher out-of-the-box. Upgrade to jOOQ 3.11.9.
 + 3.0.2 - Bug fix when running on JDK 9+
 + 3.0.1 - Improve Gradle build cache effectiveness of the jOOQ task
@@ -266,7 +266,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + 2.0.4 - Upgrade to jOOQ 3.9.1 and better configuration error messages
 + 2.0.3 - Upgrade to jOOQ 3.9.0
 + 2.0.2 - Configuration of call-backs for code generation java execution process
-+ 2.0.1 - Bug fixes 
++ 2.0.1 - Bug fixes
 + 2.0.0 - jOOQ version used for the code generation is independent from the jOOQ version used by the gradle-jooq plugin
 + 1.0.6 - Upgrade to jOOQ 3.6.2
 
