@@ -7,5 +7,5 @@ repositories {
 }
 
 dependencies {
-    implementation("nu.studer:gradle-jooq-plugin:3.0.3")
+    implementation("nu.studer:gradle-jooq-plugin:4.0")
 }

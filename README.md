@@ -24,7 +24,7 @@ You can apply the plugin using the `plugins` DSL
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '3.0.3'
+    id 'nu.studer.jooq' version '4.0'
 }
 ```
 
@@ -38,7 +38,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'nu.studer:gradle-jooq-plugin:3.0.3'
+    classpath 'nu.studer:gradle-jooq-plugin:4.0'
   }
 }
 
@@ -252,7 +252,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Configuring the jOOQ code generation via Gradle Kotlin DSL: [here](example/use_kotlin_dsl).
 
 # Changelog
-+ 3.0.4 pending - Upgrade to jOOQ 3.12.3
++ 4.0 - Make Gradle 5.0 the minimum compatible version. Upgrade to jOOQ 3.12.3
 + 3.0.3 - Explicitly add JAXB dependencies to run on JDK 9 and higher out-of-the-box. Upgrade to jOOQ 3.11.9.
 + 3.0.2 - Bug fix when running on JDK 9+
 + 3.0.1 - Improve Gradle build cache effectiveness of the jOOQ task
