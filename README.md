@@ -20,29 +20,12 @@ Recent build scan: https://gradle.com/s/bkc4davu2dvu4
 
 # Applying the plugin
 
-You can apply the plugin using the `plugins` DSL
+Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
     id 'nu.studer.jooq' version '4.0'
 }
-```
-
-Or using the `buildscript` block
-
-```groovy
-buildscript {
-  repositories {
-    maven {
-      url 'https://plugins.gradle.org/m2/'
-    }
-  }
-  dependencies {
-    classpath 'nu.studer:gradle-jooq-plugin:4.0'
-  }
-}
-
-apply plugin: 'nu.studer.jooq'
 ```
 
 **Please note that due to non-backward compatible API changes in jOOQ between 3.10.x and 3.11.x, you must apply the following plugin version in your Gradle build:**
