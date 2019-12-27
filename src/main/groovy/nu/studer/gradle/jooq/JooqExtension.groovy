@@ -31,6 +31,7 @@ class JooqExtension {
     final Closure whenConfigAdded
     final String path
     final Map<String, JooqConfiguration> configs
+    boolean attachToCompileJava = true
 
     String version = DEFAULT_JOOQ_VERSION
     JooqEdition edition = DEFAULT_JOOQ_EDITION
