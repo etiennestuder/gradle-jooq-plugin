@@ -47,7 +47,6 @@ class JooqTask extends DefaultTask {
     @Internal
     Action<? super ExecResult> execResultHandler
 
-    @InputFiles
     @Classpath
     FileCollection jooqClasspath
 
