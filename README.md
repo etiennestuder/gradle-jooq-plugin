@@ -254,7 +254,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + 2.0.3 - Upgrade to jOOQ 3.9.0
 + 2.0.2 - Configuration of call-backs for code generation java execution process
 + 2.0.1 - Bug fixes
-+ 2.0.0 - jOOQ version used for the code generation independent from jOOQ version used by the gradle-jooq plugin
++ 2.0.0 - Make jOOQ version used for code generation independent from jOOQ version used by gradle-jooq plugin
 + 1.0.6 - Upgrade to jOOQ 3.6.2
 
 # Acknowledgements
