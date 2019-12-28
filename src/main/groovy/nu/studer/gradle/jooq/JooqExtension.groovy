@@ -27,14 +27,15 @@ class JooqExtension {
 
     private static final String DEFAULT_JOOQ_VERSION = "3.12.3"
     private static final JooqEdition DEFAULT_JOOQ_EDITION = JooqEdition.OSS
+    private static final boolean DEFAULT_GENERATE_JOOQ_SCHEMA_SOURCE_ON_COMPILATION = true
 
     final Closure whenConfigAdded
     final String path
     final Map<String, JooqConfiguration> configs
-    boolean generateSchemaSourceOnCompilation = true
 
     String version = DEFAULT_JOOQ_VERSION
     JooqEdition edition = DEFAULT_JOOQ_EDITION
+    boolean generateSchemaSourceOnCompilation = DEFAULT_GENERATE_JOOQ_SCHEMA_SOURCE_ON_COMPILATION
 
     JooqExtension(Closure whenConfigAdded, String path) {
         this.whenConfigAdded = whenConfigAdded
