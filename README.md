@@ -75,7 +75,8 @@ gradle generateSampleJooqSchemaSource
 
 The code generation tasks are automatically configured as dependencies of the corresponding source compilation tasks
 provided by the `JavaBasePlugin` plugin. Hence, running a build that eventually needs to compile sources will first
-trigger the required jOOQ code generation tasks.
+trigger the required jOOQ code generation tasks. This auto-triggering of the code generation when compiling the
+containing source set can be turned off.
 
 To see the log output of the jOOQ code generation tool, run the Gradle build with log level `info`:
 
@@ -97,6 +98,7 @@ See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd) for the ful
 jooq {
   version = '3.12.3'
   edition = 'OSS'
+  generateSchemaSourceOnCompilation = true
   sample(sourceSets.main) {
     jdbc {
       driver = 'org.postgresql.Driver'
@@ -235,6 +237,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Configuring the jOOQ code generation via Gradle Kotlin DSL: [here](example/use_kotlin_dsl).
 
 # Changelog
++ 4.1 - Provide global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set
 + 4.0 - Make Gradle 5.0 the minimum compatible version. Upgrade to jOOQ 3.12.3
 + 3.0.3 - Explicitly add JAXB dependencies to run on JDK 9 and higher out-of-the-box. Upgrade to jOOQ 3.11.9.
 + 3.0.2 - Bug fix when running on JDK 9+
