@@ -238,7 +238,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 
 # Changelog
 + 4.1 - Provide global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set
-+ 4.0 - Make Gradle 5.0 the minimum compatible version. Upgrade to jOOQ 3.12.3
++ 4.0 - Make Gradle 5.0 the minimum compatible version. Upgrade to jOOQ 3.12.3.
 + 3.0.3 - Explicitly add JAXB dependencies to run on JDK 9 and higher out-of-the-box. Upgrade to jOOQ 3.11.9.
 + 3.0.2 - Bug fix when running on JDK 9+
 + 3.0.1 - Improve Gradle build cache effectiveness of the jOOQ task
