@@ -259,6 +259,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 
 # Acknowledgements
 
++ [Sineaggi](https://github.com/Sineaggi) (pr)
 + [martintreurnicht](https://github.com/martintreurnicht) (pr)
 + [anuraaga](https://github.com/anuraaga) (pr)
 + [ldaley](https://github.com/ldaley) (pr)
