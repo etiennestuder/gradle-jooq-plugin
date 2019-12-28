@@ -15,7 +15,7 @@ dependencies {
 
 jooq {
     // removes the task dependency from compileJava to generateSampleJooqSchemaSource
-    attachToCompileJava = false
+    generateSchemaSourceOnCompilation = false
     sample(sourceSets.main) {
         jdbc {
             driver = 'org.h2.Driver'

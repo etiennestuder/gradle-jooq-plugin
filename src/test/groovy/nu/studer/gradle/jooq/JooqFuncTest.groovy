@@ -607,7 +607,7 @@ dependencies {
 jooq {
    version = '3.12.3'
    edition = 'OSS'
-   attachToCompileJava = false
+   generateSchemaSourceOnCompilation = false
    sample(sourceSets.main) {
        jdbc {
            driver = 'org.h2.Driver'
