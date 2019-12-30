@@ -18,6 +18,8 @@ The plugin is hosted on the [Gradle Plugin portal](https://plugins.gradle.org/pl
 
 Recent build scan: https://gradle.com/s/bkc4davu2dvu4
 
+Find out more about build scans for Gradle and Maven at https://scans.gradle.com.
+
 # Applying the plugin
 
 Apply the `nu.studer.jooq` plugin to your Gradle project.
