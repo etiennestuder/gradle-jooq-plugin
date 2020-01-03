@@ -212,6 +212,13 @@ class JooqExtensionKotlin(
 
         get() = jooq.edition
 
+    var generateSchemaSourceOnCompilation: Boolean
+        set(value) {
+            jooq.generateSchemaSourceOnCompilation = value
+        }
+
+    get() = jooq.generateSchemaSourceOnCompilation
+
     operator fun String.invoke(sourceSet: SourceSet, action: Configuration.() -> Unit) {
         val jooqConfig = JooqConfiguration(
             this,
