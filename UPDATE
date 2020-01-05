@@ -1,0 +1,6 @@
+- Upgrade to latest Gradle version
+- Update Gradle cross-version test matrix
+- Upgrade to latest Gradle plugin versions
+- Upgrade to latest dependency versions
+- Fine-tune build scan config
+- Add recent build scan link to README
