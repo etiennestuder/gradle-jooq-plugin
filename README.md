@@ -26,7 +26,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '4.0'
+    id 'nu.studer.jooq' version '4.1'
 }
 ```
 
