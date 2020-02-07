@@ -209,7 +209,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.jooq:jooq'
+    implementation 'org.jooq:jooq'
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
@@ -271,7 +271,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.jooq:jooq'
+    implementation 'org.jooq:jooq'
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
@@ -309,7 +309,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.jooq:jooq'
+    implementation 'org.jooq:jooq'
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
@@ -343,7 +343,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.jooq:jooq'
+    implementation 'org.jooq:jooq'
     jooqRuntime 'com.h2database:h2:1.4.193'
     jooqRuntime project(':custom-generator')  // include sub-project that contains the custom generator strategy
 }
@@ -390,7 +390,7 @@ repositories {
 }
 
 dependencies {
-    compile("org.jooq:jooq-codegen:3.12.3")
+    implementation 'org.jooq:jooq-codegen:3.12.3'
 }
 
 """
@@ -427,7 +427,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.jooq:jooq'
+    implementation 'org.jooq:jooq'
     jooqRuntime 'com.h2database:h2:1.4.193'
     jooqRuntime project(':custom-generator')  // include sub-project that contains the custom generator strategy
 }
@@ -468,7 +468,7 @@ repositories {
 }
 
 dependencies {
-    compile("org.jooq:jooq-codegen:3.12.3")
+    implementation 'org.jooq:jooq-codegen:3.12.3'
 }
 """
     }
@@ -505,7 +505,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.jooq:jooq'
+    implementation 'org.jooq:jooq'
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
@@ -556,7 +556,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.jooq:jooq'
+    implementation 'org.jooq:jooq'
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
@@ -606,7 +606,7 @@ repositories {
 }
 
 dependencies {
-    compile 'org.jooq:jooq'
+    implementation 'org.jooq:jooq'
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 

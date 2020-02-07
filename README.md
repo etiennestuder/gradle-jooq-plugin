@@ -61,7 +61,7 @@ on jOOQ, you can omit the version:
 
 ```groovy
 dependencies {
-  compile 'org.jooq:jooq'
+  implementation 'org.jooq:jooq'
 }
 ```
 
