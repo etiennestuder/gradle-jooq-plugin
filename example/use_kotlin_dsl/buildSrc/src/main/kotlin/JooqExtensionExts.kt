@@ -177,18 +177,18 @@ fun MutableList<ForcedType>.forcedType(action: ForcedType.() -> Unit) {
  * @receiver the Jooq [Database]
  * @param action A configuration lambda to apply on a receiver of type [Database]
  */
-fun Database.schemata(action: MutableList<Schema>.() -> Unit) {
+fun Database.schemata(action: MutableList<SchemaMappingType>.() -> Unit) {
   this.withSchemata((this.schemata ?: mutableListOf()).apply(action))
 }
 
 /**
- * Applies schema configuration to [MutableList] of [Schema]
+ * Applies schema configuration to [MutableList] of [SchemaMappingType]
  *
- * @receiver the Jooq [MutableList] of [Schema]
- * @param action A configuration lambda to apply on a receiver of type [MutableList] of [Schema]
+ * @receiver the Jooq [MutableList] of [SchemaMappingType]
+ * @param action A configuration lambda to apply on a receiver of type [MutableList] of [SchemaMappingType]
  */
-fun MutableList<Schema>.schema(action: Schema.() -> Unit) {
-  this += Schema().apply(action)
+fun MutableList<SchemaMappingType>.schema(action: SchemaMappingType.() -> Unit) {
+  this += SchemaMappingType().apply(action)
 }
 
 /**
