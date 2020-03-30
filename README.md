@@ -51,7 +51,7 @@ This plugin supports existing and future jOOQ versions. It also supports the dif
 ```groovy
 jooq {
   version = '3.12.3' // the default (can be omitted)
-  edition = 'OSS'    // the default (can be omitted), other allowed values are PRO, PRO_JAVA_6, and TRIAL
+  edition = 'OSS'    // the default (can be omitted), other allowed values are PRO, PRO_JAVA_6, PRO_JAVA_8 and TRIAL
 }
 ```
 
