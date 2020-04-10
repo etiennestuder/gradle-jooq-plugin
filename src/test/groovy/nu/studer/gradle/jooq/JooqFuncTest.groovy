@@ -196,6 +196,32 @@ class JooqFuncTest extends BaseFuncTest {
         result.task(':cleanGenerateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
     }
 
+    @Unroll
+    void "jdbc configuration parameters can be normalized for cacheability"() {
+        given:
+        buildFile << buildWithNormalizedConfigurationForCacheability('jdbc:h2:~/test;AUTO_SERVER=TRUE')
+        def firstRun = runWithArguments('build')
+
+        buildFile.delete()
+        buildFile << buildWithNormalizedConfigurationForCacheability(jdbcUrl, user)
+
+        when:
+        def secondRun = runWithArguments('build')
+
+        then:
+        firstRun.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+        secondRun.task(':generateSampleJooqSchemaSource').outcome == expectedOutcome
+
+        where:
+        jdbcUrl                                                 | jdbcDriver            | user    | expectedOutcome
+        'jdbc:h2:~/test;AUTO_SERVER=TRUE;DB_CLOSE_ON_EXIT=TRUE' | 'org.h2.Driver'       | 'sa'    | TaskOutcome.SUCCESS
+        'jdbc:h2:~/test;AUTO_SERVER=TRUE'                       | 'org.h2.Driver'       | 'sa'    | TaskOutcome.UP_TO_DATE
+        'jdbc:h2:~/test123;AUTO_SERVER=TRUE'                    | 'org.h2.Driver'       | 'sa'    | TaskOutcome.UP_TO_DATE
+        'jdbc:h2:~/test;AUTO_SERVER=TRUE'                       | 'org.h2.Driver'       | 'admin' | TaskOutcome.UP_TO_DATE
+        'jdbc:h2:~/test;AUTO_SERVER=TRUE'                       | 'org.postgres.Driver' | 'sa'    | TaskOutcome.UP_TO_DATE
+    }
+
+
     private static String buildWithJooqPluginDSL(String targetPackageName = 'nu.studer.sample', String targetDirectory = null) {
         """
 plugins {
@@ -636,4 +662,66 @@ jooq {
 }
 """
     }
+
+    private static String buildWithNormalizedConfigurationForCacheability(String jdbcUrl = 'jdbc:h2:~/test;AUTO_SERVER=TRUE',
+                                                                          String user = 'sa',
+                                                                          String jdbcDriver = 'org.h2.Driver',
+                                                                          String generatorDbName = 'org.jooq.meta.h2.H2Database'
+
+    ) {
+        """
+plugins {
+    id 'nu.studer.jooq'
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.jooq:jooq'
+    jooqRuntime 'com.h2database:h2:1.4.193'
+}
+
+jooq {
+   version = '3.12.3'
+   edition = 'OSS'
+   normalization { config ->
+      jdbc {
+         url = config.jdbc.url.replaceAll('\\\\d','')      
+         user = 'ignore for up to date check'
+         driver = 'ignore for up to date check'
+      }
+      generator {
+         database {
+           name = 'ignore for up to date check'}
+    }
+      
+   }
+   sample(sourceSets.main) {
+       jdbc {
+           driver = '$jdbcDriver'
+           url = '$jdbcUrl'
+           user = '$user'
+           password = ''
+  
+       }
+       generator {
+           name = 'org.jooq.codegen.DefaultGenerator'
+           database {
+               name = '$generatorDbName'
+               includes = '.*'
+               excludes = ''
+           }
+           target {
+               packageName = 'nu.studer.sample'
+           }
+       }
+   }
+}
+"""
+    }
+
 }

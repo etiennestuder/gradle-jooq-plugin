@@ -15,15 +15,12 @@
  */
 package nu.studer.gradle.jooq
 
+import nu.studer.gradle.util.JaxbConfigurationBridge
+import org.apache.commons.lang3.SerializationUtils
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
-import org.gradle.api.tasks.Classpath
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.Internal
-import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
 import org.jooq.Constants
@@ -53,15 +50,28 @@ class JooqTask extends DefaultTask {
     @Internal
     Configuration configuration
 
+    @Internal
+    Action<Configuration> customNormalization
+
     private Configuration normalizedConfiguration
 
-    @Input
-    @SuppressWarnings("GroovyUnusedDeclaration")
-    Configuration getNormalizedConfiguration() {
+    private Configuration cacheableConfiguration
+
+    private Configuration getNormalizedConfiguration() {
         if (normalizedConfiguration == null) {
             normalizedConfiguration = relativizeTo(configuration, project.projectDir)
         }
         normalizedConfiguration
+    }
+
+    @Input
+    @SuppressWarnings("GroovyUnusedDeclaration")
+    Configuration getCacheableConfiguration() {
+        if (customNormalization && cacheableConfiguration == null) {
+            def normalizedConfiguration = getNormalizedConfiguration()
+            cacheableConfiguration = applyCustomNormalization(normalizedConfiguration, customNormalization)
+        }
+        cacheableConfiguration ?: getNormalizedConfiguration()
     }
 
     private static Configuration relativizeTo(Configuration configuration, File dir) {
@@ -77,6 +87,18 @@ class JooqTask extends DefaultTask {
             }
         }
         configuration
+    }
+
+    private static Configuration applyCustomNormalization(Configuration normalizedConfiguration, Action<?> customNormalization) {
+        Configuration clone = cloneConfiguration(normalizedConfiguration)
+        def delegate = new JaxbConfigurationBridge(clone, "")
+        customNormalization.execute(delegate)
+        return clone
+    }
+
+    private static Configuration cloneConfiguration(Configuration configuration) {
+        //some classloader issues with object serialization or even Jaxb made me use this temporally
+        return (Configuration) SerializationUtils.clone(configuration)
     }
 
     @OutputDirectory

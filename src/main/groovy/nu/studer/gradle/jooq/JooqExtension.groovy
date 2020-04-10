@@ -16,6 +16,7 @@
 package nu.studer.gradle.jooq
 
 import nu.studer.gradle.util.JaxbConfigurationBridge
+import org.gradle.api.Action
 import org.gradle.api.tasks.SourceSet
 import org.jooq.meta.jaxb.Configuration
 
@@ -32,6 +33,7 @@ class JooqExtension {
     final Closure whenConfigAdded
     final String path
     final Map<String, JooqConfiguration> configs
+    private Action<Configuration> customNormalization
 
     String version = DEFAULT_JOOQ_VERSION
     JooqEdition edition = DEFAULT_JOOQ_EDITION
@@ -41,6 +43,11 @@ class JooqExtension {
         this.whenConfigAdded = whenConfigAdded
         this.path = path
         this.configs = [:]
+    }
+
+    @SuppressWarnings("GroovyUnusedDeclaration")
+    def normalization(Action<Configuration> normalizationClosure) {
+        this.customNormalization = normalizationClosure
     }
 
     @SuppressWarnings("GroovyAssignabilityCheck")
@@ -63,13 +70,13 @@ class JooqExtension {
 
         // apply the given closure to the configuration bridge, i.e. its contained JAXB Configuration object
         def delegate = new JaxbConfigurationBridge(jooqConfig.configuration, "${path}.${configName}")
-        Closure copy = (Closure) closure.clone();
-        copy.resolveStrategy = Closure.DELEGATE_FIRST;
-        copy.delegate = delegate;
+        Closure copy = (Closure) closure.clone()
+        copy.resolveStrategy = Closure.DELEGATE_FIRST
+        copy.delegate = delegate
         if (copy.maximumNumberOfParameters == 0) {
-            copy.call();
+            copy.call()
         } else {
-            copy.call delegate;
+            copy.call delegate
         }
 
         delegate.target
@@ -78,7 +85,7 @@ class JooqExtension {
     private JooqConfiguration findOrCreateConfig(String configName, SourceSet sourceSet) {
         JooqConfiguration jooqConfig = configs[configName]
         if (!jooqConfig) {
-            jooqConfig = new JooqConfiguration(configName, sourceSet, new Configuration())
+            jooqConfig = new JooqConfiguration(configName, sourceSet, new Configuration(), customNormalization)
             whenConfigAdded(jooqConfig)
             configs[configName] = jooqConfig
         }

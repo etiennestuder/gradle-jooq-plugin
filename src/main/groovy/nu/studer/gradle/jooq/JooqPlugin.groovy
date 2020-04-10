@@ -106,6 +106,7 @@ class JooqPlugin implements Plugin<Project> {
         jooqTask.description = "Generates the jOOQ sources from the '$jooqConfiguration.name' jOOQ configuration."
         jooqTask.group = "jOOQ"
         jooqTask.configuration = jooqConfiguration.configuration
+        jooqTask.customNormalization = jooqConfiguration.customNormalization
         jooqTask.jooqClasspath = jooqRuntime
     }
 

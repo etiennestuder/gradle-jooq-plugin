@@ -22,6 +22,10 @@ dependencies {
     implementation("javax.activation:activation:1.1.1")
     implementation("com.sun.xml.bind:jaxb-core:2.3.0.1")
     implementation("com.sun.xml.bind:jaxb-impl:2.3.0.1")
+    //some classloader issues during configuration clone made me use this temporally
+    //see JooqTask.cloneConfiguration()
+    implementation("org.apache.commons:commons-lang3:3.10")
+
 
     testImplementation "com.h2database:h2:1.4.200"
     testImplementation("org.spockframework:spock-core:1.3-groovy-2.5") {

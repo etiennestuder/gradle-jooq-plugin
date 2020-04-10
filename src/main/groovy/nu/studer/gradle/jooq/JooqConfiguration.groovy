@@ -15,6 +15,7 @@
  */
 package nu.studer.gradle.jooq
 
+import org.gradle.api.Action
 import org.gradle.api.Named
 import org.gradle.api.tasks.SourceSet
 import org.jooq.meta.jaxb.Configuration
@@ -28,11 +29,13 @@ class JooqConfiguration implements Named {
     final String name
     final SourceSet sourceSet
     final Configuration configuration
+    final Action<Configuration> customNormalization
 
-    JooqConfiguration(String name, SourceSet sourceSet, Configuration configuration) {
+    JooqConfiguration(String name, SourceSet sourceSet, Configuration configuration, Action<Configuration> customNormalization) {
         this.name = name
         this.sourceSet = sourceSet
         this.configuration = configuration
+        this.customNormalization = customNormalization
     }
 
     def getJooqTaskName() {
