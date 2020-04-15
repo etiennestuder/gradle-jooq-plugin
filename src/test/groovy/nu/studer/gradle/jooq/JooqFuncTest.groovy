@@ -696,9 +696,9 @@ jooq {
       }
       generator {
          database {
-           name = 'ignore for up to date check'}
-    }
-      
+           name = 'ignore for up to date check'
+         }
+      }
    }
    sample(sourceSets.main) {
        jdbc {

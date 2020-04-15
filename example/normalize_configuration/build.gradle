@@ -1,0 +1,46 @@
+plugins {
+    id 'nu.studer.jooq' version '4.1'
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.jooq:jooq'
+    jooqRuntime 'com.h2database:h2:1.4.193'
+}
+
+jooq {
+    // removes the task dependency from compileJava to generateSampleJooqSchemaSource
+    generateSchemaSourceOnCompilation = false
+    normalization {config ->
+        jdbc {
+            url = config.jdbc.url.replaceAll(';*','')
+            user = ''
+            password = ''
+            driver = ''
+        }
+    }
+    sample(sourceSets.main) {
+        jdbc {
+            driver = 'org.h2.Driver'
+            url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+            user = 'sa'
+            password = ''
+        }
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            database {
+                name = 'org.jooq.meta.h2.H2Database'
+                includes = '.*'
+                excludes = ''
+            }
+            target {
+                packageName = 'nu.studer.sample'
+            }
+        }
+    }
+}

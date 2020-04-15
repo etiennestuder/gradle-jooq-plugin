@@ -94,7 +94,7 @@ includes them in the `main` source set.
 By default, the generated sources are written to `build/generated-src/jooq/<configurationName>`. The
 output directory can be configured by explicitly setting the `directory` attribute of the `target` configuration.
 
-See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd) for the full set of configuration options.
+See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.12.0.xsd) for the full set of configuration options.
 
 ```groovy
 jooq {
@@ -153,13 +153,58 @@ jooq {
   }
 }
 ```
+## Normalization for up to date checks
+By default a configuration change will let the up to date check of the task to fail and the generateSchema task is executed. In a setup 
+where the database is created by sql scripts the jdbc configuration might not be relevant for the up to date check. To ignore 
+or apply a normalization pattern to a configuration property the normalization block provides such possibilities as shown in the
+following example.
+
+```groovy
+jooq {
+   version = '3.12.3'
+   edition = 'OSS'
+   normalization { config ->
+      jdbc {
+         url = config.jdbc.url.replaceAll(':\\\\d+','')  //normalize db port     
+         user = ''
+         driver = ''
+      }
+      generator {
+         database {
+           name = ''
+         }
+      }      
+   }
+   sample(sourceSets.main) {
+       jdbc {
+           driver = 'org.postgresql.Driver'
+           url = 'jdbc:postgresql://localhost:5432/sample'
+           user = 'sa'
+           password = ''
+  
+       }
+       generator {
+           name = 'org.jooq.codegen.DefaultGenerator'
+           database {
+               name = 'org.jooq.meta.postgres.PostgresDatabase'
+               includes = '.*'
+               excludes = ''
+           }
+           target {
+               packageName = 'nu.studer.sample'
+           }
+       }
+   }
+}
+```
+  
 
 ## Configuration pitfalls
 
 ### Configuring a sequence of elements
 
 Resemblance of the jOOQ configuration DSL with the Groovy language is coincidental. Complex types that include
-sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd) must be defined in the DSL's nesting style:
+sequences like [ForcedTypes](http://www.jooq.org/xsd/jooq-codegen-3.12.0.xsd) must be defined in the DSL's nesting style:
 
 ```groovy
 forcedTypes {
@@ -213,7 +258,7 @@ strategy {
 }
 ```
 
-Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd). The `name` on the `Strategy` element
+Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.12.0.xsd). The `name` on the `Strategy` element
 has a default value and that's an issue since is part of an XSD `choice` element, i.e. only one element can be present. This is the only `choice` element
 in the whole XSD, so this workaround only needs to be applied here.
 
@@ -237,6 +282,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Running on JDK 9 and higher with all JAXB dependencies already added by the plugin: [here](example/run_jdk9).
 + Running on JDK 11 and higher with manual addition of the annotation API: [here](example/run_jdk11).
 + Configuring the jOOQ code generation via Gradle Kotlin DSL: [here](example/use_kotlin_dsl).
++ Normalize the jOOQ Configuration for better up to date checks: [here](example/normalize_configuration).
 
 # Changelog
 + 4.1 - Global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set
