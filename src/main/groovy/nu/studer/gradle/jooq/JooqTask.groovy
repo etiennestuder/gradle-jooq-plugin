@@ -16,7 +16,6 @@
 package nu.studer.gradle.jooq
 
 import nu.studer.gradle.util.JaxbConfigurationBridge
-import org.apache.commons.lang3.SerializationUtils
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
@@ -97,8 +96,14 @@ class JooqTask extends DefaultTask {
     }
 
     private static Configuration cloneConfiguration(Configuration configuration) {
-        //some classloader issues with object serialization or even Jaxb made me use this temporally
-        return (Configuration) SerializationUtils.clone(configuration)
+        def baos = new ByteArrayOutputStream()
+        baos.withObjectOutputStream { it.writeObject(configuration) }
+
+        def result = null
+        new ByteArrayInputStream(baos.toByteArray()).withObjectInputStream(configuration.getClass().classLoader) { ois ->
+            result = ois.readObject() as Configuration
+        }
+        return result
     }
 
     @OutputDirectory
