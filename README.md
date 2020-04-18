@@ -75,10 +75,10 @@ new code generation task `generateSampleJooqSchemaSource` to the project.
 gradle generateSampleJooqSchemaSource
 ```
 
-The code generation tasks are automatically configured as dependencies of the corresponding source compilation tasks
+By default, the code generation tasks are automatically configured as dependencies of the corresponding source compilation tasks
 provided by the `JavaBasePlugin` plugin. Hence, running a build that eventually needs to compile sources will first
 trigger the required jOOQ code generation tasks. This auto-triggering of the code generation when compiling the
-containing source set can be turned off.
+containing source set can be turned off by setting `generateSchemaSourceOnCompilation` to `false`.
 
 To see the log output of the jOOQ code generation tool, run the Gradle build with log level `info`:
 
