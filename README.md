@@ -102,11 +102,11 @@ includes them in the `main` source set.
 By default, the generated sources are written to `build/generated-src/jooq/<configurationName>`. The
 output directory can be configured by explicitly setting the `directory` attribute of the `target` configuration.
 
-See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd) for the full set of configuration options.
+See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.13.0.xsd) for the full set of configuration options.
 
 ```groovy
 jooq {
-  version = '3.12.3'
+  version = '3.13.1'
   edition = 'OSS'
   generateSchemaSourceOnCompilation = true
   sample(sourceSets.main) {
@@ -248,7 +248,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Configuring the jOOQ code generation via Groovy DSL in a Kotlin DSL build: [here](example/use_kotlin_dsl).
 
 # Changelog
-+ 4.2 - Add new jOOQ editions for Java 8 and Java 6. Upgrade to jOOQ 3.12.3.
++ 4.2 - Add new jOOQ editions for Java 8 and Java 6. Upgrade to jOOQ 3.13.1.
 + 4.1 - Global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set
 + 4.0 - Make Gradle 5.0 the minimum compatible version. Upgrade to jOOQ 3.12.3.
 + 3.0.3 - Explicitly add JAXB dependencies to run on JDK 9 and higher out-of-the-box. Upgrade to jOOQ 3.11.9.
