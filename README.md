@@ -247,6 +247,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Configuring the jOOQ code generation via Gradle Kotlin DSL: [here](example/use_kotlin_dsl).
 
 # Changelog
++ 4.2 - Add new jOOQ editions for Java 8 and Java 6. Upgrade to jOOQ 3.12.3.
 + 4.1 - Global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set
 + 4.0 - Make Gradle 5.0 the minimum compatible version. Upgrade to jOOQ 3.12.3.
 + 3.0.3 - Explicitly add JAXB dependencies to run on JDK 9 and higher out-of-the-box. Upgrade to jOOQ 3.11.9.
