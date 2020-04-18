@@ -14,7 +14,7 @@ dependencies {
 }
 
 jooq {
-    version = "3.12.3"
+    version = "3.13.1"
     edition = JooqEdition.OSS
     "sample"(sourceSets["main"]) {
         jdbc {

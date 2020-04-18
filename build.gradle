@@ -16,7 +16,7 @@ buildScan {
 }
 
 dependencies {
-    implementation("org.jooq:jooq-codegen:3.12.3")
+    implementation("org.jooq:jooq-codegen:3.13.1")
 
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("javax.activation:activation:1.1.1")

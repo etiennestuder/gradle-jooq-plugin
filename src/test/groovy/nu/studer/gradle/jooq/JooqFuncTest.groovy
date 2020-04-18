@@ -214,7 +214,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.12.3'
+   version = '3.13.1'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -276,7 +276,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.12.3'
+   version = '3.13.1'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -314,7 +314,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.12.3'
+   version = '3.13.1'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -390,7 +390,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq-codegen:3.12.3'
+    implementation 'org.jooq:jooq-codegen:3.13.1'
 }
 
 """
@@ -468,7 +468,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq-codegen:3.12.3'
+    implementation 'org.jooq:jooq-codegen:3.13.1'
 }
 """
     }
@@ -611,7 +611,7 @@ dependencies {
 }
 
 jooq {
-   version = '3.12.3'
+   version = '3.13.1'
    edition = 'OSS'
    generateSchemaSourceOnCompilation = ${generateSchemaSourceOnCompilation}
    sample(sourceSets.main) {
