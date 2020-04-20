@@ -4,13 +4,13 @@ gradle-jooq-plugin
 > The work on this software project is in no way associated with my employer nor with the role I'm having at my employer. Any requests for changes will be decided upon exclusively by myself based on my personal preferences. I maintain this project as much or as little as my spare time permits.
 
 # Overview
-[Gradle](http://www.gradle.org) plugin that integrates [jOOQ](http://www.jooq.org). For each jOOQ configuration declared
+[Gradle](https://www.gradle.org) plugin that integrates [jOOQ](https://www.jooq.org). For each jOOQ configuration declared
 in the build, the plugin adds a task to generate the jOOQ Java sources from a given database schema and includes the
 generated sources in the specified source set. Multiple configurations are supported. The code generation tasks fully
 participate in the Gradle uptodate checks. The plugin can be applied on both Java projects and Android projects.
 
 You can find out more details about the actual jOOQ source code generation in the
-[jOOQ documentation](http://www.jooq.org/doc/latest/manual/code-generation).
+[jOOQ documentation](https://www.jooq.org/doc/latest/manual/code-generation).
 
 The plugin is hosted on the [Gradle Plugin portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
 
@@ -94,7 +94,7 @@ includes them in the `main` source set.
 By default, the generated sources are written to `build/generated-src/jooq/<configurationName>`. The
 output directory can be configured by explicitly setting the `directory` attribute of the `target` configuration.
 
-See the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.12.0.xsd) for the full set of configuration options.
+See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.12.0.xsd) for the full set of configuration options.
 
 ```groovy
 jooq {
@@ -204,7 +204,7 @@ jooq {
 ### Configuring a sequence of elements
 
 Resemblance of the jOOQ configuration DSL with the Groovy language is coincidental. Complex types that include
-sequences like [ForcedTypes](http://www.jooq.org/xsd/jooq-codegen-3.12.0.xsd) must be defined in the DSL's nesting style:
+sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.12.0.xsd) must be defined in the DSL's nesting style:
 
 ```groovy
 forcedTypes {
@@ -258,7 +258,7 @@ strategy {
 }
 ```
 
-Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](http://www.jooq.org/xsd/jooq-codegen-3.12.0.xsd). The `name` on the `Strategy` element
+Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.12.0.xsd). The `name` on the `Strategy` element
 has a default value and that's an issue since is part of an XSD `choice` element, i.e. only one element can be present. This is the only `choice` element
 in the whole XSD, so this workaround only needs to be applied here.
 
