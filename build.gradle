@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'nu.studer'
-version = '4.2-DEV'
+version = '4.3-DEV'
 
 buildScan {
     publishAlways()
@@ -16,7 +16,7 @@ buildScan {
 }
 
 dependencies {
-    implementation("org.jooq:jooq-codegen:3.12.3")
+    implementation("org.jooq:jooq-codegen:3.13.1")
 
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("javax.activation:activation:1.1.1")

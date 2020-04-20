@@ -26,7 +26,7 @@ import org.jooq.meta.jaxb.Configuration
  */
 class JooqExtension {
 
-    private static final String DEFAULT_JOOQ_VERSION = "3.12.3"
+    private static final String DEFAULT_JOOQ_VERSION = "3.13.1"
     private static final JooqEdition DEFAULT_JOOQ_EDITION = JooqEdition.OSS
     private static final boolean DEFAULT_GENERATE_JOOQ_SCHEMA_SOURCE_ON_COMPILATION = true
 
