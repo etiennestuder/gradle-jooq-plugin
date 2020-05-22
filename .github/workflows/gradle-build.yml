@@ -6,7 +6,7 @@ jobs:
      runs-on: ubuntu-latest
      strategy:
         matrix:
-          java: [ 8, 9, 10, 11, 12 ]
+          java: [ 8, 9, 10, 11, 12, 13 ]
      name: Building on Java ${{ matrix.java }}
      steps:
        - name: Check out project
