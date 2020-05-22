@@ -34,6 +34,11 @@ dependencies {
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.6.2'
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 plugindev {
     pluginImplementationClass 'nu.studer.gradle.jooq.JooqPlugin'
     pluginDescription 'Gradle plugin that integrates jOOQ. For each configuration, the plugin adds a task to generate the sources from a given database schema and includes the generated sources in the specified source set. Multiple configurations are supported. The code generation tasks fully participate in the Gradle uptodate checks.'
