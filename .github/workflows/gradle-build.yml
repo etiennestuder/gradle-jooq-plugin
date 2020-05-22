@@ -1,4 +1,4 @@
-name: "Assemble Gradle project"
+name: "Build Gradle project"
 on: [push]
 
 jobs:
@@ -12,4 +12,4 @@ jobs:
          with:
            java-version: 8
        - name: Build with Gradle
-         run: ./gradlew build
+         run: ./gradlew build --no-scan
