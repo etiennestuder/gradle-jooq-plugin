@@ -77,12 +77,3 @@ tasks.withType(Test).configureEach {
         includeEngines 'junit-vintage'
     }
 }
-
-// run tests with Java 9
-//project.gradle.taskGraph.whenReady { taskGraph ->
-//    project.tasks.withType(Test) { Test testTask ->
-//        if (taskGraph.hasTask(testTask)) {
-//            testTask.executable = new File('/Library/Java/JavaVirtualMachines/jdk-9.0.4.jdk/Contents/Home/bin/java')
-//        }
-//    }
-//}
