@@ -16,4 +16,4 @@ jobs:
          with:
            java-version: ${{ matrix.java }}
        - name: Build with Gradle
-         run: ./gradlew build -Pgradle-jooq-plugin.acceptGradleTOS=true
+         run: ./gradlew build testAll -Pgradle-jooq-plugin.acceptGradleTOS=true
