@@ -12,4 +12,4 @@ jobs:
          with:
            java-version: 8
        - name: Build with Gradle
-         run: ./gradlew build
+         run: ./gradlew build -Pgradle-jooq-plugin.acceptGradleTOS=true
