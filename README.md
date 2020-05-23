@@ -40,7 +40,7 @@ Depending on which database you are connecting to, you need to put the correspon
 
 ```groovy
 dependencies {
-    jooqRuntime 'postgresql:postgresql:9.1-901.jdbc4'
+    jooqRuntime 'org.postgresql:postgresql:42.2.12'
 }
 ```
 
