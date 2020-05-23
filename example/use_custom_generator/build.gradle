@@ -45,7 +45,6 @@ tasks.generateSampleJooqSchemaSource.with {
         s.standardOutput = out
         s.errorOutput = out
         s.ignoreExitValue = true
-        s.jvmArgs '-Xmx512M'
     }
     execResultHandler = { ExecResult r ->
         if (r.exitValue != 0) {
