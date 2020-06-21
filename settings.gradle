@@ -1,3 +1,21 @@
+plugins {
+    id 'com.gradle.enterprise' version '3.3.4'
+}
+
+gradleEnterprise {
+    buildScan {
+        def acceptTOSProp = 'gradle-jooq-plugin.acceptGradleTOS'
+        if (settings.hasProperty(acceptTOSProp) && Boolean.valueOf(settings.getProperty(acceptTOSProp))) {
+            termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+            termsOfServiceAgree = 'yes'
+        }
+        publishAlways()
+        obfuscation {
+            ipAddresses { addresses -> addresses.collect { address -> '0.0.0.0' } }
+        }
+    }
+}
+
 rootProject.name = 'gradle-jooq-plugin'
 
 buildCache {
