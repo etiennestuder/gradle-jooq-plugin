@@ -22,9 +22,6 @@ import groovy.lang.Closure;
  */
 public final class Objects {
 
-    private Objects() {
-    }
-
     /**
      * Applies the given closure to the given delegate.
      *
@@ -40,6 +37,9 @@ public final class Objects {
         } else {
             copy.call(delegate);
         }
+    }
+
+    private Objects() {
     }
 
 }
