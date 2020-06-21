@@ -18,18 +18,21 @@ package nu.studer.gradle.jooq
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.ProjectLayout
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.gradle.process.ExecOperations
 import org.gradle.process.ExecResult
 import org.gradle.process.JavaExecSpec
 import org.jooq.Constants
 import org.jooq.codegen.GenerationTool
 import org.jooq.meta.jaxb.Configuration
 
+import javax.inject.Inject
 import javax.xml.XMLConstants
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
@@ -55,11 +58,22 @@ class JooqTask extends DefaultTask {
 
     private Configuration normalizedConfiguration
 
+    private final ObjectFactory objects
+    private final ProjectLayout projectLayout
+    private final ExecOperations execOperations
+
+    @Inject
+    JooqTask(ObjectFactory objects, ProjectLayout projectLayout, ExecOperations execOperations) {
+        this.objects = objects
+        this.projectLayout = projectLayout
+        this.execOperations = execOperations
+    }
+
     @Input
     @SuppressWarnings("GroovyUnusedDeclaration")
     Configuration getNormalizedConfiguration() {
         if (normalizedConfiguration == null) {
-            normalizedConfiguration = relativizeTo(configuration, project.projectDir)
+            normalizedConfiguration = relativizeTo(configuration, projectLayout.projectDirectory.asFile)
         }
         normalizedConfiguration
     }
@@ -82,33 +96,32 @@ class JooqTask extends DefaultTask {
     @OutputDirectory
     @SuppressWarnings("GroovyUnusedDeclaration")
     File getOutputDirectory() {
-        project.file(configuration.generator.target.directory)
+        new File(projectLayout.projectDirectory.asFile, configuration.generator.target.directory)
     }
 
     @TaskAction
     @SuppressWarnings("GroovyUnusedDeclaration")
     void generate() {
         def configFile = new File(temporaryDir, "config.xml")
-        def execResult = executeJooq(configFile)
+        def execResult = executeJooq(configFile, projectLayout)
         if (execResultHandler) {
             execResultHandler.execute(execResult)
         }
     }
 
-    private ExecResult executeJooq(File configFile) {
-        project.javaexec(new Action<JavaExecSpec>() {
+    private ExecResult executeJooq(File configFile, ProjectLayout projectLayout) {
+        execOperations.javaexec(new Action<JavaExecSpec>() {
 
             @Override
             void execute(JavaExecSpec spec) {
                 spec.main = "org.jooq.codegen.GenerationTool"
                 spec.classpath = jooqClasspath
+                spec.workingDir = projectLayout.projectDirectory
                 spec.args configFile
+
                 if (javaExecSpec) {
                     javaExecSpec.execute(spec)
                 }
-
-                // Required in order to ensure correct interpretation of destination
-                spec.workingDir = project.projectDir
 
                 configFile.parentFile.mkdirs()
                 writeConfiguration(getNormalizedConfiguration(), configFile)

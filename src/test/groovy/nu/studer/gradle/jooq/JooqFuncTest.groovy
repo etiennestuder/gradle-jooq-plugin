@@ -2,6 +2,7 @@ package nu.studer.gradle.jooq
 
 import groovy.sql.Sql
 import org.gradle.testkit.runner.TaskOutcome
+import org.gradle.util.GradleVersion
 import org.jooq.Constants
 import spock.lang.AutoCleanup
 import spock.lang.Shared
@@ -38,6 +39,27 @@ class JooqFuncTest extends BaseFuncTest {
 
         and:
         result.task(':generateSampleJooqSchemaSource')
+    }
+
+    void "successfully applies jooq plugin with Gradle configuration cache enabled"() {
+        given:
+        gradleVersion = GradleVersion.version('6.5')
+        buildFile << buildWithJooqPluginDSL()
+
+        when:
+        def result = runWithArguments('build', '--configuration-cache=on')
+
+        then:
+        new File(workspaceDir, 'build/generated-src/jooq/sample/nu/studer/sample/jooq_test/tables/Foo.java').exists()
+        result.output.contains("Calculating task graph as no configuration cache is available for tasks: build")
+        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+
+        when:
+        result = runWithArguments('build', '--configuration-cache=on')
+
+        then:
+        result.output.contains("Reusing configuration cache.")
+        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.UP_TO_DATE
     }
 
     void "participates in the up-to-date checks when the configuration is the same"() {
