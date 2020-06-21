@@ -17,6 +17,7 @@ package nu.studer.gradle.jooq
 
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.Directory
 import org.gradle.api.file.FileCollection
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.model.ObjectFactory
@@ -70,7 +71,6 @@ class JooqTask extends DefaultTask {
     }
 
     @Input
-    @SuppressWarnings("GroovyUnusedDeclaration")
     Configuration getNormalizedConfiguration() {
         if (normalizedConfiguration == null) {
             normalizedConfiguration = relativizeTo(configuration, projectLayout.projectDirectory.asFile)
@@ -94,13 +94,11 @@ class JooqTask extends DefaultTask {
     }
 
     @OutputDirectory
-    @SuppressWarnings("GroovyUnusedDeclaration")
-    File getOutputDirectory() {
-        new File(projectLayout.projectDirectory.asFile, configuration.generator.target.directory)
+    Directory getOutputDirectory() {
+        projectLayout.projectDirectory.dir(configuration.generator.target.directory)
     }
 
     @TaskAction
-    @SuppressWarnings("GroovyUnusedDeclaration")
     void generate() {
         def configFile = new File(temporaryDir, "config.xml")
         def execResult = executeJooq(configFile, projectLayout)

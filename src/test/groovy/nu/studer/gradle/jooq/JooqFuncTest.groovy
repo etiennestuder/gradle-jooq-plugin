@@ -89,6 +89,20 @@ class JooqFuncTest extends BaseFuncTest {
         result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
     }
 
+    void "participates in the up-to-date checks when parts of the outputs are removed"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+        runWithArguments('build')
+
+        new File(workspaceDir, 'build/generated-src/jooq/sample/nu/studer/sample/jooq_test/tables/Foo.java').delete()
+
+        when:
+        def result = runWithArguments('build')
+
+        then:
+        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+    }
+
     void "shows an error message with a link to the current XSD when a property is missing"() {
         given:
         buildFile << buildWithMissingProperty()
