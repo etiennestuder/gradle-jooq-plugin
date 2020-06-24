@@ -102,11 +102,9 @@ class JooqPlugin implements Plugin<Project> {
      * Adds the task that runs the jOOQ code generator in a separate process.
      */
     private void createJooqTask(JooqConfiguration jooqConfiguration) {
-        JooqTask jooqTask = project.tasks.create(jooqConfiguration.jooqTaskName, JooqTask.class)
+        JooqTask jooqTask = project.tasks.create(jooqConfiguration.jooqTaskName, JooqTask.class, jooqRuntime, jooqConfiguration.configuration)
         jooqTask.description = "Generates the jOOQ sources from the '$jooqConfiguration.name' jOOQ configuration."
         jooqTask.group = "jOOQ"
-        jooqTask.configuration = jooqConfiguration.configuration
-        jooqTask.jooqClasspath = jooqRuntime
     }
 
     /**

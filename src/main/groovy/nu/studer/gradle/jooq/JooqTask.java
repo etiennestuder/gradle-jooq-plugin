@@ -54,35 +54,20 @@ public class JooqTask extends DefaultTask {
 
     private final ProjectLayout projectLayout;
     private final ExecOperations execOperations;
+    private final FileCollection jooqClasspath;
+    private final Configuration configuration;
+
+    private Configuration normalizedConfiguration;
 
     private Action<? super JavaExecSpec> javaExecSpec;
     private Action<? super ExecResult> execResultHandler;
-    private FileCollection jooqClasspath;
-    private Configuration configuration;
-    private Configuration normalizedConfiguration;
 
     @Inject
-    public JooqTask(ProjectLayout projectLayout, ExecOperations execOperations) {
+    public JooqTask(ProjectLayout projectLayout, ExecOperations execOperations, FileCollection jooqClasspath, Configuration configuration) {
         this.projectLayout = projectLayout;
         this.execOperations = execOperations;
-    }
-
-    @Internal
-    public Action<? super JavaExecSpec> getJavaExecSpec() {
-        return javaExecSpec;
-    }
-
-    public void setJavaExecSpec(Action<? super JavaExecSpec> javaExecSpec) {
-        this.javaExecSpec = javaExecSpec;
-    }
-
-    @Internal
-    public Action<? super ExecResult> getExecResultHandler() {
-        return execResultHandler;
-    }
-
-    public void setExecResultHandler(Action<? super ExecResult> execResultHandler) {
-        this.execResultHandler = execResultHandler;
+        this.jooqClasspath = jooqClasspath;
+        this.configuration = configuration;
     }
 
     @Classpath
@@ -90,17 +75,9 @@ public class JooqTask extends DefaultTask {
         return jooqClasspath;
     }
 
-    public void setJooqClasspath(FileCollection jooqClasspath) {
-        this.jooqClasspath = jooqClasspath;
-    }
-
     @Internal
     public Configuration getConfiguration() {
         return configuration;
-    }
-
-    public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
     }
 
     @Input
@@ -124,6 +101,24 @@ public class JooqTask extends DefaultTask {
             }
         }
         return configuration;
+    }
+
+    @Internal
+    public Action<? super JavaExecSpec> getJavaExecSpec() {
+        return javaExecSpec;
+    }
+
+    public void setJavaExecSpec(Action<? super JavaExecSpec> javaExecSpec) {
+        this.javaExecSpec = javaExecSpec;
+    }
+
+    @Internal
+    public Action<? super ExecResult> getExecResultHandler() {
+        return execResultHandler;
+    }
+
+    public void setExecResultHandler(Action<? super ExecResult> execResultHandler) {
+        this.execResultHandler = execResultHandler;
     }
 
     @OutputDirectory
