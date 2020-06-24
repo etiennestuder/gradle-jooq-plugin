@@ -28,8 +28,8 @@ public final class Objects {
      * @param closure  the closure to apply
      * @param delegate the delegate that the closure is applied to
      */
-    public static void applyClosureToDelegate(Closure closure, Object delegate) {
-        Closure copy = (Closure) closure.clone();
+    public static void applyClosureToDelegate(Closure<?> closure, Object delegate) {
+        Closure<?> copy = (Closure<?>) closure.clone();
         copy.setResolveStrategy(Closure.DELEGATE_FIRST);
         copy.setDelegate(delegate);
         if (copy.getMaximumNumberOfParameters() == 0) {
