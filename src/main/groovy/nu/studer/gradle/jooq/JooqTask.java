@@ -133,46 +133,46 @@ public class JooqTask extends DefaultTask {
 
     @TaskAction
     public void generate() {
+        // define a config file to which the jOOQ code generation configuration is written to
         File configFile = new File(getTemporaryDir(), "config.xml");
+
+        // write jOOQ code generation configuration to config file
+        writeConfiguration(getNormalizedConfiguration(), configFile);
+
+        // generate the jOOQ Java sources files using the written config file
         ExecResult execResult = executeJooq(configFile);
+
+        // invoke custom result handler
         if (execResultHandler != null) {
             execResultHandler.execute(execResult);
         }
     }
 
+    private void writeConfiguration(Configuration config, File file) {
+        try (OutputStream fs = new FileOutputStream(file)) {
+            SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN));
+
+            JAXBContext ctx = JAXBContext.newInstance(Configuration.class);
+            Marshaller marshaller = ctx.createMarshaller();
+            marshaller.setSchema(schema);
+
+            marshaller.marshal(config, fs);
+        } catch (IOException | JAXBException | SAXException e) {
+            throw new TaskExecutionException(JooqTask.this, e);
+        }
+    }
+
     private ExecResult executeJooq(final File configFile) {
-        return execOperations.javaexec(new Action<JavaExecSpec>() {
+        return execOperations.javaexec(spec -> {
+            spec.setMain("org.jooq.codegen.GenerationTool");
+            spec.setClasspath(jooqClasspath);
+            spec.setWorkingDir(projectLayout.getProjectDirectory());
+            spec.args(configFile);
 
-            @Override
-            public void execute(JavaExecSpec spec) {
-                spec.setMain("org.jooq.codegen.GenerationTool");
-                spec.setClasspath(jooqClasspath);
-                spec.setWorkingDir(projectLayout.getProjectDirectory());
-                spec.args(configFile);
-
-                if (javaExecSpec != null) {
-                    javaExecSpec.execute(spec);
-                }
-
-                configFile.getParentFile().mkdirs();
-                writeConfiguration(getNormalizedConfiguration(), configFile);
+            if (javaExecSpec != null) {
+                javaExecSpec.execute(spec);
             }
-
-            private void writeConfiguration(Configuration config, File file) {
-                try (OutputStream fs = new FileOutputStream(file)) {
-                    SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                    Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN));
-
-                    JAXBContext ctx = JAXBContext.newInstance(Configuration.class);
-                    Marshaller marshaller = ctx.createMarshaller();
-                    marshaller.setSchema(schema);
-
-                    marshaller.marshal(config, fs);
-                } catch (IOException | JAXBException | SAXException e) {
-                    throw new TaskExecutionException(JooqTask.this, e);
-                }
-            }
-
         });
     }
 
