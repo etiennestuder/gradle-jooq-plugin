@@ -8,18 +8,24 @@ group = 'nu.studer'
 version = '4.3-DEV'
 
 dependencies {
-    implementation("org.jooq:jooq-codegen:3.13.1")
+    implementation 'org.jooq:jooq-codegen:3.13.1'
 
-    implementation("javax.xml.bind:jaxb-api:2.3.1")
-    implementation("javax.activation:activation:1.1.1")
-    implementation("com.sun.xml.bind:jaxb-core:2.3.0.1")
-    implementation("com.sun.xml.bind:jaxb-impl:2.3.0.1")
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'javax.activation:activation:1.1.1'
+    implementation 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+    implementation 'com.sun.xml.bind:jaxb-impl:2.3.0.1'
 
-    testImplementation "com.h2database:h2:1.4.200"
-    testImplementation("org.spockframework:spock-core:1.3-groovy-2.5") {
-        exclude module: 'groovy-all'
+    testImplementation 'com.h2database:h2:1.4.200'
+    testImplementation 'org.spockframework:spock-core:2.0-M3-groovy-2.5'
+    testImplementation 'org.spockframework:spock-junit4:2.0-M3-groovy-2.5'
+}
+
+configurations.all { configuration ->
+    configuration.resolutionStrategy.eachDependency {
+        if (requested.group == 'org.codehaus.groovy') {
+            useVersion '2.5.12'
+        }
     }
-    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine:5.6.2'
 }
 
 java {
@@ -65,7 +71,5 @@ testedGradleVersions.each { version ->
 
 tasks.withType(Test).configureEach {
     maxParallelForks = 2
-    useJUnitPlatform() {
-        includeEngines 'junit-vintage'
-    }
+    useJUnitPlatform()
 }
