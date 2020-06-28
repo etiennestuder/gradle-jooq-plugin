@@ -5,7 +5,6 @@ import org.gradle.testkit.runner.GradleRunner
 import org.gradle.util.GradleVersion
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
-import org.junit.rules.TestName
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -28,14 +27,11 @@ abstract class BaseFuncTest extends Specification {
     @Rule
     TemporaryFolder tempDir = new TemporaryFolder()
 
-    @Rule
-    TestName testName = new TestName()
-
     File workspaceDir
     GradleVersion gradleVersion
 
     void setup() {
-        workspaceDir = new File(tempDir.root, testName.methodName)
+        workspaceDir = new File(tempDir.root, specificationContext.currentIteration.name)
         gradleVersion = determineGradleVersion()
     }
 
