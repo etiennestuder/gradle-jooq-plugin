@@ -10,6 +10,7 @@ import spock.lang.Unroll
 
 import java.sql.DriverManager
 
+@Unroll
 class JooqFuncTest extends BaseFuncTest {
 
     @AutoCleanup
@@ -198,8 +199,7 @@ class JooqFuncTest extends BaseFuncTest {
         result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
     }
 
-    @Unroll
-    void "can disable auto-generation of schema source on compilation"() {
+    void "can disable auto-generation of schema source on compilation (generateSchemaSourceOnCompilation #generateSchemaSourceOnCompilation)"() {
         given:
         buildFile.delete()
         buildFile << buildWithAutoGenerationOfSchemaSourceOnCompilationEnabled(generateSchemaSourceOnCompilation)
