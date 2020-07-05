@@ -50,14 +50,14 @@ class JooqPlugin implements Plugin<Project> {
         enforceJooqVersion(project)
 
         // create configuration for the runtime classpath of the jooq code generator (shared by all jooq configuration domain objects)
-        final Configuration configuration = createJooqRuntimeConfiguration(project);
+        final Configuration runtimeConfiguration = createJooqRuntimeConfiguration(project);
 
         project.extensions.create(JOOQ_EXTENSION_NAME, JooqExtension.class, { JooqConfiguration jooqConfiguration, JooqExtension extension ->
-            JooqTask jooqTask = project.tasks.create(jooqConfiguration.jooqTaskName, JooqTask.class, configuration, jooqConfiguration.configuration)
+            JooqTask jooqTask = project.tasks.create(jooqConfiguration.jooqTaskName, JooqTask.class, runtimeConfiguration, jooqConfiguration.configuration)
             jooqTask.description = "Generates the jOOQ sources from the '${jooqConfiguration.name}' jOOQ configuration."
             jooqTask.group = "jOOQ"
 
-            String outputDirectoryName = "${project.buildDir}/generated-src/jooq/${jooqConfiguration.name}"
+            String outputDirectoryName = project.layout.buildDirectory.dir("generated-src/jooq/${jooqConfiguration.name}").get()
             jooqConfiguration.configuration.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName)))
 
             SourceSet sourceSet = jooqConfiguration.sourceSet
