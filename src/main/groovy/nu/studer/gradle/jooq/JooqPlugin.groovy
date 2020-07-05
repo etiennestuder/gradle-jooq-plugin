@@ -34,7 +34,6 @@ class JooqPlugin implements Plugin<Project> {
 
     private static final String JOOQ_EXTENSION_NAME = "jooq"
 
-    Project project
     JooqExtension extension
     Configuration jooqRuntime
 
@@ -43,8 +42,6 @@ class JooqPlugin implements Plugin<Project> {
         if (GradleVersion.current().baseVersion < GradleVersion.version("6.0")) {
             throw new IllegalStateException("This version of the jooq plugin is not compatible with Gradle < 6.0");
         }
-
-        this.project = project
 
         // apply Java base plugin, making it possible to also use the jOOQ plugin for Android builds
         project.plugins.apply(JavaBasePlugin.class)
@@ -60,8 +57,8 @@ class JooqPlugin implements Plugin<Project> {
      */
     private void addJooqExtension(Project project) {
         def whenConfigurationAdded = { JooqConfiguration jooqConfiguration ->
-            def jooqTask = createJooqTask(jooqConfiguration)
-            configureDefaultOutput(jooqConfiguration)
+            def jooqTask = createJooqTask(jooqConfiguration, project)
+            configureDefaultOutput(jooqConfiguration, project)
             configureSourceSet(jooqConfiguration, jooqTask)
         }
 
@@ -103,7 +100,7 @@ class JooqPlugin implements Plugin<Project> {
     /**
      * Adds the task that runs the jOOQ code generator in a separate process.
      */
-    private JooqTask createJooqTask(JooqConfiguration jooqConfiguration) {
+    private JooqTask createJooqTask(JooqConfiguration jooqConfiguration, Project project) {
         JooqTask jooqTask = project.tasks.create(jooqConfiguration.jooqTaskName, JooqTask.class, jooqRuntime, jooqConfiguration.configuration)
         jooqTask.description = "Generates the jOOQ sources from the '$jooqConfiguration.name' jOOQ configuration."
         jooqTask.group = "jOOQ"
@@ -113,7 +110,7 @@ class JooqPlugin implements Plugin<Project> {
     /**
      * Configures a sensible default output directory.
      */
-    private void configureDefaultOutput(JooqConfiguration jooqConfiguration) {
+    private static void configureDefaultOutput(JooqConfiguration jooqConfiguration, Project project) {
         String outputDirectoryName = "${project.buildDir}/generated-src/jooq/$jooqConfiguration.name"
         jooqConfiguration.configuration.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName)))
     }
