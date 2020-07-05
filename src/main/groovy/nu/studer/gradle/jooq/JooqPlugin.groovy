@@ -40,15 +40,39 @@ class JooqPlugin implements Plugin<Project> {
     void apply(Project project) {
         // abort if old Gradle version is not supported
         if (GradleVersion.current().baseVersion < GradleVersion.version("6.0")) {
-            throw new IllegalStateException("This version of the jooq plugin is not compatible with Gradle < 6.0");
+            throw new IllegalStateException("This version of the jooq plugin is not compatible with Gradle < 6.0")
         }
 
         // apply Java base plugin, making it possible to also use the jOOQ plugin for Android builds
         project.plugins.apply(JavaBasePlugin.class)
 
+        // allow to configure the jOOQ version via extension property
+        JooqVersion.applyDefaultVersion(project)
+
+        // use the configured jOOQ version on all jOOQ dependencies
+        enforceJooqVersion(project)
+
         addJooqExtension(project)
         addJooqConfiguration(project)
-        forceJooqVersionAndEdition(project)
+    }
+
+    /**
+     * Forces the jOOQ version and edition selected by the user throughout all
+     * dependency configurations.
+     */
+    private static void enforceJooqVersion(Project project) {
+        def jooqGroupIds = JooqEdition.values().collect { it.groupId }.toSet()
+        project.configurations.all { configuration ->
+            configuration.resolutionStrategy.eachDependency { details ->
+                def requested = details.requested
+                if (jooqGroupIds.contains(requested.group) && requested.name.startsWith('jooq')) {
+                    def group = project.extensions.getByType(JooqExtension).edition.groupId
+                    def version = JooqVersion.fromProject(project).asString()
+                    details.useTarget("$group:$requested.name:$version")
+                }
+            }
+        }
+
     }
 
     /**
@@ -79,22 +103,6 @@ class JooqPlugin implements Plugin<Project> {
         project.dependencies.add(jooqRuntime.name, "javax.activation:activation:1.1.1")
         project.dependencies.add(jooqRuntime.name, "com.sun.xml.bind:jaxb-core:2.3.0.1")
         project.dependencies.add(jooqRuntime.name, "com.sun.xml.bind:jaxb-impl:2.3.0.1")
-    }
-
-    /**
-     * Forces the jOOQ version and edition selected by the user throughout all
-     * dependency configurations.
-     */
-    private void forceJooqVersionAndEdition(Project project) {
-        def jooqGroupIds = JooqEdition.values().collect { it.groupId }.toSet()
-        project.configurations.all {
-            resolutionStrategy.eachDependency { details ->
-                def requested = details.requested
-                if (jooqGroupIds.contains(requested.group) && requested.name.startsWith('jooq')) {
-                    details.useTarget("$extension.edition.groupId:$requested.name:$extension.version")
-                }
-            }
-        }
     }
 
     /**

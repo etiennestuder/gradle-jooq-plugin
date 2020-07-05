@@ -249,8 +249,9 @@ dependencies {
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
+jooqVersion = '3.13.2'
+
 jooq {
-   version = '3.13.2'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -311,8 +312,9 @@ dependencies {
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
+jooqVersion = '3.13.2'
+
 jooq {
-   version = '3.13.2'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -349,8 +351,9 @@ dependencies {
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
+jooqVersion = '3.13.2'
+
 jooq {
-   version = '3.13.2'
    edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
@@ -646,8 +649,9 @@ dependencies {
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
+jooqVersion = '3.13.2'
+
 jooq {
-   version = '3.13.2'
    edition = 'OSS'
    generateSchemaSourceOnCompilation = ${generateSchemaSourceOnCompilation}
    sample(sourceSets.main) {
@@ -672,4 +676,5 @@ jooq {
 }
 """
     }
+
 }

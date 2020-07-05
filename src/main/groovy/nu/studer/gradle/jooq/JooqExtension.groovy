@@ -25,7 +25,6 @@ import org.jooq.meta.jaxb.Configuration
  */
 class JooqExtension {
 
-    private static final String DEFAULT_JOOQ_VERSION = "3.13.2"
     private static final JooqEdition DEFAULT_JOOQ_EDITION = JooqEdition.OSS
     private static final boolean DEFAULT_GENERATE_JOOQ_SCHEMA_SOURCE_ON_COMPILATION = true
 
@@ -33,7 +32,6 @@ class JooqExtension {
     final String path
     final Map<String, JooqConfiguration> configs
 
-    String version = DEFAULT_JOOQ_VERSION
     JooqEdition edition = DEFAULT_JOOQ_EDITION
     boolean generateSchemaSourceOnCompilation = DEFAULT_GENERATE_JOOQ_SCHEMA_SOURCE_ON_COMPILATION
 
@@ -63,13 +61,13 @@ class JooqExtension {
 
         // apply the given closure to the configuration bridge, i.e. its contained JAXB Configuration object
         def delegate = new JaxbConfigurationBridge(jooqConfig.configuration, "${path}.${configName}")
-        Closure copy = (Closure) closure.clone();
-        copy.resolveStrategy = Closure.DELEGATE_FIRST;
-        copy.delegate = delegate;
+        Closure copy = (Closure) closure.clone()
+        copy.resolveStrategy = Closure.DELEGATE_FIRST
+        copy.delegate = delegate
         if (copy.maximumNumberOfParameters == 0) {
-            copy.call();
+            copy.call()
         } else {
-            copy.call delegate;
+            copy.call delegate
         }
 
         delegate.target
