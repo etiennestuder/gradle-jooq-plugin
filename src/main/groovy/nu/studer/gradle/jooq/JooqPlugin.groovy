@@ -60,9 +60,9 @@ class JooqPlugin implements Plugin<Project> {
      */
     private void addJooqExtension(Project project) {
         def whenConfigurationAdded = { JooqConfiguration jooqConfiguration ->
-            createJooqTask(jooqConfiguration)
+            def jooqTask = createJooqTask(jooqConfiguration)
             configureDefaultOutput(jooqConfiguration)
-            configureSourceSet(jooqConfiguration)
+            configureSourceSet(jooqConfiguration, jooqTask)
         }
 
         extension = project.extensions.create(JOOQ_EXTENSION_NAME, JooqExtension.class, whenConfigurationAdded, JOOQ_EXTENSION_NAME)
@@ -103,10 +103,11 @@ class JooqPlugin implements Plugin<Project> {
     /**
      * Adds the task that runs the jOOQ code generator in a separate process.
      */
-    private void createJooqTask(JooqConfiguration jooqConfiguration) {
+    private JooqTask createJooqTask(JooqConfiguration jooqConfiguration) {
         JooqTask jooqTask = project.tasks.create(jooqConfiguration.jooqTaskName, JooqTask.class, jooqRuntime, jooqConfiguration.configuration)
         jooqTask.description = "Generates the jOOQ sources from the '$jooqConfiguration.name' jOOQ configuration."
         jooqTask.group = "jOOQ"
+        jooqTask
     }
 
     /**
@@ -120,11 +121,12 @@ class JooqPlugin implements Plugin<Project> {
     /**
      * Ensures the Java compiler will pick up the generated sources.
      */
-    private void configureSourceSet(JooqConfiguration jooqConfiguration) {
+    private void configureSourceSet(JooqConfiguration jooqConfiguration, JooqTask jooqTask) {
         SourceSet sourceSet = jooqConfiguration.sourceSet
-        sourceSet.java.srcDir { jooqConfiguration.configuration.generator.target.directory }
         if (extension.generateSchemaSourceOnCompilation) {
-            project.tasks.getByName(sourceSet.compileJavaTaskName).dependsOn jooqConfiguration.jooqTaskName.toString()
+            sourceSet.java.srcDir jooqTask
+        } else {
+            sourceSet.java.srcDir { jooqTask.outputDirectory }
         }
     }
 
