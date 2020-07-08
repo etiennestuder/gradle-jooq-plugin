@@ -45,7 +45,7 @@ class JooqPlugin implements Plugin<Project> {
 
         // allow to configure the jOOQ edition/version via extension property
         JooqEditionProperty.applyDefaultEdition(project)
-        JooqVersion.applyDefaultVersion(project)
+        JooqVersionProperty.applyDefaultVersion(project)
 
         // use the configured jOOQ version on all jOOQ dependencies
         enforceJooqEditionAndVersion(project)
@@ -81,7 +81,7 @@ class JooqPlugin implements Plugin<Project> {
                 def requested = details.requested
                 if (jooqGroupIds.contains(requested.group) && requested.name.startsWith('jooq')) {
                     def group = JooqEditionProperty.fromProject(project).asGroupId()
-                    def version = JooqVersion.fromProject(project).asVersion()
+                    def version = JooqVersionProperty.fromProject(project).asVersion()
                     details.useTarget("$group:$requested.name:$version")
                 }
             }
