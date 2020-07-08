@@ -43,11 +43,12 @@ class JooqPlugin implements Plugin<Project> {
         // apply Java base plugin, making it possible to also use the jOOQ plugin for Android builds
         project.plugins.apply(JavaBasePlugin.class)
 
-        // allow to configure the jOOQ version via extension property
+        // allow to configure the jOOQ edition/version via extension property
+        JooqEditionProperty.applyDefaultEdition(project)
         JooqVersion.applyDefaultVersion(project)
 
         // use the configured jOOQ version on all jOOQ dependencies
-        enforceJooqVersion(project)
+        enforceJooqEditionAndVersion(project)
 
         // create configuration for the runtime classpath of the jooq code generator (shared by all jooq configuration domain objects)
         final Configuration runtimeConfiguration = createJooqRuntimeConfiguration(project);
@@ -73,14 +74,14 @@ class JooqPlugin implements Plugin<Project> {
      * Forces the jOOQ version and edition selected by the user throughout all
      * dependency configurations.
      */
-    private static void enforceJooqVersion(Project project) {
+    private static void enforceJooqEditionAndVersion(Project project) {
         def jooqGroupIds = JooqEdition.values().collect { it.groupId }.toSet()
         project.configurations.all { configuration ->
             configuration.resolutionStrategy.eachDependency { details ->
                 def requested = details.requested
                 if (jooqGroupIds.contains(requested.group) && requested.name.startsWith('jooq')) {
-                    def group = project.extensions.getByType(JooqExtension).edition.groupId
-                    def version = JooqVersion.fromProject(project).asString()
+                    def group = JooqEditionProperty.fromProject(project).asGroupId()
+                    def version = JooqVersion.fromProject(project).asVersion()
                     details.useTarget("$group:$requested.name:$version")
                 }
             }
