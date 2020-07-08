@@ -43,9 +43,10 @@ class JooqPlugin implements Plugin<Project> {
         // apply Java base plugin, making it possible to also use the jOOQ plugin for Android builds
         project.plugins.apply(JavaBasePlugin.class)
 
-        // allow to configure the jOOQ edition/version via extension property
+        // allow to configure the jOOQ edition/version and compilation on source code generation via extension property
         JooqEditionProperty.applyDefaultEdition(project)
         JooqVersionProperty.applyDefaultVersion(project)
+        JooqGenerateSchemaSourceOnCompilationProperty.applyDefaultValue(project)
 
         // use the configured jOOQ version on all jOOQ dependencies
         enforceJooqEditionAndVersion(project)
@@ -62,7 +63,8 @@ class JooqPlugin implements Plugin<Project> {
             jooqConfiguration.configuration.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName)))
 
             SourceSet sourceSet = jooqConfiguration.sourceSet
-            if (extension.generateSchemaSourceOnCompilation) {
+            boolean generateSchemaSourceOnCompilationProperty = JooqGenerateSchemaSourceOnCompilationProperty.fromProject(project).asValue()
+            if (generateSchemaSourceOnCompilationProperty) {
                 sourceSet.java.srcDir jooqTask
             } else {
                 sourceSet.java.srcDir { jooqTask.outputDirectory }

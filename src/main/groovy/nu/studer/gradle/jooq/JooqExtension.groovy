@@ -25,13 +25,9 @@ import org.jooq.meta.jaxb.Configuration
  */
 class JooqExtension {
 
-    private static final boolean DEFAULT_GENERATE_JOOQ_SCHEMA_SOURCE_ON_COMPILATION = true
-
     final Closure whenConfigAdded
     final String path
     final Map<String, JooqConfiguration> configs
-
-    boolean generateSchemaSourceOnCompilation = DEFAULT_GENERATE_JOOQ_SCHEMA_SOURCE_ON_COMPILATION
 
     JooqExtension(Closure whenConfigAdded, String path) {
         this.whenConfigAdded = whenConfigAdded

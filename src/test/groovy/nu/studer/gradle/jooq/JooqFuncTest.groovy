@@ -651,9 +651,9 @@ dependencies {
 
 jooqVersion = '3.13.2'
 jooqEdition = 'OSS'
+jooqGenerateSchemaSourceOnCompilation = ${generateSchemaSourceOnCompilation}
 
 jooq {
-   generateSchemaSourceOnCompilation = ${generateSchemaSourceOnCompilation}
    sample(sourceSets.main) {
        jdbc {
            driver = 'org.h2.Driver'
