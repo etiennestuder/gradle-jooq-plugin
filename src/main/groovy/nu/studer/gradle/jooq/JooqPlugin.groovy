@@ -76,7 +76,7 @@ class JooqPlugin implements Plugin<Project> {
      */
     private static void enforceJooqEditionAndVersion(Project project) {
         def jooqGroupIds = JooqEdition.values().collect { it.groupId }.toSet()
-        project.configurations.all { configuration ->
+        project.configurations.configureEach { configuration ->
             configuration.resolutionStrategy.eachDependency { details ->
                 def requested = details.requested
                 if (jooqGroupIds.contains(requested.group) && requested.name.startsWith('jooq')) {
