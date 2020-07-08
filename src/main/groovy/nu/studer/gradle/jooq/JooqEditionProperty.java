@@ -20,7 +20,8 @@ final class JooqEditionProperty {
     }
 
     static JooqEditionProperty fromProject(Project project) {
-        return from((JooqEdition) project.getExtensions().getExtraProperties().get(PROJECT_PROPERTY));
+        Object value = project.getExtensions().getExtraProperties().get(PROJECT_PROPERTY);
+        return value instanceof String ? from(JooqEdition.valueOf((String) value)) : from((JooqEdition) value);
     }
 
     private static JooqEditionProperty from(JooqEdition jooqEdition) {

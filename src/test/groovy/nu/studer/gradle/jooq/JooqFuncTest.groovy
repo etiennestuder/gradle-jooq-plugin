@@ -250,9 +250,9 @@ dependencies {
 }
 
 jooqVersion = '3.13.2'
+jooqEdition = 'OSS'
 
 jooq {
-   edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
            driver = 'org.h2.Driver'
@@ -313,9 +313,9 @@ dependencies {
 }
 
 jooqVersion = '3.13.2'
+jooqEdition = 'OSS'
 
 jooq {
-   edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
            driver = 'org.h2.Driver'
@@ -352,9 +352,9 @@ dependencies {
 }
 
 jooqVersion = '3.13.2'
+jooqEdition = 'OSS'
 
 jooq {
-   edition = 'OSS'
    sample(sourceSets.main) {
        jdbc {
            driver = 'org.h2.Driver'
@@ -650,9 +650,9 @@ dependencies {
 }
 
 jooqVersion = '3.13.2'
+jooqEdition = 'OSS'
 
 jooq {
-   edition = 'OSS'
    generateSchemaSourceOnCompilation = ${generateSchemaSourceOnCompilation}
    sample(sourceSets.main) {
        jdbc {
