@@ -71,7 +71,7 @@ class JooqExtension {
         JooqConfiguration jooqConfig = configs[configName]
         if (!jooqConfig) {
             jooqConfig = new JooqConfiguration(configName, sourceSet, new Configuration())
-            whenConfigAdded(jooqConfig, this)
+            whenConfigAdded jooqConfig
             configs[configName] = jooqConfig
         }
         jooqConfig

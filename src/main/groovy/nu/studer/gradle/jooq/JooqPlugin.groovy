@@ -54,7 +54,7 @@ class JooqPlugin implements Plugin<Project> {
         // create configuration for the runtime classpath of the jooq code generator (shared by all jooq configuration domain objects)
         final Configuration runtimeConfiguration = createJooqRuntimeConfiguration(project);
 
-        project.extensions.create(JOOQ_EXTENSION_NAME, JooqExtension.class, { JooqConfiguration jooqConfiguration, JooqExtension extension ->
+        project.extensions.create(JOOQ_EXTENSION_NAME, JooqExtension.class, { JooqConfiguration jooqConfiguration ->
             JooqTask jooqTask = project.tasks.create(jooqConfiguration.jooqTaskName, JooqTask.class, runtimeConfiguration, jooqConfiguration.configuration)
             jooqTask.description = "Generates the jOOQ sources from the '${jooqConfiguration.name}' jOOQ configuration."
             jooqTask.group = "jOOQ"
