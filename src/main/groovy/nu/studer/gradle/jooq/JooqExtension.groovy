@@ -63,8 +63,6 @@ class JooqExtension {
         } else {
             copy.call delegate
         }
-
-        delegate.target
     }
 
     private JooqConfiguration findOrCreateConfig(String configName, SourceSet sourceSet) {

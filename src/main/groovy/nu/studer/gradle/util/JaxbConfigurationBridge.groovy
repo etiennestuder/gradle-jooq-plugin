@@ -79,8 +79,6 @@ class JaxbConfigurationBridge {
                 def delegate = new JaxbConfigurationBridge(methodInvocationResult, "${path}.${methodName}")
                 Objects.applyClosureToDelegate(args[0], delegate)
             }
-
-            target
         } else {
             LOGGER.warn("Cannot find configuration container element '$methodName' on '$path'. " +
                     "Make sure to use the equal sign to set simple configuration property values.")
