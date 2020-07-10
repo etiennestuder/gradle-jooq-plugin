@@ -22,6 +22,8 @@ import groovy.lang.Closure;
  */
 public final class Objects {
 
+    // todo (etst) reuse this code
+
     /**
      * Applies the given closure to the given delegate.
      *
