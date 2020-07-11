@@ -15,6 +15,7 @@
  */
 package nu.studer.gradle.util
 
+import nu.studer.gradle.jooq.util.Objects
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 

@@ -15,6 +15,7 @@
  */
 package nu.studer.gradle.util
 
+import nu.studer.gradle.jooq.util.Objects
 import org.gradle.api.InvalidUserDataException
 import org.jooq.Constants
 import org.slf4j.Logger

@@ -15,6 +15,7 @@
  */
 package nu.studer.gradle.jooq
 
+import nu.studer.gradle.jooq.util.Strings
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -28,6 +29,7 @@ import org.jooq.meta.jaxb.Generator
 import org.jooq.meta.jaxb.Target
 
 import static java.lang.String.format
+import static nu.studer.gradle.jooq.util.Strings.*
 
 /**
  * Plugin that extends the java-base plugin and registers a {@link JooqTask} for each defined jOOQ configuration.
@@ -67,7 +69,7 @@ class JooqPlugin implements Plugin<Project> {
         // create a rocker task for each rocker configuration domain object
         container.configureEach({ config ->
             // register jOOQ task, create it lazily
-            String taskName = "generate" + (config.name.equals("main") ? "" : StringUtils.capitalize(config.name)) + "Jooq";
+            String taskName = "generate" + (config.name.equals("main") ? "" : capitalize(config.name)) + "Jooq";
             TaskProvider<JooqTask> jooq = project.getTasks().register(taskName, JooqTask.class, config, runtimeConfiguration);
             jooq.configure({ task ->
                 task.setDescription(format("Generates the jOOQ sources from the %s jOOQ configuration.", config.name));
