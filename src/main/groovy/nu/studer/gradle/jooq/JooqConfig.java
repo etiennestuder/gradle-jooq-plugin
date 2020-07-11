@@ -1,7 +1,7 @@
 package nu.studer.gradle.jooq;
 
 import groovy.lang.Closure;
-import nu.studer.gradle.util.JaxbConfigurationBridge;
+import nu.studer.gradle.jooq.jaxb.JaxbConfigurationBridge;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Internal;
