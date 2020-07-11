@@ -30,7 +30,7 @@ import org.jooq.meta.jaxb.Target
 import static java.lang.String.format
 
 /**
- * Plugin that extends the java-base plugin and registers a {@link JooqTask2} for each defined jOOQ configuration.
+ * Plugin that extends the java-base plugin and registers a {@link JooqTask} for each defined jOOQ configuration.
  * Each task generates the jOOQ source code from the configured database. The tasks properly participate in the Gradle
  * up-to-date checks. The tasks are wired as dependencies of the compilation tasks of the JavaBasePlugin plugin.
  */
@@ -68,7 +68,7 @@ class JooqPlugin implements Plugin<Project> {
         container.configureEach({ config ->
             // register jOOQ task, create it lazily
             String taskName = "generate" + (config.name.equals("main") ? "" : StringUtils.capitalize(config.name)) + "Jooq";
-            TaskProvider<JooqTask2> jooq = project.getTasks().register(taskName, JooqTask2.class, config, runtimeConfiguration);
+            TaskProvider<JooqTask> jooq = project.getTasks().register(taskName, JooqTask.class, config, runtimeConfiguration);
             jooq.configure({ task ->
                 task.setDescription(format("Generates the jOOQ sources from the %s jOOQ configuration.", config.name));
                 task.setGroup("jOOQ")

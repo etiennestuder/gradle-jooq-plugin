@@ -49,12 +49,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-// todo (etst) rename class
 /**
  * Gradle Task that runs the jOOQ source code generation.
  */
 @SuppressWarnings("UnstableApiUsage")
-public class JooqTask2 extends DefaultTask {
+public class JooqTask extends DefaultTask {
 
     private final JooqConfig config;
     private final ConfigurableFileCollection runtimeClasspath;
@@ -66,7 +65,7 @@ public class JooqTask2 extends DefaultTask {
     private final ExecOperations execOperations;
 
     @Inject
-    public JooqTask2(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProjectLayout projectLayout, ExecOperations execOperations) {
+    public JooqTask(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProjectLayout projectLayout, ExecOperations execOperations) {
         this.config = config;
         this.runtimeClasspath = objects.fileCollection().from(runtimeClasspath);
 
@@ -161,7 +160,7 @@ public class JooqTask2 extends DefaultTask {
 
             marshaller.marshal(config, fs);
         } catch (IOException | JAXBException | SAXException e) {
-            throw new TaskExecutionException(JooqTask2.this, e);
+            throw new TaskExecutionException(JooqTask.this, e);
         }
     }
 
