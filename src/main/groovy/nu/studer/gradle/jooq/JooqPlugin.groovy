@@ -21,7 +21,6 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.JavaBasePlugin
 import org.gradle.api.plugins.JavaPluginConvention
-import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.util.GradleVersion
@@ -31,7 +30,7 @@ import org.jooq.meta.jaxb.Target
 import static java.lang.String.format
 
 /**
- * Plugin that extends the java-base plugin and registers a {@link JooqTask} for each defined jOOQ configuration.
+ * Plugin that extends the java-base plugin and registers a {@link JooqTask2} for each defined jOOQ configuration.
  * Each task generates the jOOQ source code from the configured database. The tasks properly participate in the Gradle
  * up-to-date checks. The tasks are wired as dependencies of the compilation tasks of the JavaBasePlugin plugin.
  */
@@ -54,14 +53,13 @@ class JooqPlugin implements Plugin<Project> {
         // allow to configure the jOOQ edition/version and compilation on source code generation via extension property
         JooqEditionProperty.applyDefaultEdition(project)
         JooqVersionProperty.applyDefaultVersion(project)
-        JooqGenerateSchemaSourceOnCompilationProperty.applyDefaultValue(project)
 
         // use the configured jOOQ version on all jOOQ dependencies
         enforceJooqEditionAndVersion(project)
 
         // add rocker DSL extension
         NamedDomainObjectContainer<JooqConfig> container = project.container(JooqConfig.class, { name -> project.getObjects().newInstance(JooqConfig.class, name) })
-        project.getExtensions().add("jooq2", container);
+        project.getExtensions().add("jooq", container);
 
         // create configuration for the runtime classpath of the jooq code generator (shared by all jooq configuration domain objects)
         final Configuration runtimeConfiguration = createJooqRuntimeConfiguration(project);
@@ -76,6 +74,7 @@ class JooqPlugin implements Plugin<Project> {
                 task.setGroup("jOOQ")
             });
 
+            // todo (etst) add as property to jooq config
             String outputDirectoryName = project.layout.buildDirectory.dir("generated-src/jooq/${config.name}").get()
             config.jooqConfiguration.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName)))
 
@@ -94,23 +93,6 @@ class JooqPlugin implements Plugin<Project> {
 
             // todo (etst) add jooq runtime dependency
         });
-
-        project.extensions.create(JOOQ_EXTENSION_NAME, JooqExtension.class, { JooqConfiguration jooqConfiguration ->
-            JooqTask jooqTask = project.tasks.create(jooqConfiguration.jooqTaskName, JooqTask.class, runtimeConfiguration, jooqConfiguration.configuration)
-            jooqTask.description = "Generates the jOOQ sources from the '${jooqConfiguration.name}' jOOQ configuration."
-            jooqTask.group = "jOOQ"
-
-            String outputDirectoryName = project.layout.buildDirectory.dir("generated-src/jooq/${jooqConfiguration.name}").get()
-            jooqConfiguration.configuration.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName)))
-
-            SourceSet sourceSet = jooqConfiguration.sourceSet
-            boolean generateSchemaSourceOnCompilationProperty = JooqGenerateSchemaSourceOnCompilationProperty.fromProject(project).asValue()
-            if (generateSchemaSourceOnCompilationProperty) {
-                sourceSet.java.srcDir jooqTask
-            } else {
-                sourceSet.java.srcDir { jooqTask.outputDirectory }
-            }
-        }, JOOQ_EXTENSION_NAME)
     }
 
     /**

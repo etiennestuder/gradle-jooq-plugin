@@ -49,6 +49,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+// todo (etst) rename class
 /**
  * Gradle Task that runs the jOOQ source code generation.
  */

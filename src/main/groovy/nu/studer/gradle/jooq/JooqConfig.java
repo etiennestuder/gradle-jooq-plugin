@@ -54,6 +54,7 @@ public class JooqConfig {
     public String toString() {
         return "JooqConfig{" +
             "name='" + name + '\'' +
+            ", jooqConfiguration=" + jooqConfiguration +
             ", generateSchemaSourceOnCompilation=" + generateSchemaSourceOnCompilation +
             '}';
     }

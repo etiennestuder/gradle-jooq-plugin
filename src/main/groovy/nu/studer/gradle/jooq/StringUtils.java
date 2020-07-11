@@ -9,4 +9,5 @@ final class StringUtils {
     private StringUtils() {
     }
 
+    // todo (etst) move to util package
 }

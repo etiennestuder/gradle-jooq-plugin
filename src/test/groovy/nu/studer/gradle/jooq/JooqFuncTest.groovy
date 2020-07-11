@@ -170,10 +170,10 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build')
 
         then:
-        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
 
         and:
-        def foo = new File(workspaceDir, 'build/generated-src/jooq/sample/org/jooq/generated/jooq_test/tables/records/FooRecord.java')
+        def foo = new File(workspaceDir, 'build/generated-src/jooq/main/org/jooq/generated/jooq_test/tables/records/FooRecord.java')
         foo.exists()
         foo.text.contains("public Integer A() {") // instead of getA, as the sample generator strategy removed the get prefix
     }
@@ -254,7 +254,7 @@ dependencies {
 jooqVersion = '3.13.2'
 jooqEdition = 'OSS'
 
-jooq2 {
+jooq {
   main {
     generationTool {
       jdbc {
@@ -319,7 +319,7 @@ dependencies {
 jooqVersion = '3.13.2'
 jooqEdition = 'OSS'
 
-jooq2 {
+jooq {
   main {
     generationTool {
       jdbc {
@@ -360,7 +360,7 @@ dependencies {
 jooqVersion = '3.13.2'
 jooqEdition = 'OSS'
 
-jooq2 {
+jooq {
   main {
     generationTool {
       jdbc {
@@ -395,7 +395,7 @@ dependencies {
     jooqRuntime project(':custom-generator')  // include sub-project that contains the custom generator strategy
 }
 
-jooq2 {
+jooq {
   main {
     generationTool {
       jdbc {
@@ -482,28 +482,30 @@ dependencies {
 }
 
 jooq {
-   sample(sourceSets.main) {
-       jdbc {
-           driver = 'org.h2.Driver'
-           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-           user = 'sa'
-           password = ''
-       }
-       generator {
-           name = 'org.jooq.codegen.DefaultGenerator'
-           strategy {
-                name = 'nu.studer.sample.SampleGeneratorStrategy'  // use the custom generator strategy
-           }
-           database {
-               name = 'org.jooq.meta.h2.H2Database'
-               includes = '.*'
-               excludes = ''
-           }
-           generate {
-               javaTimeTypes = true
-           }
-       }
-   }
+  main {
+    generationTool {
+      jdbc {
+          driver = 'org.h2.Driver'
+          url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+          user = 'sa'
+          password = ''
+      }
+      generator {
+        name = 'org.jooq.codegen.DefaultGenerator'
+        strategy {
+          name = 'nu.studer.sample.SampleGeneratorStrategy'  // use the custom generator strategy
+        }
+        database {
+          name = 'org.jooq.meta.h2.H2Database'
+          includes = '.*'
+          excludes = ''
+        }
+        generate {
+          javaTimeTypes = true
+        }
+      }
+    }
+  }
 }
 """
     }
@@ -558,7 +560,7 @@ dependencies {
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
-jooq2 {
+jooq {
   main {
     generationTool {
       jdbc {
@@ -617,7 +619,7 @@ def calculateDriver() {
     'org.h2.Driver'
 }
 
-jooq2 {
+jooq {
   main {
     generationTool {
       jdbc {
@@ -666,7 +668,7 @@ dependencies {
 jooqVersion = '3.13.2'
 jooqEdition = 'OSS'
 
-jooq2 {
+jooq {
   main {
     generateSchemaSourceOnCompilation = ${generateSchemaSourceOnCompilation}
     generationTool {
