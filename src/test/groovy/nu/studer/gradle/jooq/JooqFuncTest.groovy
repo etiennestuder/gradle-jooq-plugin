@@ -5,6 +5,7 @@ import org.gradle.testkit.runner.TaskOutcome
 import org.gradle.util.GradleVersion
 import org.jooq.Constants
 import spock.lang.AutoCleanup
+import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Unroll
 
@@ -36,10 +37,10 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build')
 
         then:
-        new File(workspaceDir, 'build/generated-src/jooq/sample/nu/studer/sample/jooq_test/tables/Foo.java').exists()
+        new File(workspaceDir, 'build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java').exists()
 
         and:
-        result.task(':generateSampleJooqSchemaSource')
+        result.task(':generateJooq')
     }
 
     void "successfully applies jooq plugin with Gradle configuration cache enabled"() {
@@ -51,16 +52,16 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build', '--configuration-cache=on')
 
         then:
-        new File(workspaceDir, 'build/generated-src/jooq/sample/nu/studer/sample/jooq_test/tables/Foo.java').exists()
+        new File(workspaceDir, 'build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java').exists()
         result.output.contains("Calculating task graph as no configuration cache is available for tasks: build")
-        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
 
         when:
         result = runWithArguments('build', '--configuration-cache=on')
 
         then:
         result.output.contains("Reusing configuration cache.")
-        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.UP_TO_DATE
+        result.task(':generateJooq').outcome == TaskOutcome.UP_TO_DATE
     }
 
     void "participates in the up-to-date checks when the configuration is the same"() {
@@ -72,7 +73,7 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build')
 
         then:
-        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.UP_TO_DATE
+        result.task(':generateJooq').outcome == TaskOutcome.UP_TO_DATE
     }
 
     void "participates in the up-to-date checks when the configuration is different"() {
@@ -87,7 +88,7 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build')
 
         then:
-        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
     void "participates in the up-to-date checks when parts of the outputs are removed"() {
@@ -95,13 +96,13 @@ class JooqFuncTest extends BaseFuncTest {
         buildFile << buildWithJooqPluginDSL()
         runWithArguments('build')
 
-        new File(workspaceDir, 'build/generated-src/jooq/sample/nu/studer/sample/jooq_test/tables/Foo.java').delete()
+        new File(workspaceDir, 'build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java').delete()
 
         when:
         def result = runWithArguments('build')
 
         then:
-        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
     void "shows an error message with a link to the current XSD when a property is missing"() {
@@ -112,7 +113,7 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runAndFailWithArguments('build')
 
         then:
-        result.output.contains "Invalid property: 'missing' on extension 'jooq.sample.generator.generate', value: true. Please check the current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}"
+        result.output.contains "Invalid property: 'missing' on extension 'jooq.main.generationTool.generator.generate', value: true. Please check the current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}"
     }
 
     void "shows an error message with a link to the current XSD when a configuration container element is missing"() {
@@ -123,7 +124,7 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runAndFailWithArguments('build')
 
         then:
-        result.output.contains "Invalid configuration container element: 'missing' on extension 'jooq.sample'. Please check the current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}"
+        result.output.contains "Invalid configuration container element: 'missing' on extension 'jooq.main.generationTool'. Please check the current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}"
     }
 
     void "successfully applies custom strategies when a sub project is added to the jooqRuntime configuration"() {
@@ -136,7 +137,7 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build')
 
         then:
-        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
     void "correctly writes out boolean default values"() {
@@ -147,7 +148,7 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build')
 
         then:
-        def configXml = new File(workspaceDir, 'build/tmp/generateSampleJooqSchemaSource/config.xml')
+        def configXml = new File(workspaceDir, 'build/tmp/generateJooq/config.xml')
         configXml.exists()
 
         def rootNode = new XmlSlurper().parse(configXml)
@@ -155,7 +156,7 @@ class JooqFuncTest extends BaseFuncTest {
         rootNode.generator.generate.emptySchemas == false
 
         and:
-        result.task(':generateSampleJooqSchemaSource')
+        result.task(':generateJooq')
     }
 
     void "successfully applies custom strategies when a submodule is added to the jooqRuntime configuration"() {
@@ -185,7 +186,7 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build')
 
         then:
-        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
     void "parses DSL with variables and methods references"() {
@@ -196,9 +197,10 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build')
 
         then:
-        result.task(':generateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
+    @Ignore
     void "can disable auto-generation of schema source on compilation (generateSchemaSourceOnCompilation #generateSchemaSourceOnCompilation)"() {
         given:
         buildFile.delete()
@@ -208,7 +210,7 @@ class JooqFuncTest extends BaseFuncTest {
         def result = runWithArguments('build')
 
         then:
-        (result.task(':generateSampleJooqSchemaSource') != null) == generateSchemaSourceOnCompilation
+        (result.task(':generateJooq') != null) == generateSchemaSourceOnCompilation
 
         where:
         generateSchemaSourceOnCompilation << [true, false]
@@ -216,20 +218,20 @@ class JooqFuncTest extends BaseFuncTest {
 
     void "can clean sources generated by jooq by calling its clean task rule"() {
         given:
-        buildFile << buildWithJooqPluginDSL('nu.studer.sample', 'src/generated/jooq/sample')
+        buildFile << buildWithJooqPluginDSL('nu.studer.sample', 'src/generated/jooq/main')
 
         when:
         runWithArguments('build')
 
         then:
-        new File(workspaceDir, 'src/generated/jooq/sample/nu/studer/sample/jooq_test/tables/Foo.java').exists()
+        new File(workspaceDir, 'src/generated/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java').exists()
 
         when:
-        def result = runWithArguments('cleanGenerateSampleJooqSchemaSource')
+        def result = runWithArguments('cleanGenerateJooq')
 
         then:
-        !new File(workspaceDir, 'src/generated/jooq/sample/nu/studer/sample/jooq_test/tables/Foo.java').exists()
-        result.task(':cleanGenerateSampleJooqSchemaSource').outcome == TaskOutcome.SUCCESS
+        !new File(workspaceDir, 'src/generated/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java').exists()
+        result.task(':cleanGenerateJooq').outcome == TaskOutcome.SUCCESS
     }
 
     private static String buildWithJooqPluginDSL(String targetPackageName = 'nu.studer.sample', String targetDirectory = null) {
@@ -252,45 +254,47 @@ dependencies {
 jooqVersion = '3.13.2'
 jooqEdition = 'OSS'
 
-jooq {
-   sample(sourceSets.main) {
-       jdbc {
-           driver = 'org.h2.Driver'
-           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-           user = 'sa'
-           password = ''
-       }
-       generator {
-           name = 'org.jooq.codegen.DefaultGenerator'
-           strategy {
-               name = 'org.jooq.codegen.DefaultGeneratorStrategy'
-           }
-           database {
-               name = 'org.jooq.meta.h2.H2Database'
-               includes = '.*'
-               excludes = ''
-               forcedTypes {
-                 forcedType {
-                     name = 'varchar'
-                     expression = '.*'
-                     types = 'JSONB?'
-                 }
-                 forcedType {
-                     name = 'varchar'
-                     expression = '.*'
-                     types = 'INET'
-                 }
-               }
-           }
-           generate {
-               javaTimeTypes = true
-           }
-           target {
-               packageName = '$targetPackageName'
-               ${targetDirectory ? "directory = '$targetDirectory'" : ""}
-           }
-       }
-   }
+jooq2 {
+  main {
+    generationTool {
+      jdbc {
+        driver = 'org.h2.Driver'
+        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+        user = 'sa'
+        password = ''
+      }
+      generator {
+        name = 'org.jooq.codegen.DefaultGenerator'
+        strategy {
+          name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+        }
+        database {
+          name = 'org.jooq.meta.h2.H2Database'
+          includes = '.*'
+          excludes = ''
+          forcedTypes {
+            forcedType {
+              name = 'varchar'
+              expression = '.*'
+              types = 'JSONB?'
+            }
+            forcedType {
+              name = 'varchar'
+              expression = '.*'
+              types = 'INET'
+            }
+          }
+        }
+        generate {
+          javaTimeTypes = true
+        }
+        target {
+          packageName = '$targetPackageName'
+          ${targetDirectory ? "directory = '$targetDirectory'" : ""}
+        }
+      }
+    }
+  }
 }
 """
     }
@@ -315,21 +319,23 @@ dependencies {
 jooqVersion = '3.13.2'
 jooqEdition = 'OSS'
 
-jooq {
-   sample(sourceSets.main) {
-       jdbc {
-           driver = 'org.h2.Driver'
-           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-           user = 'sa'
-           password = ''
-       }
-       generator {
-           name = 'org.jooq.codegen.DefaultGenerator'
-           generate {
-               missing = true
-           }
-       }
-   }
+jooq2 {
+  main {
+    generationTool {
+      jdbc {
+        driver = 'org.h2.Driver'
+        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+        user = 'sa'
+        password = ''
+      }
+      generator {
+        name = 'org.jooq.codegen.DefaultGenerator'
+        generate {
+          missing = true
+        }
+      }
+    }
+  }
 }
 """
     }
@@ -354,17 +360,19 @@ dependencies {
 jooqVersion = '3.13.2'
 jooqEdition = 'OSS'
 
-jooq {
-   sample(sourceSets.main) {
-       jdbc {
-           driver = 'org.h2.Driver'
-           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-           user = 'sa'
-           password = ''
-       }
-       missing {
-       }
-   }
+jooq2 {
+  main {
+    generationTool {
+      jdbc {
+        driver = 'org.h2.Driver'
+        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+        user = 'sa'
+        password = ''
+      }
+      missing {
+      }
+    }
+  }
 }
 """
     }
@@ -387,27 +395,29 @@ dependencies {
     jooqRuntime project(':custom-generator')  // include sub-project that contains the custom generator strategy
 }
 
-jooq {
-   sample(sourceSets.main) {
-       jdbc {
-           driver = 'org.h2.Driver'
-           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-           user = 'sa'
-           password = ''
-       }
-       generator {
-           name = 'org.jooq.codegen.DefaultGenerator'
-           strategy {
-               name = 'nu.studer.sample.SampleGeneratorStrategy'
-           }
-           database {
-               name = 'org.jooq.meta.h2.H2Database'
-           }
-           generate {
-               javaTimeTypes = true
-           }
-       }
-   }
+jooq2 {
+  main {
+    generationTool {
+      jdbc {
+        driver = 'org.h2.Driver'
+        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+        user = 'sa'
+        password = ''
+      }
+      generator {
+        name = 'org.jooq.codegen.DefaultGenerator'
+        strategy {
+          name = 'nu.studer.sample.SampleGeneratorStrategy'
+        }
+        database {
+          name = 'org.jooq.meta.h2.H2Database'
+        }
+        generate {
+          javaTimeTypes = true
+        }
+      }
+    }
+  }
 }
 """
     }
@@ -548,36 +558,38 @@ dependencies {
     jooqRuntime 'com.h2database:h2:1.4.193'
 }
 
-jooq {
-   sample(sourceSets.main) {
-       jdbc {
-           driver = 'org.h2.Driver'
-           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-           user = 'sa'
-           password = ''
-       }
-       generator {
-            strategy {
-                name = null
-                matchers {
-                  tables {
-                    table {
-                        pojoClass {
-                            transform = 'PASCAL'
-                            expression = '\$0_POJO'
-                        }
-                    }
-                  }
+jooq2 {
+  main {
+    generationTool {
+      jdbc {
+        driver = 'org.h2.Driver'
+        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+        user = 'sa'
+        password = ''
+      }
+      generator {
+        strategy {
+          name = null
+          matchers {
+            tables {
+              table {
+                pojoClass {
+                  transform = 'PASCAL'
+                  expression = '\$0_POJO'
                 }
+              }
             }
-            database {
-               name = 'org.jooq.meta.h2.H2Database'
-            }
-            generate {
-               javaTimeTypes = true
-            }
+          }
         }
-   }
+        database {
+          name = 'org.jooq.meta.h2.H2Database'
+        }
+        generate {
+          javaTimeTypes = true
+        }
+      }
+    }
+  }
 }
 """
     }
@@ -605,29 +617,31 @@ def calculateDriver() {
     'org.h2.Driver'
 }
 
-jooq {
-   sample(sourceSets.main) {
-       jdbc {
-           driver = calculateDriver()
-           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-           user = userSA
-           password = ''
-       }
-       generator {
-           name = 'org.jooq.codegen.DefaultGenerator'
-           strategy {
-               name = 'org.jooq.codegen.DefaultGeneratorStrategy'
-           }
-           database {
-               name = 'org.jooq.meta.h2.H2Database'
-               includes = '.*'
-               excludes = ''
-           }
-           generate {
-               javaTimeTypes = true
-           }
-       }
-   }
+jooq2 {
+  main {
+    generationTool {
+      jdbc {
+        driver = calculateDriver()
+        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+        user = userSA
+        password = ''
+      }
+      generator {
+        name = 'org.jooq.codegen.DefaultGenerator'
+        strategy {
+          name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+        }
+        database {
+          name = 'org.jooq.meta.h2.H2Database'
+          includes = '.*'
+          excludes = ''
+        }
+        generate {
+          javaTimeTypes = true
+        }
+      }
+    }
+  }
 }
 """
     }
@@ -651,28 +665,30 @@ dependencies {
 
 jooqVersion = '3.13.2'
 jooqEdition = 'OSS'
-jooqGenerateSchemaSourceOnCompilation = ${generateSchemaSourceOnCompilation}
 
-jooq {
-   sample(sourceSets.main) {
-       jdbc {
-           driver = 'org.h2.Driver'
-           url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-           user = 'sa'
-           password = ''
-       }
-       generator {
-           name = 'org.jooq.codegen.DefaultGenerator'
-           database {
-               name = 'org.jooq.meta.h2.H2Database'
-               includes = '.*'
-               excludes = ''
-           }
-           target {
-               packageName = 'nu.studer.sample'
-           }
-       }
-   }
+jooq2 {
+  main {
+    generateSchemaSourceOnCompilation = ${generateSchemaSourceOnCompilation}
+    generationTool {
+      jdbc {
+        driver = 'org.h2.Driver'
+        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+        user = 'sa'
+        password = ''
+      }
+      generator {
+        name = 'org.jooq.codegen.DefaultGenerator'
+        database {
+          name = 'org.jooq.meta.h2.H2Database'
+          includes = '.*'
+          excludes = ''
+        }
+        target {
+          packageName = 'nu.studer.sample'
+        }
+      }
+    }
+  }
 }
 """
     }
