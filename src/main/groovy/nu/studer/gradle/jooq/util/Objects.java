@@ -22,12 +22,10 @@ import groovy.lang.Closure;
  */
 public final class Objects {
 
-    // todo (etst) reuse this code
-
     /**
      * Applies the given closure to the given delegate.
      *
-     * @param closure  the closure to apply
+     * @param closure the closure to apply
      * @param delegate the delegate that the closure is applied to
      */
     public static void applyClosureToDelegate(Closure<?> closure, Object delegate) {

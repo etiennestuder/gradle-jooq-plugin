@@ -10,6 +10,7 @@ import org.jooq.meta.jaxb.Configuration;
 import javax.inject.Inject;
 
 import static java.lang.String.format;
+import static nu.studer.gradle.jooq.util.Objects.applyClosureToDelegate;
 
 public class JooqConfig {
 
@@ -40,14 +41,7 @@ public class JooqConfig {
     public void generationTool(Closure<?> closure) {
         // apply the given closure to the configuration bridge, i.e. its contained JAXB Configuration object
         JaxbConfigurationBridge delegate = new JaxbConfigurationBridge(jooqConfiguration, format("jooq.%s.generationTool", name));
-        Closure<?> copy = (Closure<?>) closure.clone();
-        copy.setResolveStrategy(Closure.DELEGATE_FIRST);
-        copy.setDelegate(delegate);
-        if (copy.getMaximumNumberOfParameters() == 0) {
-            copy.call();
-        } else {
-            copy.call(delegate);
-        }
+        applyClosureToDelegate(closure, delegate);
     }
 
     @Override
