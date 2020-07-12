@@ -6,6 +6,8 @@ import org.gradle.api.file.Directory;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
+import org.gradle.api.provider.Provider;
+import org.gradle.api.provider.ProviderFactory;
 import org.gradle.api.tasks.Internal;
 import org.jooq.meta.jaxb.Configuration;
 import org.jooq.meta.jaxb.Generator;
@@ -22,17 +24,15 @@ public class JooqConfig {
 
     private final Configuration jooqConfiguration;
     private final Property<Boolean> generateSchemaSourceOnCompilation;
-
-    private final ProjectLayout layout;
+    private final Provider<Directory> outputDir;
 
     @Inject
-    public JooqConfig(String name, ObjectFactory objects, ProjectLayout layout) {
+    public JooqConfig(String name, ObjectFactory objects, ProviderFactory providerFactory, ProjectLayout layout) {
         this.name = name;
 
         this.jooqConfiguration = new Configuration();
         this.generateSchemaSourceOnCompilation = objects.property(Boolean.class).convention(Boolean.TRUE);
-
-        this.layout = layout;
+        this.outputDir = layout.getProjectDirectory().dir(providerFactory.<CharSequence>provider(() -> jooqConfiguration.getGenerator().getTarget().getDirectory()));
 
         // todo (etst) add as property to jooq config
         Directory outputDirectoryName = layout.getBuildDirectory().dir("generated-src/jooq/" + name).get();
@@ -50,8 +50,8 @@ public class JooqConfig {
     }
 
     @Internal
-    public Directory getOutputDir() {
-        return layout.getProjectDirectory().dir(jooqConfiguration.getGenerator().getTarget().getDirectory());
+    public Provider<Directory> getOutputDir() {
+        return outputDir;
     }
 
     @SuppressWarnings("unused")

@@ -22,6 +22,7 @@ import org.gradle.api.file.Directory;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.model.ObjectFactory;
+import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
@@ -128,7 +129,7 @@ public class JooqTask extends DefaultTask {
     }
 
     @OutputDirectory
-    public Directory getOutputDir() {
+    public Provider<Directory> getOutputDir() {
         return config.getOutputDir();
     }
 
