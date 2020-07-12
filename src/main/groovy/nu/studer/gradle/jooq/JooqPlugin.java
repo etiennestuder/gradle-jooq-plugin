@@ -46,7 +46,7 @@ public class JooqPlugin implements Plugin<Project> {
         project.getExtensions().add("jooq", container);
 
         // create configuration for the runtime classpath of the jooq code generator (shared by all jooq configuration domain objects)
-        final Configuration runtimeConfiguration = createJooqRuntimeConfiguration(project);
+        final Configuration runtimeConfiguration = createJooqGeneratorRuntimeConfiguration(project);
 
         // create a rocker task for each rocker configuration domain object
         container.configureEach(config -> {
@@ -94,7 +94,7 @@ public class JooqPlugin implements Plugin<Project> {
      * Adds the configuration that holds the classpath to use for invoking jOOQ. Users can add their JDBC driver and any generator extensions they might have. Explicitly add JAXB
      * dependencies since they have been removed from JDK 9 and higher. Explicitly add Activation dependency since it has been removed from JDK 11 and higher.
      */
-    private static Configuration createJooqRuntimeConfiguration(Project project) {
+    private static Configuration createJooqGeneratorRuntimeConfiguration(Project project) {
         Configuration jooqRuntime = project.getConfigurations().create("jooqRuntime"); // todo (etst) rename to jooqGenerator
         jooqRuntime.setDescription("The classpath used to invoke jOOQ. Add your JDBC driver and generator extensions here.");
         project.getDependencies().add(jooqRuntime.getName(), "org.jooq:jooq-codegen");
