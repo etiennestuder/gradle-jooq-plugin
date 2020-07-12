@@ -1,26 +1,22 @@
 package nu.studer.gradle.jooq;
 
-import nu.studer.gradle.jooq.util.Strings;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ModuleVersionSelector;
-import org.gradle.api.file.Directory;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.util.GradleVersion;
-import org.jooq.meta.jaxb.Generator;
-import org.jooq.meta.jaxb.Target;
 
 import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
-import static nu.studer.gradle.jooq.util.Strings.*;
+import static nu.studer.gradle.jooq.util.Strings.capitalize;
 
 /**
  * Plugin that extends the java-base plugin and registers a {@link JooqTask} for each defined jOOQ configuration. Each task generates the jOOQ source code from the configured
@@ -60,10 +56,6 @@ public class JooqPlugin implements Plugin<Project> {
                 task.setDescription(String.format("Generates the jOOQ sources from the %s jOOQ configuration.", config.name));
                 task.setGroup("jOOQ");
             });
-
-            // todo (etst) add as property to jooq config
-            Directory outputDirectoryName = project.getLayout().getBuildDirectory().dir("generated-src/jooq/" + config.name).get();
-            config.getJooqConfiguration().withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName.getAsFile().getAbsolutePath())));
 
             // add the output of the jooq task as a source directory of the source set with the matching name (which adds an implicit task dependency)
             SourceSetContainer sourceSets = project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets();
