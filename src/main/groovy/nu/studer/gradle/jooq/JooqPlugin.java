@@ -5,6 +5,7 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ModuleVersionSelector;
+import org.gradle.api.file.Directory;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.SourceSetContainer;
@@ -62,7 +63,7 @@ public class JooqPlugin implements Plugin<Project> {
             sourceSets.configureEach(sourceSet -> {
                 if (sourceSet.getName().equals(config.name)) {
                     // todo (etst) use forUseAtConfigurationTime?
-                    sourceSet.getJava().srcDir(config.getGenerateSchemaSourceOnCompilation().get() ? jooq : (Callable) () -> jooq.get().getOutputDirectory());
+                    sourceSet.getJava().srcDir(config.getGenerateSchemaSourceOnCompilation().get() ? jooq : (Callable<Directory>) config::getOutputDir);
                     // todo (etst) add jooq runtime dependency
                 }
             });

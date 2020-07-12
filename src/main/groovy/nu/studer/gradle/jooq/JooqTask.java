@@ -128,8 +128,8 @@ public class JooqTask extends DefaultTask {
     }
 
     @OutputDirectory
-    public Directory getOutputDirectory() {
-        return projectLayout.getProjectDirectory().dir(config.getJooqConfiguration().getGenerator().getTarget().getDirectory());
+    public Directory getOutputDir() {
+        return config.getOutputDir();
     }
 
     @TaskAction

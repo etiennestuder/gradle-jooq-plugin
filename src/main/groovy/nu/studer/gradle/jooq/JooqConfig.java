@@ -23,12 +23,16 @@ public class JooqConfig {
     private final Configuration jooqConfiguration;
     private final Property<Boolean> generateSchemaSourceOnCompilation;
 
+    private final ProjectLayout layout;
+
     @Inject
     public JooqConfig(String name, ObjectFactory objects, ProjectLayout layout) {
         this.name = name;
 
         this.jooqConfiguration = new Configuration();
         this.generateSchemaSourceOnCompilation = objects.property(Boolean.class).convention(Boolean.TRUE);
+
+        this.layout = layout;
 
         // todo (etst) add as property to jooq config
         Directory outputDirectoryName = layout.getBuildDirectory().dir("generated-src/jooq/" + name).get();
@@ -43,6 +47,11 @@ public class JooqConfig {
     @Internal
     public Property<Boolean> getGenerateSchemaSourceOnCompilation() {
         return generateSchemaSourceOnCompilation;
+    }
+
+    @Internal
+    public Directory getOutputDir() {
+        return layout.getProjectDirectory().dir(jooqConfiguration.getGenerator().getTarget().getDirectory());
     }
 
     @SuppressWarnings("unused")
