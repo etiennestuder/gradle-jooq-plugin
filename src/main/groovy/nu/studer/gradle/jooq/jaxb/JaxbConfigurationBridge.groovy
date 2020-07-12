@@ -15,7 +15,6 @@
  */
 package nu.studer.gradle.jooq.jaxb
 
-import nu.studer.gradle.jooq.util.Objects
 import org.gradle.api.InvalidUserDataException
 import org.jooq.Constants
 import org.slf4j.Logger
@@ -24,6 +23,9 @@ import org.slf4j.LoggerFactory
 import javax.xml.bind.annotation.XmlElement
 import java.lang.reflect.Field
 import java.lang.reflect.ParameterizedType
+
+import static nu.studer.gradle.jooq.util.Objects.applyClosureToDelegate
+
 /**
  * Generically maps from a Gradle configuration Closure to a (nested) JAXB configuration target object.
  */
@@ -68,7 +70,7 @@ class JaxbConfigurationBridge {
 
                 // apply the given closure to the target
                 def delegate = new JaxbConfigurationListBridge(methodInvocationResult, nameOfChildren, classOfChildren, "${path}.${methodName}")
-                Objects.applyClosureToDelegate(args[0], delegate)
+                applyClosureToDelegate(args[0], delegate)
             } else {
                 // if the return value is null, create a new instance of the defined return type and set via bean setter method
                 if (!methodInvocationResult) {
@@ -78,11 +80,11 @@ class JaxbConfigurationBridge {
 
                 // apply the given closure to the target
                 def delegate = new JaxbConfigurationBridge(methodInvocationResult, "${path}.${methodName}")
-                Objects.applyClosureToDelegate(args[0], delegate)
+                applyClosureToDelegate(args[0], delegate)
             }
         } else {
             LOGGER.warn("Cannot find configuration container element '$methodName' on '$path'. " +
-                    "Make sure to use the equal sign to set simple configuration property values.")
+                "Make sure to use the equal sign to set simple configuration property values.")
             throw new MissingMethodException(methodName, getClass(), args)
         }
     }

@@ -15,9 +15,10 @@
  */
 package nu.studer.gradle.jooq.jaxb
 
-import nu.studer.gradle.jooq.util.Objects
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+
+import static nu.studer.gradle.jooq.util.Objects.applyClosureToDelegate
 
 /**
  * Generically maps from a Gradle configuration Closure to a (nested) JAXB configuration target list.
@@ -46,12 +47,12 @@ class JaxbConfigurationListBridge {
 
             // apply the given closure to the target
             def delegate = new JaxbConfigurationBridge(child, "${path}.${methodName}")
-            Objects.applyClosureToDelegate(args[0], delegate)
+            applyClosureToDelegate(args[0], delegate)
 
             target
         } else {
             LOGGER.error("Cannot find configuration list element '$methodName' on '$path'. " +
-                    "The expected configuration list element name is '$nameOfChildren'.")
+                "The expected configuration list element name is '$nameOfChildren'.")
             throw new MissingMethodException(methodName, getClass(), args)
         }
     }
