@@ -61,12 +61,8 @@ public class JooqPlugin implements Plugin<Project> {
             SourceSetContainer sourceSets = project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets();
             sourceSets.configureEach(sourceSet -> {
                 if (sourceSet.getName().equals(config.name)) {
-                    boolean generateSchemaSourceOnCompilationProperty = config.getGenerateSchemaSourceOnCompilation().get(); // todo (etst) use forUseAtConfigurationTime?
-                    if (generateSchemaSourceOnCompilationProperty) {
-                        sourceSet.getJava().srcDir(jooq);
-                    } else {
-                        sourceSet.getJava().srcDir((Callable) () -> jooq.get().getOutputDirectory());
-                    }
+                    // todo (etst) use forUseAtConfigurationTime?
+                    sourceSet.getJava().srcDir(config.getGenerateSchemaSourceOnCompilation().get() ? jooq : (Callable) () -> jooq.get().getOutputDirectory());
                     // todo (etst) add jooq runtime dependency
                 }
             });
