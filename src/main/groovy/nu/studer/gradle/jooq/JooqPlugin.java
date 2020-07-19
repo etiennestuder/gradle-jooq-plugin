@@ -1,5 +1,7 @@
 package nu.studer.gradle.jooq;
 
+import nu.studer.gradle.jooq.property.JooqEditionProperty;
+import nu.studer.gradle.jooq.property.JooqVersionProperty;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;

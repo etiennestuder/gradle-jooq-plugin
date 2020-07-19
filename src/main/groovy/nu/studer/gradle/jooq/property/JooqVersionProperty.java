@@ -1,25 +1,25 @@
-package nu.studer.gradle.jooq;
+package nu.studer.gradle.jooq.property;
 
 import org.gradle.api.Project;
 
 import static java.util.Objects.requireNonNull;
 
-final class JooqVersionProperty {
+public final class JooqVersionProperty {
 
     private static final String PROJECT_PROPERTY = "jooqVersion";
     private static final String DEFAULT = "3.13.2";
 
-    final String version;
+    private final String version;
 
     private JooqVersionProperty(String version) {
         this.version = requireNonNull(version);
     }
 
-    static void applyDefaultVersion(Project project) {
+    public static void applyDefaultVersion(Project project) {
         project.getExtensions().getExtraProperties().set(PROJECT_PROPERTY, DEFAULT);
     }
 
-    static JooqVersionProperty fromProject(Project project) {
+    public static JooqVersionProperty fromProject(Project project) {
         return from((String) project.getExtensions().getExtraProperties().get(PROJECT_PROPERTY));
     }
 
@@ -27,7 +27,7 @@ final class JooqVersionProperty {
         return new JooqVersionProperty(version);
     }
 
-    String asVersion() {
+    public String asVersion() {
         return version;
     }
 
