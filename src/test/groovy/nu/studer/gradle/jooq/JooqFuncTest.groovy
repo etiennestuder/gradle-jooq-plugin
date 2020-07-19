@@ -126,7 +126,7 @@ class JooqFuncTest extends BaseFuncTest {
         result.output.contains "Invalid configuration container element: 'missing' on extension 'jooq.main.generationTool'. Please check the current XSD: https://www.jooq.org/xsd/${Constants.XSD_CODEGEN}"
     }
 
-    void "successfully applies custom strategies when a sub project is added to the jooqRuntime configuration"() {
+    void "successfully applies custom strategies when a sub project is added to the jooqGenerator configuration"() {
         given:
         buildFile << buildWithCustomStrategiesOnSubProject()
         createCustomGeneratorSubProject()
@@ -158,7 +158,7 @@ class JooqFuncTest extends BaseFuncTest {
         result.task(':generateJooq')
     }
 
-    void "successfully applies custom strategies when a submodule is added to the jooqRuntime configuration"() {
+    void "successfully applies custom strategies when a submodule is added to the jooqGenerator configuration"() {
         given:
         buildFile << buildWithCustomStrategiesOnSubmodule()
         file('settings.gradle') << "include 'custom-generator'"
@@ -246,7 +246,7 @@ repositories {
 
 dependencies {
     implementation 'org.jooq:jooq'
-    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
 jooqVersion = '3.13.2'
@@ -311,7 +311,7 @@ repositories {
 
 dependencies {
     implementation 'org.jooq:jooq'
-    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
 jooqVersion = '3.13.2'
@@ -352,7 +352,7 @@ repositories {
 
 dependencies {
     implementation 'org.jooq:jooq'
-    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
 jooqVersion = '3.13.2'
@@ -389,8 +389,8 @@ repositories {
 
 dependencies {
     implementation 'org.jooq:jooq'
-    jooqRuntime 'com.h2database:h2:1.4.193'
-    jooqRuntime project(':custom-generator')  // include sub-project that contains the custom generator strategy
+    jooqGenerator 'com.h2database:h2:1.4.193'
+    jooqGenerator project(':custom-generator')  // include sub-project that contains the custom generator strategy
 }
 
 jooq {
@@ -475,8 +475,8 @@ repositories {
 
 dependencies {
     implementation 'org.jooq:jooq'
-    jooqRuntime 'com.h2database:h2:1.4.193'
-    jooqRuntime project(':custom-generator')  // include sub-project that contains the custom generator strategy
+    jooqGenerator 'com.h2database:h2:1.4.193'
+    jooqGenerator project(':custom-generator')  // include sub-project that contains the custom generator strategy
 }
 
 jooq {
@@ -555,7 +555,7 @@ repositories {
 
 dependencies {
     implementation 'org.jooq:jooq'
-    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
 jooq {
@@ -608,7 +608,7 @@ repositories {
 
 dependencies {
     implementation 'org.jooq:jooq'
-    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
 def userSA = 'sa'
@@ -660,7 +660,7 @@ repositories {
 
 dependencies {
     implementation 'org.jooq:jooq'
-    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
 jooqVersion = '3.13.2'
