@@ -1,6 +1,7 @@
 package nu.studer.gradle.jooq;
 
 import nu.studer.gradle.jooq.property.JooqEditionProperty;
+import nu.studer.gradle.jooq.property.JooqGenerateSchemaSourceOnCompilationProperty;
 import nu.studer.gradle.jooq.property.JooqVersionProperty;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Plugin;
@@ -41,6 +42,7 @@ public class JooqPlugin implements Plugin<Project> {
         // allow to configure the jOOQ edition/version and compilation on source code generation via extension property
         JooqEditionProperty.applyDefaultEdition(project);
         JooqVersionProperty.applyDefaultVersion(project);
+        JooqGenerateSchemaSourceOnCompilationProperty.applyDefaultValue(project);
 
         // use the configured jOOQ version on all jOOQ dependencies
         enforceJooqEditionAndVersion(project);
@@ -65,8 +67,8 @@ public class JooqPlugin implements Plugin<Project> {
             SourceSetContainer sourceSets = project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets();
             sourceSets.configureEach(sourceSet -> {
                 if (sourceSet.getName().equals(config.name)) {
-                    // todo (etst) use forUseAtConfigurationTime?
-                    sourceSet.getJava().srcDir(config.getGenerateSchemaSourceOnCompilation().get() ? jooq : (Callable<Provider<Directory>>) config::getOutputDir);
+                    boolean generateSchemaSourceOnCompilation = JooqGenerateSchemaSourceOnCompilationProperty.fromProject(project).asValue();
+                    sourceSet.getJava().srcDir(generateSchemaSourceOnCompilation ? jooq : (Callable<Provider<Directory>>) config::getOutputDir);
                     // todo (etst) add jooq runtime dependency
                 }
             });

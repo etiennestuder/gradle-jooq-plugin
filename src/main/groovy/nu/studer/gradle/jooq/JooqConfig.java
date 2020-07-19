@@ -5,7 +5,6 @@ import nu.studer.gradle.jooq.jaxb.JaxbConfigurationBridge;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.model.ObjectFactory;
-import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
 import org.gradle.api.tasks.Internal;
@@ -23,15 +22,13 @@ public class JooqConfig {
     final String name;
 
     private final Configuration jooqConfiguration;
-    private final Property<Boolean> generateSchemaSourceOnCompilation;
     private final Provider<Directory> outputDir;
 
     @Inject
-    public JooqConfig(String name, ObjectFactory objects, ProviderFactory providerFactory, ProjectLayout layout) {
+    public JooqConfig(String name, ProviderFactory providerFactory, ProjectLayout layout) {
         this.name = name;
 
         this.jooqConfiguration = new Configuration();
-        this.generateSchemaSourceOnCompilation = objects.property(Boolean.class).convention(Boolean.TRUE);
         this.outputDir = layout.getProjectDirectory().dir(providerFactory.<CharSequence>provider(() -> jooqConfiguration.getGenerator().getTarget().getDirectory()));
 
         // todo (etst) add as property to jooq config
@@ -42,11 +39,6 @@ public class JooqConfig {
     @Internal
     public Configuration getJooqConfiguration() {
         return jooqConfiguration;
-    }
-
-    @Internal
-    public Property<Boolean> getGenerateSchemaSourceOnCompilation() {
-        return generateSchemaSourceOnCompilation;
     }
 
     @Internal
@@ -66,7 +58,7 @@ public class JooqConfig {
         return "JooqConfig{" +
             "name='" + name + '\'' +
             ", jooqConfiguration=" + jooqConfiguration +
-            ", generateSchemaSourceOnCompilation=" + generateSchemaSourceOnCompilation +
+            ", outputDir=" + outputDir +
             '}';
     }
 

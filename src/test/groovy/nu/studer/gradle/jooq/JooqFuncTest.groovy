@@ -5,7 +5,6 @@ import org.gradle.testkit.runner.TaskOutcome
 import org.gradle.util.GradleVersion
 import org.jooq.Constants
 import spock.lang.AutoCleanup
-import spock.lang.Ignore
 import spock.lang.Shared
 import spock.lang.Unroll
 
@@ -200,7 +199,6 @@ class JooqFuncTest extends BaseFuncTest {
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
-    @Ignore
     void "can disable auto-generation of schema source on compilation (generateSchemaSourceOnCompilation #generateSchemaSourceOnCompilation)"() {
         given:
         buildFile.delete()
@@ -667,10 +665,10 @@ dependencies {
 
 jooqVersion = '3.13.2'
 jooqEdition = 'OSS'
+jooqGenerateSchemaSourceOnCompilation = ${generateSchemaSourceOnCompilation}
 
 jooq {
   main {
-    generateSchemaSourceOnCompilation = ${generateSchemaSourceOnCompilation}
     generationTool {
       jdbc {
         driver = 'org.h2.Driver'
