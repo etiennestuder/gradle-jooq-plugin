@@ -69,7 +69,7 @@ public class JooqPlugin implements Plugin<Project> {
                 if (sourceSet.getName().equals(config.name)) {
                     boolean generateSchemaSourceOnCompilation = JooqGenerateSchemaSourceOnCompilationProperty.fromProject(project).asValue();
                     sourceSet.getJava().srcDir(generateSchemaSourceOnCompilation ? jooq : (Callable<Provider<Directory>>) config::getOutputDir);
-                    // todo (etst) add jooq runtime dependency
+                    project.getDependencies().add(sourceSet.getImplementationConfigurationName(), "org.jooq:jooq");
                 }
             });
         });

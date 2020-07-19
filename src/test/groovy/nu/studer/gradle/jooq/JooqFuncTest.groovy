@@ -429,7 +429,7 @@ jooq {
 
     }
 
-    def customGeneratorBuildFile() {
+    static def customGeneratorBuildFile() {
         """apply plugin: 'java'
 
 repositories {
@@ -443,7 +443,7 @@ dependencies {
 """
     }
 
-    def sampleGeneratorStrategy() {
+    static def sampleGeneratorStrategy() {
         """package nu.studer.sample;
 
 import org.jooq.codegen.DefaultGeneratorStrategy;
