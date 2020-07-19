@@ -4,7 +4,6 @@ import groovy.lang.Closure;
 import nu.studer.gradle.jooq.jaxb.JaxbConfigurationBridge;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.ProjectLayout;
-import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
 import org.gradle.api.tasks.Internal;
