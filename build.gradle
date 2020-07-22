@@ -20,14 +20,6 @@ dependencies {
     testImplementation 'org.spockframework:spock-junit4:2.0-M3-groovy-2.5'
 }
 
-configurations.all { configuration ->
-    configuration.resolutionStrategy.eachDependency {
-        if (requested.group == 'org.codehaus.groovy') {
-            useVersion '2.5.12'
-        }
-    }
-}
-
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
