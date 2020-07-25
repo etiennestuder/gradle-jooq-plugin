@@ -31,7 +31,7 @@ abstract class BaseFuncTest extends Specification {
     GradleVersion gradleVersion
 
     void setup() {
-        workspaceDir = new File(tempDir.root, specificationContext.currentIteration.name)
+        workspaceDir = new File(tempDir.root, specificationContext.currentIteration.name.replace(':', '.'))
         gradleVersion = determineGradleVersion()
     }
 
