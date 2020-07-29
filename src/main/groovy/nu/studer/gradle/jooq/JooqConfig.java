@@ -31,7 +31,7 @@ public class JooqConfig {
         this.outputDir = layout.getProjectDirectory().dir(providerFactory.<CharSequence>provider(() -> jooqConfiguration.getGenerator().getTarget().getDirectory()));
 
         Directory outputDirectoryName = layout.getBuildDirectory().dir("generated-src/jooq/" + name).get();
-        jooqConfiguration.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName.getAsFile().getAbsolutePath())));
+        jooqConfiguration.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName.getAsFile().getPath())));
     }
 
     @Internal
