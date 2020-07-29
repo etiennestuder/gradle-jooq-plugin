@@ -30,7 +30,6 @@ public class JooqConfig {
         this.jooqConfiguration = new Configuration();
         this.outputDir = layout.getProjectDirectory().dir(providerFactory.<CharSequence>provider(() -> jooqConfiguration.getGenerator().getTarget().getDirectory()));
 
-        // todo (etst) add as property to jooq config
         Directory outputDirectoryName = layout.getBuildDirectory().dir("generated-src/jooq/" + name).get();
         jooqConfiguration.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName.getAsFile().getAbsolutePath())));
     }

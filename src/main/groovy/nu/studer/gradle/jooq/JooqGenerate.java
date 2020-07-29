@@ -85,28 +85,15 @@ public class JooqGenerate extends DefaultTask {
         return runtimeClasspath;
     }
 
-    // todo (etst) move to JooqConfig
     @Input
     public Configuration getNormalizedConfiguration() {
-        if (normalizedConfiguration == null) {
-            normalizedConfiguration = relativizeTo(config.getJooqConfiguration(), projectLayout.getProjectDirectory().getAsFile());
-        }
+        calculateNormalizedConfiguration();
         return normalizedConfiguration;
     }
 
-    private static Configuration relativizeTo(Configuration configuration, File dir) {
-        String directoryValue = configuration.getGenerator().getTarget().getDirectory();
-        if (directoryValue != null) {
-            File file = new File(directoryValue);
-            if (file.isAbsolute()) {
-                String relativized = dir.toURI().relativize(file.toURI()).getPath();
-                if (relativized.endsWith(File.separator)) {
-                    relativized = relativized.substring(0, relativized.length() - 1);
-                }
-                configuration.getGenerator().getTarget().setDirectory(relativized);
-            }
-        }
-        return configuration;
+    @OutputDirectory
+    public Provider<Directory> getOutputDir() {
+        return config.getOutputDir();
     }
 
     @Internal
@@ -127,9 +114,25 @@ public class JooqGenerate extends DefaultTask {
         this.execResultHandler = execResultHandler;
     }
 
-    @OutputDirectory
-    public Provider<Directory> getOutputDir() {
-        return config.getOutputDir();
+    private void calculateNormalizedConfiguration() {
+        if (normalizedConfiguration == null) {
+            normalizedConfiguration = relativizeTo(config.getJooqConfiguration(), projectLayout.getProjectDirectory().getAsFile());
+        }
+    }
+
+    private static Configuration relativizeTo(Configuration configuration, File dir) {
+        String directoryValue = configuration.getGenerator().getTarget().getDirectory();
+        if (directoryValue != null) {
+            File file = new File(directoryValue);
+            if (file.isAbsolute()) {
+                String relativized = dir.toURI().relativize(file.toURI()).getPath();
+                if (relativized.endsWith(File.separator)) {
+                    relativized = relativized.substring(0, relativized.length() - 1);
+                }
+                configuration.getGenerator().getTarget().setDirectory(relativized);
+            }
+        }
+        return configuration;
     }
 
     @TaskAction
