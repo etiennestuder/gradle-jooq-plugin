@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 import static nu.studer.gradle.jooq.util.Strings.capitalize;
 
 /**
- * Plugin that extends the java-base plugin and registers a {@link JooqTask} for each defined jOOQ configuration. Each task generates the jOOQ source code from the configured
- * database. The tasks properly participate in the Gradle up-to-date checks. The tasks are wired as dependencies of the compilation tasks of the JavaBasePlugin plugin.
+ * Plugin that extends the java-base plugin and registers a {@link JooqGenerate} task for each defined jOOQ configuration. Each task generates the jOOQ source code from the
+ * configured database. The tasks properly participate in the Gradle up-to-date checks. The tasks are wired as dependencies of the compilation tasks of the JavaBasePlugin plugin.
  */
 @SuppressWarnings("unused")
 public class JooqPlugin implements Plugin<Project> {
@@ -57,7 +57,7 @@ public class JooqPlugin implements Plugin<Project> {
         // create a rocker task for each rocker configuration domain object
         container.configureEach(config -> {
             String taskName = "generate" + (config.name.equals("main") ? "" : capitalize(config.name)) + "Jooq";
-            TaskProvider<JooqTask> jooq = project.getTasks().register(taskName, JooqTask.class, config, runtimeConfiguration);
+            TaskProvider<JooqGenerate> jooq = project.getTasks().register(taskName, JooqGenerate.class, config, runtimeConfiguration);
             jooq.configure(task -> {
                 task.setDescription(String.format("Generates the jOOQ sources from the %s jOOQ configuration.", config.name));
                 task.setGroup("jOOQ");
