@@ -64,8 +64,9 @@ public final class Objects {
 
         ByteArrayInputStream bis = new ByteArrayInputStream(bas.toByteArray());
         try (ObjectInputStream is = new ObjectInputStream(bis)) {
-            //noinspection unchecked
-            return (T) is.readObject();
+            @SuppressWarnings("unchecked")
+            T clone = (T) is.readObject();
+            return clone;
         } catch (IOException | ClassNotFoundException e) {
             throw new GradleException("Cannot deserialize object: " + obj.getClass(), e);
         }
