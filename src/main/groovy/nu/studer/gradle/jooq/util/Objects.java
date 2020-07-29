@@ -16,6 +16,13 @@
 package nu.studer.gradle.jooq.util;
 
 import groovy.lang.Closure;
+import org.gradle.api.GradleException;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * Utility class.
@@ -36,6 +43,31 @@ public final class Objects {
             copy.call();
         } else {
             copy.call(delegate);
+        }
+    }
+
+    /**
+     * Clones the given object via in-memory object serialization and deserialization.
+     *
+     * @param obj the object to clone
+     * @param <T> the type of the object to clone
+     * @return the cloned object
+     */
+    public static <T> T cloneObject(T obj) {
+        ByteArrayOutputStream bas = new ByteArrayOutputStream();
+        try (ObjectOutputStream os = new ObjectOutputStream(bas)) {
+            os.writeObject(obj);
+            os.flush();
+        } catch (IOException e) {
+            throw new GradleException("Cannot serialize object: " + obj.getClass(), e);
+        }
+
+        ByteArrayInputStream bis = new ByteArrayInputStream(bas.toByteArray());
+        try (ObjectInputStream is = new ObjectInputStream(bis)) {
+            //noinspection unchecked
+            return (T) is.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new GradleException("Cannot deserialize object: " + obj.getClass(), e);
         }
     }
 

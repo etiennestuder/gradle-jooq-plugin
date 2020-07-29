@@ -50,6 +50,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static nu.studer.gradle.jooq.util.Objects.cloneObject;
+
 /**
  * Gradle Task that runs the jOOQ source code generation.
  */
@@ -87,7 +89,7 @@ public class JooqGenerate extends DefaultTask {
 
     @Input
     public Configuration getNormalizedConfiguration() {
-        calculateNormalizedConfiguration();
+        normalizeConfiguration();
         return normalizedConfiguration;
     }
 
@@ -114,9 +116,10 @@ public class JooqGenerate extends DefaultTask {
         this.execResultHandler = execResultHandler;
     }
 
-    private void calculateNormalizedConfiguration() {
+    private void normalizeConfiguration() {
         if (normalizedConfiguration == null) {
-            normalizedConfiguration = relativizeTo(config.getJooqConfiguration(), projectLayout.getProjectDirectory().getAsFile());
+            Configuration clonedJooqConfiguration = cloneObject(config.getJooqConfiguration());
+            normalizedConfiguration = relativizeTo(clonedJooqConfiguration, projectLayout.getProjectDirectory().getAsFile());
         }
     }
 
@@ -141,7 +144,7 @@ public class JooqGenerate extends DefaultTask {
         File configFile = new File(getTemporaryDir(), "config.xml");
 
         // write jOOQ code generation configuration to config file
-        writeConfiguration(getNormalizedConfiguration(), configFile);
+        writeConfiguration(config.getJooqConfiguration(), configFile);
 
         // generate the jOOQ Java sources files using the written config file
         ExecResult execResult = executeJooq(configFile);
