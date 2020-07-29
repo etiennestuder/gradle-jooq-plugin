@@ -98,6 +98,7 @@ class JaxbConfigurationBridge {
     }
 
     def propertyMissing(String name) {
+        // todo (etst) resolve properly
         target."$name"
     }
 

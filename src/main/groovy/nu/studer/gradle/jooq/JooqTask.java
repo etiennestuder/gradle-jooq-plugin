@@ -53,6 +53,7 @@ import java.io.OutputStream;
 /**
  * Gradle Task that runs the jOOQ source code generation.
  */
+// todo (etst) rename to JooqGenerate
 @SuppressWarnings("UnstableApiUsage")
 public class JooqTask extends DefaultTask {
 
