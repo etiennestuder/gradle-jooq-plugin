@@ -23,6 +23,7 @@ class JooqFuncTest extends BaseFuncTest {
         sql.execute('CREATE TABLE IF NOT EXISTS jooq_test.foo (a INT);')
     }
 
+    @SuppressWarnings(['SqlNoDataSourceInspection', 'SqlResolve'])
     void cleanupSpec() {
         sql.execute('DROP TABLE jooq_test.foo')
         sql.execute('DROP SCHEMA jooq_test')
@@ -297,6 +298,44 @@ task dummy {}
         then:
         !fileExists('src/generated/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
         result.task(':cleanGenerateJooq').outcome == TaskOutcome.SUCCESS
+    }
+
+    void "can normalize jooq configuration input property"() {
+        given:
+        def packageIgnoringConfigNormalization = """
+generateJooq {
+  generationToolConfigNormalization = { org.jooq.meta.jaxb.Configuration c ->
+    c.generator.target.packageName = ''
+  }
+}
+"""
+
+        when: // apply normalization
+        buildFile << buildWithJooqPluginDSL('some.place')
+        buildFile << packageIgnoringConfigNormalization
+        def result = runWithArguments('generateJooq')
+
+        then:
+        fileExists('build/generated-src/jooq/main/some/place/jooq_test/tables/Foo.java')
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+
+        when: // apply normalization
+        buildFile.delete()
+        buildFile << buildWithJooqPluginDSL('some.other.place')
+        buildFile << packageIgnoringConfigNormalization
+        result = runWithArguments('generateJooq')
+
+        then:
+        result.task(':generateJooq').outcome == TaskOutcome.UP_TO_DATE
+
+        when: // do not apply normalization
+        buildFile.delete()
+        buildFile << buildWithJooqPluginDSL('yet.another.place')
+        result = runWithArguments('generateJooq')
+
+        then:
+        fileExists('build/generated-src/jooq/main/yet/another/place/jooq_test/tables/Foo.java')
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
     void "can customize java execution and handle execution result"() {

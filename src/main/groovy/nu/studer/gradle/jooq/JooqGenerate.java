@@ -60,11 +60,14 @@ public class JooqGenerate extends DefaultTask {
     private final JooqConfig config;
     private final ConfigurableFileCollection runtimeClasspath;
     private Configuration normalizedConfiguration;
+    private Action<? super Configuration> generationToolConfigNormalization;
     private Action<? super JavaExecSpec> javaExecSpec;
     private Action<? super ExecResult> execResultHandler;
 
     private final ProjectLayout projectLayout;
     private final ExecOperations execOperations;
+
+    private static final Action<Configuration> OUTPUT_DIRECTORY_NORMALIZATION = c -> c.getGenerator().getTarget().setDirectory(null);
 
     @Inject
     public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProjectLayout projectLayout, ExecOperations execOperations) {
@@ -116,10 +119,22 @@ public class JooqGenerate extends DefaultTask {
         this.execResultHandler = execResultHandler;
     }
 
+    @Internal
+    public Action<? super Configuration> getGenerationToolConfigNormalization() {
+        return generationToolConfigNormalization;
+    }
+
+    public void setGenerationToolConfigNormalization(Action<? super Configuration> generationToolConfigNormalization) {
+        this.generationToolConfigNormalization = generationToolConfigNormalization;
+    }
+
     private void normalizeConfiguration() {
         if (normalizedConfiguration == null) {
             Configuration clonedConfiguration = cloneObject(config.getJooqConfiguration());
-            clonedConfiguration.getGenerator().getTarget().setDirectory(null);
+            OUTPUT_DIRECTORY_NORMALIZATION.execute(clonedConfiguration);
+            if (generationToolConfigNormalization != null) {
+                generationToolConfigNormalization.execute(clonedConfiguration);
+            }
             normalizedConfiguration = clonedConfiguration;
         }
     }
