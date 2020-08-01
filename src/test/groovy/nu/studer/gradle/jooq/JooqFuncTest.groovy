@@ -178,8 +178,8 @@ afterEvaluate {
         def result = runWithArguments('dependencies')
 
         then:
-        result.output.contains('org.jooq:jooq-codegen -> org.jooq.trial:jooq-codegen:3.13.2')
-        result.output.contains('org.jooq:jooq -> org.jooq.trial:jooq:3.13.2')
+        result.output.contains('org.jooq:jooq-codegen -> org.jooq.trial:jooq-codegen:3.13.4')
+        result.output.contains('org.jooq:jooq -> org.jooq.trial:jooq:3.13.4')
     }
 
     void "supports task avoidance"() {
@@ -496,7 +496,7 @@ dependencies {
     jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
-jooqVersion = '3.13.2'
+jooqVersion = '3.13.4'
 jooqEdition = 'OSS'
 
 jooq {
@@ -557,7 +557,7 @@ dependencies {
     jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
-jooqVersion = '3.13.2'
+jooqVersion = '3.13.4'
 jooqEdition = 'OSS'
 
 jooq {
@@ -598,7 +598,7 @@ dependencies {
     jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
-jooqVersion = '3.13.2'
+jooqVersion = '3.13.4'
 jooqEdition = 'OSS'
 
 jooq {
@@ -672,7 +672,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq-codegen:3.13.2'
+    implementation 'org.jooq:jooq-codegen:3.13.4'
 }
 """
     }

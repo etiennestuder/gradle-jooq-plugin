@@ -50,7 +50,7 @@ This plugin supports existing and future jOOQ versions. It also supports the dif
 
 ```groovy
 jooq {
-  version = '3.13.1' // the default (can be omitted)
+  version = '3.13.4' // the default (can be omitted)
   edition = 'OSS'    // the default (can be omitted), other allowed values are PRO, PRO_JAVA_8, PRO_JAVA_6, TRIAL, TRIAL_JAVA_8, TRIAL_JAVA_6
 }
 ```
@@ -106,7 +106,7 @@ See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.13.0.xsd) for the ful
 
 ```groovy
 jooq {
-  version = '3.13.1'
+  version = '3.13.4'
   edition = 'OSS'
   generateSchemaSourceOnCompilation = true
   sample(sourceSets.main) {
@@ -228,8 +228,8 @@ in the whole XSD, so this workaround only needs to be applied here.
 ### Defining the jOOQ version when the Spring boot plugin is applied
 
 When applying the [spring-boot-gradle-plugin](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin),
-it is not sufficient to declared the jOOQ version that you want to pull in via `jooq.version = '3.13.1'` since the dependency management rules of the spring-boot-gradle-plugin
-take precedence. You also have to set `ext['jooq.version'] = '3.13.1'` to pull in your requested version of jOOQ.
+it is not sufficient to declare the jOOQ version that you want to pull in via `jooq.version = '3.13.4'` since the dependency management rules of the spring-boot-gradle-plugin
+take precedence. You also have to set `ext['jooq.version'] = '3.13.4'` to pull in your requested version of jOOQ.
 
 ### Generating sources into shared folders, e.g. src/main/java
 

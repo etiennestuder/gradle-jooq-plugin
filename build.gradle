@@ -8,7 +8,7 @@ group = 'nu.studer'
 version = '4.3-DEV'
 
 dependencies {
-    implementation 'org.jooq:jooq-codegen:3.13.2'
+    implementation 'org.jooq:jooq-codegen:3.13.4'
 
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation 'javax.activation:activation:1.1.1'

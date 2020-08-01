@@ -7,7 +7,7 @@ import static java.util.Objects.requireNonNull;
 public final class JooqVersionProperty {
 
     private static final String PROJECT_PROPERTY = "jooqVersion";
-    private static final String DEFAULT = "3.13.2";
+    private static final String DEFAULT = "3.13.4";
 
     private final String version;
 
