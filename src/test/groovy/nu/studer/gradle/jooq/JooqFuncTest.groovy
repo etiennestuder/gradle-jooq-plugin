@@ -476,6 +476,7 @@ ${jooqEdition != null ? "jooqEdition = nu.studer.gradle.jooq.JooqEdition.${jooqE
 jooq {
   main {
     generationTool {
+      logging = org.jooq.meta.jaxb.Logging.WARN
       jdbc {
         driver = 'org.h2.Driver'
         url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
@@ -541,6 +542,7 @@ jooqEdition = 'OSS'
 jooq {
   main {
     generationTool {
+      logging = org.jooq.meta.jaxb.Logging.WARN
       jdbc {
         driver = 'org.h2.Driver'
         url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
@@ -559,6 +561,7 @@ jooq {
   }
   sample {
     generationTool {
+      logging = org.jooq.meta.jaxb.Logging.WARN
       jdbc {
         driver = 'org.h2.Driver'
         url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
@@ -602,6 +605,7 @@ jooqEdition = 'OSS'
 jooq {
   main {
     generationTool {
+      logging = org.jooq.meta.jaxb.Logging.WARN
       jdbc {
         driver = 'org.h2.Driver'
         url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
@@ -643,6 +647,7 @@ jooqEdition = 'OSS'
 jooq {
   main {
     generationTool {
+      logging = org.jooq.meta.jaxb.Logging.WARN
       jdbc {
         driver = 'org.h2.Driver'
         url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
@@ -678,6 +683,7 @@ dependencies {
 jooq {
   main {
     generationTool {
+      logging = org.jooq.meta.jaxb.Logging.WARN
       jdbc {
         driver = 'org.h2.Driver'
         url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
@@ -755,6 +761,7 @@ dependencies {
 jooq {
   main {
     generationTool {
+      logging = org.jooq.meta.jaxb.Logging.WARN
       jdbc {
         driver = 'org.h2.Driver'
         url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
@@ -814,6 +821,7 @@ def calculateDriver() {
 jooq {
   main {
     generationTool {
+      logging = org.jooq.meta.jaxb.Logging.WARN
       jdbc {
         driver = calculateDriver()
         url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
