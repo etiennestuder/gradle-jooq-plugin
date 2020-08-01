@@ -118,24 +118,10 @@ public class JooqGenerate extends DefaultTask {
 
     private void normalizeConfiguration() {
         if (normalizedConfiguration == null) {
-            Configuration clonedJooqConfiguration = cloneObject(config.getJooqConfiguration());
-            normalizedConfiguration = relativizeTo(clonedJooqConfiguration, projectLayout.getProjectDirectory().getAsFile());
+            Configuration clonedConfiguration = cloneObject(config.getJooqConfiguration());
+            clonedConfiguration.getGenerator().getTarget().setDirectory(null);
+            normalizedConfiguration = clonedConfiguration;
         }
-    }
-
-    private static Configuration relativizeTo(Configuration configuration, File dir) {
-        String directoryValue = configuration.getGenerator().getTarget().getDirectory();
-        if (directoryValue != null) {
-            File file = new File(directoryValue);
-            if (file.isAbsolute()) {
-                String relativized = dir.toURI().relativize(file.toURI()).getPath();
-                if (relativized.endsWith(File.separator)) {
-                    relativized = relativized.substring(0, relativized.length() - 1);
-                }
-                configuration.getGenerator().getTarget().setDirectory(relativized);
-            }
-        }
-        return configuration;
     }
 
     @TaskAction
