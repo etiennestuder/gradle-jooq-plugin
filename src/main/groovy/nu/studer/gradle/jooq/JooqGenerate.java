@@ -141,6 +141,9 @@ public class JooqGenerate extends DefaultTask {
 
     @TaskAction
     public void generate() {
+        // set target directory to the defined default value if no explicit value has been configured
+        config.getJooqConfiguration().getGenerator().getTarget().setDirectory(config.getOutputDir().get().getAsFile().getAbsolutePath());
+
         // define a config file to which the jOOQ code generation configuration is written to
         File configFile = new File(getTemporaryDir(), "config.xml");
 

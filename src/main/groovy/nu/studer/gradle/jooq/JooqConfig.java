@@ -27,11 +27,9 @@ public class JooqConfig {
     public JooqConfig(String name, ProviderFactory providerFactory, ProjectLayout layout) {
         this.name = name;
 
-        this.jooqConfiguration = new Configuration();
-        this.outputDir = layout.getProjectDirectory().dir(providerFactory.<CharSequence>provider(() -> jooqConfiguration.getGenerator().getTarget().getDirectory()));
-
-        Directory outputDirectoryName = layout.getBuildDirectory().dir("generated-src/jooq/" + name).get();
-        jooqConfiguration.withGenerator(new Generator().withTarget(new Target().withDirectory(outputDirectoryName.getAsFile().getPath())));
+        this.jooqConfiguration = new Configuration().withGenerator(new Generator().withTarget(new Target().withDirectory(null)));
+        this.outputDir = layout.getProjectDirectory().dir(providerFactory.<CharSequence>provider(() -> jooqConfiguration.getGenerator().getTarget().getDirectory()))
+            .orElse(layout.getBuildDirectory().dir("generated-src/jooq/" + name));
     }
 
     @Internal
