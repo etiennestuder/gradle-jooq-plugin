@@ -304,7 +304,7 @@ task dummy {}
         given:
         def packageIgnoringConfigNormalization = """
 generateJooq {
-  generationToolConfigNormalization = { org.jooq.meta.jaxb.Configuration c ->
+  generationToolNormalization = { org.jooq.meta.jaxb.Configuration c ->
     c.generator.target.packageName = ''
   }
 }
