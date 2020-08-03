@@ -15,6 +15,10 @@ import java.sql.DriverManager
 @Unroll
 class JooqFuncTest extends BaseFuncTest {
 
+    private static final CACHE_JOOQ_TASK = """
+generateJooq.outputs.cacheIf { true }
+"""
+
     @AutoCleanup
     @Shared
     Sql sql
@@ -269,9 +273,7 @@ task dummy {}
     void "task output is cacheable if jooq generate task is marked as cacheable"() {
         given:
         buildFile << buildWithJooqPluginDSL()
-        buildFile << """
-generateJooq.outputs.cacheIf { true }
-"""
+        buildFile << CACHE_JOOQ_TASK
 
         when:
         def result = runWithArguments('generateJooq', '--build-cache')
@@ -288,20 +290,20 @@ generateJooq.outputs.cacheIf { true }
 
     void "task inputs are relocatable if jooq generate task is marked as cacheable"() {
         given:
-        buildFile << buildWithJooqPluginDSL()
-        buildFile << """
-generateJooq.outputs.cacheIf { true }
-"""
+        buildFile << buildWithJooqPluginDSL(null, new File(workspaceDir, 'src/generated/jooq').absolutePath)
+        buildFile << CACHE_JOOQ_TASK
 
         and:
-        def otherSettingsFile = file('other/settings.gradle')
+        def otherProject = 'other'
+        def otherSettingsFile = file("$otherProject/settings.gradle")
         Files.copy(settingsFile.toPath(), otherSettingsFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
 
-        def otherBuildFile = file('other/build.gradle')
-        Files.copy(buildFile.toPath(), otherBuildFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        def otherBuildFile = file("$otherProject/build.gradle")
+        otherBuildFile << buildWithJooqPluginDSL(null, new File(workspaceDir, "$otherProject/src/generated/jooq").absolutePath)
+        otherBuildFile << CACHE_JOOQ_TASK
 
         when:
-        def result = gradleRunner('generateJooq', '--build-cache', '-i')
+        def result = gradleRunner('generateJooq', '--build-cache')
             .withProjectDir(workspaceDir)
             .build()
 
@@ -309,8 +311,8 @@ generateJooq.outputs.cacheIf { true }
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
 
         when:
-        result = gradleRunner('generateJooq', '--build-cache','-i')
-            .withProjectDir(new File(workspaceDir, 'other'))
+        result = gradleRunner('generateJooq', '--build-cache')
+            .withProjectDir(new File(workspaceDir, otherProject))
             .build()
 
         then:
