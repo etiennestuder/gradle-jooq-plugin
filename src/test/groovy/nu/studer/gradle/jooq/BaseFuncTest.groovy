@@ -53,7 +53,7 @@ buildCache {
         gradleRunner(args).buildAndFail()
     }
 
-    private GradleRunner gradleRunner(String... args) {
+    protected GradleRunner gradleRunner(String... args) {
         GradleRunner.create()
             .withPluginClasspath()
             .withTestKitDir(testKitDir)

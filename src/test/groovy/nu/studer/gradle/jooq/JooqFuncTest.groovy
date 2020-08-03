@@ -8,6 +8,8 @@ import spock.lang.AutoCleanup
 import spock.lang.Shared
 import spock.lang.Unroll
 
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
 import java.sql.DriverManager
 
 @Unroll
@@ -279,6 +281,37 @@ generateJooq.outputs.cacheIf { true }
 
         when:
         result = runWithArguments('cleanGenerateJooq', 'generateJooq', '--build-cache')
+
+        then:
+        result.task(':generateJooq').outcome == TaskOutcome.FROM_CACHE
+    }
+
+    void "task inputs are relocatable if jooq generate task is marked as cacheable"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+        buildFile << """
+generateJooq.outputs.cacheIf { true }
+"""
+
+        and:
+        def otherSettingsFile = file('other/settings.gradle')
+        Files.copy(settingsFile.toPath(), otherSettingsFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+
+        def otherBuildFile = file('other/build.gradle')
+        Files.copy(buildFile.toPath(), otherBuildFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+
+        when:
+        def result = gradleRunner('generateJooq', '--build-cache', '-i')
+            .withProjectDir(workspaceDir)
+            .build()
+
+        then:
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+
+        when:
+        result = gradleRunner('generateJooq', '--build-cache','-i')
+            .withProjectDir(new File(workspaceDir, 'other'))
+            .build()
 
         then:
         result.task(':generateJooq').outcome == TaskOutcome.FROM_CACHE
