@@ -8,17 +8,14 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ModuleVersionSelector;
-import org.gradle.api.file.Directory;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.plugins.JavaPluginConvention;
-import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.util.GradleVersion;
 
 import java.util.Arrays;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 import static nu.studer.gradle.jooq.util.Strings.capitalize;
@@ -67,8 +64,7 @@ public class JooqPlugin implements Plugin<Project> {
             SourceSetContainer sourceSets = project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets();
             sourceSets.configureEach(sourceSet -> {
                 if (sourceSet.getName().equals(config.name)) {
-                    boolean generateSchemaSourceOnCompilation = JooqGenerateSchemaSourceOnCompilationProperty.fromProject(project).asValue();
-                    sourceSet.getJava().srcDir(generateSchemaSourceOnCompilation ? jooq : (Callable<Provider<Directory>>) config::getOutputDir);
+                    sourceSet.getJava().srcDir(config.getGenerateSchemaSourceOnCompilation().flatMap(b -> b ? jooq : config.getOutputDir()));
                     project.getDependencies().add(sourceSet.getImplementationConfigurationName(), "org.jooq:jooq");
                 }
             });

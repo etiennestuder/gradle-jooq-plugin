@@ -578,12 +578,12 @@ dependencies {
     jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
-${generateSchemaSourceOnCompilation != null ? "jooqGenerateSchemaSourceOnCompilation = $generateSchemaSourceOnCompilation" : ""}
 ${jooqVersion != null ? "jooqVersion = '$jooqVersion'" : ""}
 ${jooqEdition != null ? "jooqEdition = nu.studer.gradle.jooq.JooqEdition.${jooqEdition.name()}" : ""}
 
 jooq {
   main {
+    ${generateSchemaSourceOnCompilation != null ? "generateSchemaSourceOnCompilation = $generateSchemaSourceOnCompilation" : ""}
     generationTool {
       logging = org.jooq.meta.jaxb.Logging.WARN
       jdbc {
