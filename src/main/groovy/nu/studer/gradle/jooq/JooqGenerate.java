@@ -22,7 +22,9 @@ import org.gradle.api.file.Directory;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.model.ObjectFactory;
+import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
+import org.gradle.api.provider.ProviderFactory;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
@@ -59,7 +61,7 @@ public class JooqGenerate extends DefaultTask {
 
     private final JooqConfig config;
     private final ConfigurableFileCollection runtimeClasspath;
-    private Configuration normalizedConfiguration;
+    private final Provider<Configuration> normalizedConfiguration;
     private Action<? super Configuration> generationToolNormalization;
     private Action<? super JavaExecSpec> javaExecSpec;
     private Action<? super ExecResult> execResultHandler;
@@ -70,12 +72,27 @@ public class JooqGenerate extends DefaultTask {
     private static final Action<Configuration> OUTPUT_DIRECTORY_NORMALIZATION = c -> c.getGenerator().getTarget().setDirectory(null);
 
     @Inject
-    public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProjectLayout projectLayout, ExecOperations execOperations) {
+    public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations) {
         this.config = config;
         this.runtimeClasspath = objects.fileCollection().from(runtimeClasspath);
+        this.normalizedConfiguration = normalizedConfigurationProvider(config, objects, providers);
 
         this.projectLayout = projectLayout;
         this.execOperations = execOperations;
+    }
+
+    private Provider<Configuration> normalizedConfigurationProvider(JooqConfig config, ObjectFactory objects, ProviderFactory providers) {
+        Property<Configuration> normalizedConfiguration = objects.property(Configuration.class);
+        normalizedConfiguration.set(providers.provider(() -> {
+            Configuration clonedConfiguration = cloneObject(config.getJooqConfiguration());
+            OUTPUT_DIRECTORY_NORMALIZATION.execute(clonedConfiguration);
+            if (generationToolNormalization != null) {
+                generationToolNormalization.execute(clonedConfiguration);
+            }
+            return clonedConfiguration;
+        }));
+        normalizedConfiguration.finalizeValueOnRead();
+        return normalizedConfiguration;
     }
 
     @SuppressWarnings("unused")
@@ -91,8 +108,7 @@ public class JooqGenerate extends DefaultTask {
     }
 
     @Input
-    public Configuration getNormalizedConfiguration() {
-        normalizeConfiguration();
+    public Provider<Configuration> getNormalizedConfiguration() {
         return normalizedConfiguration;
     }
 
@@ -126,17 +142,6 @@ public class JooqGenerate extends DefaultTask {
 
     public void setGenerationToolNormalization(Action<? super Configuration> generationToolNormalization) {
         this.generationToolNormalization = generationToolNormalization;
-    }
-
-    private void normalizeConfiguration() {
-        if (normalizedConfiguration == null) {
-            Configuration clonedConfiguration = cloneObject(config.getJooqConfiguration());
-            OUTPUT_DIRECTORY_NORMALIZATION.execute(clonedConfiguration);
-            if (generationToolNormalization != null) {
-                generationToolNormalization.execute(clonedConfiguration);
-            }
-            normalizedConfiguration = clonedConfiguration;
-        }
     }
 
     @TaskAction
