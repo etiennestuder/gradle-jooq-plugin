@@ -22,6 +22,7 @@ public class JooqExtension {
         this.configurations = objects.domainObjectContainer(JooqConfig.class, name -> objects.newInstance(JooqConfig.class, name));
 
         version.finalizeValueOnRead();
+        edition.finalizeValueOnRead();
     }
 
     @SuppressWarnings("unused")
