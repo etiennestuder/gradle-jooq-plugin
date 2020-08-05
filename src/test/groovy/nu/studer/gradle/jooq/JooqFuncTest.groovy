@@ -116,14 +116,14 @@ jooq {
     create("main") {
         jooqConfiguration.apply {
             logging = Logging.WARN
-            jdbc = Jdbc().apply {
+            jdbc.apply {
                 driver = "org.h2.Driver"
                 url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
                 user = "sa"
                 password = ""
             }
             generator.apply {
-                database = Database().apply {
+                database.apply {
                     name = "org.jooq.meta.h2.H2Database"
                     includes = ".*"
                     excludes = ""

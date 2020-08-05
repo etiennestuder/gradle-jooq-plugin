@@ -9,7 +9,11 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
 import org.jooq.meta.jaxb.Configuration;
+import org.jooq.meta.jaxb.Database;
+import org.jooq.meta.jaxb.Generate;
 import org.jooq.meta.jaxb.Generator;
+import org.jooq.meta.jaxb.Jdbc;
+import org.jooq.meta.jaxb.Strategy;
 import org.jooq.meta.jaxb.Target;
 
 import javax.inject.Inject;
@@ -29,11 +33,24 @@ public class JooqConfig {
     public JooqConfig(String name, ObjectFactory objects, ProviderFactory providers, ProjectLayout layout) {
         this.name = name;
 
-        this.jooqConfiguration = new Configuration().withGenerator(new Generator().withTarget(new Target().withDirectory(null)));
+        this.jooqConfiguration = jooqDefaultConfiguration();
         this.generateSchemaSourceOnCompilation = objects.property(Boolean.class).convention(true);
         this.outputDir = layout.getProjectDirectory()
-            .dir(providers.<CharSequence>provider(() -> jooqConfiguration.getGenerator() != null ? jooqConfiguration.getGenerator().getTarget() != null ? jooqConfiguration.getGenerator().getTarget().getDirectory() : null : null))
+            .dir(providers.<CharSequence>provider(() -> jooqConfiguration.getGenerator().getTarget().getDirectory()))
             .orElse(layout.getBuildDirectory().dir("generated-src/jooq/" + name));
+    }
+
+    private Configuration jooqDefaultConfiguration() {
+        return new Configuration()
+            .withJdbc(new Jdbc())
+            .withGenerator(new Generator()
+                .withStrategy(new Strategy())
+                .withDatabase(new Database())
+                .withGenerate(new Generate())
+                .withTarget(new Target()
+                    .withDirectory(null)
+                )
+            );
     }
 
     public Configuration getJooqConfiguration() {
