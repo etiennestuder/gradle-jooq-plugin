@@ -60,8 +60,8 @@ import static nu.studer.gradle.jooq.util.Objects.cloneObject;
 public class JooqGenerate extends DefaultTask {
 
     private final Configuration jooqConfiguration;
+    private final Provider<Configuration> normalizedJooqConfiguration;
     private final ConfigurableFileCollection runtimeClasspath;
-    private final Provider<Configuration> normalizedConfiguration;
     private final DirectoryProperty outputDir;
     private Action<? super Configuration> generationToolNormalization;
     private Action<? super JavaExecSpec> javaExecSpec;
@@ -75,15 +75,15 @@ public class JooqGenerate extends DefaultTask {
     @Inject
     public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations) {
         this.jooqConfiguration = config.getJooqConfiguration();
+        this.normalizedJooqConfiguration = normalizedJooqConfigurationProvider(objects, providers);
         this.runtimeClasspath = objects.fileCollection().from(runtimeClasspath);
-        this.normalizedConfiguration = normalizedConfigurationProvider(objects, providers);
         this.outputDir = objects.directoryProperty().value(config.getOutputDir());
 
         this.projectLayout = projectLayout;
         this.execOperations = execOperations;
     }
 
-    private Provider<Configuration> normalizedConfigurationProvider(ObjectFactory objects, ProviderFactory providers) {
+    private Provider<Configuration> normalizedJooqConfigurationProvider(ObjectFactory objects, ProviderFactory providers) {
         Property<Configuration> normalizedConfiguration = objects.property(Configuration.class);
         normalizedConfiguration.set(providers.provider(() -> {
             Configuration clonedConfiguration = cloneObject(jooqConfiguration);
@@ -97,15 +97,14 @@ public class JooqGenerate extends DefaultTask {
         return normalizedConfiguration;
     }
 
-    @SuppressWarnings("unused")
+    @Input
+    public Provider<Configuration> getNormalizedJooqConfiguration() {
+        return normalizedJooqConfiguration;
+    }
+
     @Classpath
     public ConfigurableFileCollection getRuntimeClasspath() {
         return runtimeClasspath;
-    }
-
-    @Input
-    public Provider<Configuration> getNormalizedConfiguration() {
-        return normalizedConfiguration;
     }
 
     @OutputDirectory
