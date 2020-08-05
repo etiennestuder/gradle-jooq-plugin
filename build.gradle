@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'nu.studer'
-version = '4.3-DEV'
+version = '5.0-DEV'
 
 dependencies {
     implementation 'org.jooq:jooq-codegen:3.13.4'
