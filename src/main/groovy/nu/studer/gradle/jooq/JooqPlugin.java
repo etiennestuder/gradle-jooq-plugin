@@ -1,7 +1,6 @@
 package nu.studer.gradle.jooq;
 
 import nu.studer.gradle.jooq.property.JooqEditionProperty;
-import nu.studer.gradle.jooq.property.JooqVersionProperty;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
@@ -36,10 +35,6 @@ public class JooqPlugin implements Plugin<Project> {
 
         // allow to configure the jOOQ edition/version and compilation on source code generation via extension property
         JooqEditionProperty.applyDefaultEdition(project);
-        JooqVersionProperty.applyDefaultVersion(project);
-
-        // use the configured jOOQ version on all jOOQ dependencies
-        enforceJooqEditionAndVersion(project);
 
         // add jOOQ DSL extension
         JooqExtension jooqExtension = project.getExtensions().create("jooq", JooqExtension.class);
@@ -65,19 +60,22 @@ public class JooqPlugin implements Plugin<Project> {
                 }
             });
         });
+
+        // use the configured jOOQ version and edition on all jOOQ dependencies
+        enforceJooqEditionAndVersion(project, jooqExtension);
     }
 
     /**
      * Forces the jOOQ version and edition selected by the user throughout all dependency configurations.
      */
-    private static void enforceJooqEditionAndVersion(Project project) {
+    private static void enforceJooqEditionAndVersion(Project project, JooqExtension jooqExtension) {
         Set<String> jooqGroupIds = Arrays.stream(JooqEdition.values()).map(JooqEdition::getGroupId).collect(Collectors.toSet());
         project.getConfigurations().configureEach(configuration ->
             configuration.getResolutionStrategy().eachDependency(details -> {
                 ModuleVersionSelector requested = details.getRequested();
                 if (jooqGroupIds.contains(requested.getGroup()) && requested.getName().startsWith("jooq")) {
                     String group = JooqEditionProperty.fromProject(project).asGroupId();
-                    String version = JooqVersionProperty.fromProject(project).asVersion();
+                    String version = jooqExtension.getVersion().get();
                     details.useTarget(group + ":" + requested.getName() + ":" + version);
                 }
             })

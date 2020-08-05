@@ -2,16 +2,28 @@ package nu.studer.gradle.jooq;
 
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.model.ObjectFactory;
+import org.gradle.api.provider.Property;
 
 import javax.inject.Inject;
 
 public class JooqExtension {
 
+    private static final String DEFAULT_VERSION = "3.13.4";
+
+    private final Property<String> version;
     private final NamedDomainObjectContainer<JooqConfig> configurations;
 
     @Inject
     public JooqExtension(ObjectFactory objects) {
+        this.version = objects.property(String.class).convention(DEFAULT_VERSION);
         this.configurations = objects.domainObjectContainer(JooqConfig.class, name -> objects.newInstance(JooqConfig.class, name));
+
+        version.finalizeValueOnRead();
+    }
+
+    @SuppressWarnings("unused")
+    public Property<String> getVersion() {
+        return version;
     }
 
     @SuppressWarnings("unused")

@@ -110,9 +110,8 @@ dependencies {
     jooqGenerator("com.h2database:h2:1.4.193")
 }
 
-val jooqVersion by extra("3.13.4")
-
 jooq {
+    version.set("3.13.4")
     configurations {
         create("main") {
             jooqConfiguration.apply {
@@ -582,10 +581,10 @@ dependencies {
     jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
-${jooqVersion != null ? "jooqVersion = '$jooqVersion'" : ""}
 ${jooqEdition != null ? "jooqEdition = nu.studer.gradle.jooq.JooqEdition.${jooqEdition.name()}" : ""}
 
 jooq {
+  ${jooqVersion != null ? "version = '$jooqVersion'" : ""}
   configurations {
     main {
       ${generateSchemaSourceOnCompilation != null ? "generateSchemaSourceOnCompilation = $generateSchemaSourceOnCompilation" : ""}
@@ -651,10 +650,10 @@ dependencies {
     jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
-jooqVersion = '3.13.4'
 jooqEdition = 'OSS'
 
 jooq {
+  version = '3.13.4'
   configurations {
     main {
       generationTool {
@@ -716,10 +715,10 @@ dependencies {
     jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
-jooqVersion = '3.13.4'
 jooqEdition = 'OSS'
 
 jooq {
+  version = '3.13.4'
   configurations {
     main {
       generationTool {
@@ -760,10 +759,10 @@ dependencies {
     jooqGenerator 'com.h2database:h2:1.4.193'
 }
 
-jooqVersion = '3.13.4'
 jooqEdition = 'OSS'
 
 jooq {
+  version = '3.13.4'
   configurations {
     main {
       generationTool {
