@@ -1,6 +1,5 @@
 package nu.studer.gradle.jooq;
 
-import nu.studer.gradle.jooq.property.JooqEditionProperty;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
@@ -32,9 +31,6 @@ public class JooqPlugin implements Plugin<Project> {
 
         // apply Java base plugin, making it possible to also use the jOOQ plugin for Android builds
         project.getPlugins().apply(JavaBasePlugin.class);
-
-        // allow to configure the jOOQ edition/version and compilation on source code generation via extension property
-        JooqEditionProperty.applyDefaultEdition(project);
 
         // add jOOQ DSL extension
         JooqExtension jooqExtension = project.getExtensions().create("jooq", JooqExtension.class);
@@ -74,7 +70,7 @@ public class JooqPlugin implements Plugin<Project> {
             configuration.getResolutionStrategy().eachDependency(details -> {
                 ModuleVersionSelector requested = details.getRequested();
                 if (jooqGroupIds.contains(requested.getGroup()) && requested.getName().startsWith("jooq")) {
-                    String group = JooqEditionProperty.fromProject(project).asGroupId();
+                    String group = jooqExtension.getEdition().get().getGroupId();
                     String version = jooqExtension.getVersion().get();
                     details.useTarget(group + ":" + requested.getName() + ":" + version);
                 }
