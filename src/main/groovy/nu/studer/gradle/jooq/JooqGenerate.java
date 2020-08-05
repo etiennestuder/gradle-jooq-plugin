@@ -19,6 +19,7 @@ import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.Directory;
+import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.model.ObjectFactory;
@@ -28,7 +29,6 @@ import org.gradle.api.provider.ProviderFactory;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
-import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskExecutionException;
@@ -59,9 +59,10 @@ import static nu.studer.gradle.jooq.util.Objects.cloneObject;
  */
 public class JooqGenerate extends DefaultTask {
 
-    private final JooqConfig config;
+    private final Configuration jooqConfiguration;
     private final ConfigurableFileCollection runtimeClasspath;
     private final Provider<Configuration> normalizedConfiguration;
+    private final DirectoryProperty outputDir;
     private Action<? super Configuration> generationToolNormalization;
     private Action<? super JavaExecSpec> javaExecSpec;
     private Action<? super ExecResult> execResultHandler;
@@ -73,18 +74,19 @@ public class JooqGenerate extends DefaultTask {
 
     @Inject
     public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations) {
-        this.config = config;
+        this.jooqConfiguration = config.getJooqConfiguration();
         this.runtimeClasspath = objects.fileCollection().from(runtimeClasspath);
-        this.normalizedConfiguration = normalizedConfigurationProvider(config, objects, providers);
+        this.normalizedConfiguration = normalizedConfigurationProvider(objects, providers);
+        this.outputDir = objects.directoryProperty().value(config.getOutputDir());
 
         this.projectLayout = projectLayout;
         this.execOperations = execOperations;
     }
 
-    private Provider<Configuration> normalizedConfigurationProvider(JooqConfig config, ObjectFactory objects, ProviderFactory providers) {
+    private Provider<Configuration> normalizedConfigurationProvider(ObjectFactory objects, ProviderFactory providers) {
         Property<Configuration> normalizedConfiguration = objects.property(Configuration.class);
         normalizedConfiguration.set(providers.provider(() -> {
-            Configuration clonedConfiguration = cloneObject(config.getJooqConfiguration());
+            Configuration clonedConfiguration = cloneObject(jooqConfiguration);
             OUTPUT_DIRECTORY_NORMALIZATION.execute(clonedConfiguration);
             if (generationToolNormalization != null) {
                 generationToolNormalization.execute(clonedConfiguration);
@@ -93,12 +95,6 @@ public class JooqGenerate extends DefaultTask {
         }));
         normalizedConfiguration.finalizeValueOnRead();
         return normalizedConfiguration;
-    }
-
-    @SuppressWarnings("unused")
-    @Nested
-    public JooqConfig getConfig() {
-        return config;
     }
 
     @SuppressWarnings("unused")
@@ -114,7 +110,7 @@ public class JooqGenerate extends DefaultTask {
 
     @OutputDirectory
     public Provider<Directory> getOutputDir() {
-        return config.getOutputDir();
+        return outputDir;
     }
 
     @Internal
@@ -150,13 +146,13 @@ public class JooqGenerate extends DefaultTask {
     @TaskAction
     public void generate() {
         // set target directory to the defined default value if no explicit value has been configured
-        config.getJooqConfiguration().getGenerator().getTarget().setDirectory(config.getOutputDir().get().getAsFile().getAbsolutePath());
+        jooqConfiguration.getGenerator().getTarget().setDirectory(outputDir.get().getAsFile().getAbsolutePath());
 
         // define a config file to which the jOOQ code generation configuration is written to
         File configFile = new File(getTemporaryDir(), "config.xml");
 
         // write jOOQ code generation configuration to config file
-        writeConfiguration(config.getJooqConfiguration(), configFile);
+        writeConfiguration(jooqConfiguration, configFile);
 
         // generate the jOOQ Java sources files using the written config file
         ExecResult execResult = executeJooq(configFile);

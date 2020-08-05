@@ -8,7 +8,6 @@ import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
-import org.gradle.api.tasks.Internal;
 import org.jooq.meta.jaxb.Configuration;
 import org.jooq.meta.jaxb.Generator;
 import org.jooq.meta.jaxb.Target;
@@ -37,17 +36,14 @@ public class JooqConfig {
             .orElse(layout.getBuildDirectory().dir("generated-src/jooq/" + name));
     }
 
-    @Internal
     public Configuration getJooqConfiguration() {
         return jooqConfiguration;
     }
 
-    @Internal
     public Property<Boolean> getGenerateSchemaSourceOnCompilation() {
         return generateSchemaSourceOnCompilation;
     }
 
-    @Internal
     public Provider<Directory> getOutputDir() {
         return outputDir;
     }
@@ -64,6 +60,7 @@ public class JooqConfig {
         return "JooqConfig{" +
             "name='" + name + '\'' +
             ", jooqConfiguration=" + jooqConfiguration +
+            ", generateSchemaSourceOnCompilation=" + generateSchemaSourceOnCompilation +
             ", outputDir=" + outputDir +
             '}';
     }
