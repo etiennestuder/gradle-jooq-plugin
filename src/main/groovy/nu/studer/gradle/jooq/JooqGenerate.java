@@ -122,6 +122,7 @@ public class JooqGenerate extends DefaultTask {
         return javaExecSpec;
     }
 
+    @SuppressWarnings("unused")
     public void setJavaExecSpec(Action<? super JavaExecSpec> javaExecSpec) {
         this.javaExecSpec = javaExecSpec;
     }
@@ -131,6 +132,7 @@ public class JooqGenerate extends DefaultTask {
         return execResultHandler;
     }
 
+    @SuppressWarnings("unused")
     public void setExecResultHandler(Action<? super ExecResult> execResultHandler) {
         this.execResultHandler = execResultHandler;
     }
@@ -140,6 +142,7 @@ public class JooqGenerate extends DefaultTask {
         return generationToolNormalization;
     }
 
+    @SuppressWarnings("unused")
     public void setGenerationToolNormalization(Action<? super Configuration> generationToolNormalization) {
         this.generationToolNormalization = generationToolNormalization;
     }
