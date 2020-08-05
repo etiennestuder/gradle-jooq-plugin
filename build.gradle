@@ -51,8 +51,8 @@ def testAll = tasks.create('testAll') {
 }
 
 List<String> testedGradleVersions = []
-testedGradleVersions << "6.5"
-testedGradleVersions << "6.0.1"
+testedGradleVersions << "6.5.1"
+testedGradleVersions << "6.1.1"
 
 testedGradleVersions.each { version ->
     project.tasks.create("test_" + version.replaceAll("[^a-zA-Z0-9]", "_"), Test).with {
