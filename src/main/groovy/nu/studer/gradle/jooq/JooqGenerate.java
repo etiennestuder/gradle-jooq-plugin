@@ -103,7 +103,7 @@ public class JooqGenerate extends DefaultTask {
     }
 
     @Classpath
-    public ConfigurableFileCollection getRuntimeClasspath() {
+    public FileCollection getRuntimeClasspath() {
         return runtimeClasspath;
     }
 
