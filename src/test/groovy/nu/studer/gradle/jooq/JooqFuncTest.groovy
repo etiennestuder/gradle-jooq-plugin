@@ -113,22 +113,24 @@ dependencies {
 val jooqVersion by extra("3.13.4")
 
 jooq {
-    create("main") {
-        jooqConfiguration.apply {
-            logging = Logging.WARN
-            jdbc.apply {
-                driver = "org.h2.Driver"
-                url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
-                user = "sa"
-                password = ""
-            }
-            generator.apply {
-                database.apply {
-                    name = "org.jooq.meta.h2.H2Database"
-                    includes = ".*"
-                    excludes = ""
+    configurations {
+        create("main") {
+            jooqConfiguration.apply {
+                logging = Logging.WARN
+                jdbc.apply {
+                    driver = "org.h2.Driver"
+                    url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
+                    user = "sa"
+                    password = ""
                 }
-                target.packageName = "nu.studer.sample"
+                generator.apply {
+                    database.apply {
+                        name = "org.jooq.meta.h2.H2Database"
+                        includes = ".*"
+                        excludes = ""
+                    }
+                    target.packageName = "nu.studer.sample"
+                }
             }
         }
     }
@@ -179,22 +181,24 @@ jooq {
         buildFile << """
 def newTargetDir = file('src/generated/jooq/other')
 jooq {
-  main {
-    generationTool {
-      generator {
-        target {
-          directory = newTargetDir
+  configurations {
+    main {
+      generationTool {
+        generator {
+          target {
+            directory = newTargetDir
+          }
         }
       }
     }
   }
 }
 
-jooq.main.jooqConfiguration.generator.target.directory = file('src/generated/jooq/yet/another')
+jooq.configurations.main.jooqConfiguration.generator.target.directory = file('src/generated/jooq/yet/another')
 
 afterEvaluate {
   SourceSetContainer sourceSets = project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets()
-    SourceSet sourceSet = sourceSets.findByName('main')
+  SourceSet sourceSet = sourceSets.findByName('main')
   Set<File> dirs = sourceSet.getJava().getSrcDirs()
   dirs.eachWithIndex { dir, index ->
     println "\$dir---"
@@ -582,44 +586,46 @@ ${jooqVersion != null ? "jooqVersion = '$jooqVersion'" : ""}
 ${jooqEdition != null ? "jooqEdition = nu.studer.gradle.jooq.JooqEdition.${jooqEdition.name()}" : ""}
 
 jooq {
-  main {
-    ${generateSchemaSourceOnCompilation != null ? "generateSchemaSourceOnCompilation = $generateSchemaSourceOnCompilation" : ""}
-    generationTool {
-      logging = org.jooq.meta.jaxb.Logging.WARN
-      jdbc {
-        driver = 'org.h2.Driver'
-        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-        user = 'sa'
-        password = ''
-      }
-      generator {
-        name = 'org.jooq.codegen.DefaultGenerator'
-        strategy {
-          name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+  configurations {
+    main {
+      ${generateSchemaSourceOnCompilation != null ? "generateSchemaSourceOnCompilation = $generateSchemaSourceOnCompilation" : ""}
+      generationTool {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        jdbc {
+          driver = 'org.h2.Driver'
+          url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+          user = 'sa'
+          password = ''
         }
-        database {
-          name = 'org.jooq.meta.h2.H2Database'
-          includes = '.*'
-          excludes = ''
-          forcedTypes {
-            forcedType {
-              name = 'varchar'
-              expression = '.*'
-              types = 'JSONB?'
-            }
-            forcedType {
-              name = 'varchar'
-              expression = '.*'
-              types = 'INET'
+        generator {
+          name = 'org.jooq.codegen.DefaultGenerator'
+          strategy {
+            name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+          }
+          database {
+            name = 'org.jooq.meta.h2.H2Database'
+            includes = '.*'
+            excludes = ''
+            forcedTypes {
+              forcedType {
+                name = 'varchar'
+                expression = '.*'
+                types = 'JSONB?'
+              }
+              forcedType {
+                name = 'varchar'
+                expression = '.*'
+                types = 'INET'
+              }
             }
           }
-        }
-        generate {
-          javaTimeTypes = true
-        }
-        target {
-          ${targetPackageName != null ? "packageName = '$targetPackageName'" : "packageName = 'nu.studer.sample'"}
-          ${targetDirectory != null ? "directory = '$targetDirectory'" : ""}
+          generate {
+            javaTimeTypes = true
+          }
+          target {
+            ${targetPackageName != null ? "packageName = '$targetPackageName'" : "packageName = 'nu.studer.sample'"}
+            ${targetDirectory != null ? "directory = '$targetDirectory'" : ""}
+          }
         }
       }
     }
@@ -649,40 +655,42 @@ jooqVersion = '3.13.4'
 jooqEdition = 'OSS'
 
 jooq {
-  main {
-    generationTool {
-      logging = org.jooq.meta.jaxb.Logging.WARN
-      jdbc {
-        driver = 'org.h2.Driver'
-        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-        user = 'sa'
-        password = ''
-      }
-      generator {
-        database {
-          name = 'org.jooq.meta.h2.H2Database'
+  configurations {
+    main {
+      generationTool {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        jdbc {
+          driver = 'org.h2.Driver'
+          url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+          user = 'sa'
+          password = ''
         }
-        target {
-          packageName = 'nu.studer.main-pkg'
+        generator {
+          database {
+            name = 'org.jooq.meta.h2.H2Database'
+          }
+          target {
+            packageName = 'nu.studer.main-pkg'
+          }
         }
       }
     }
-  }
-  sample {
-    generationTool {
-      logging = org.jooq.meta.jaxb.Logging.WARN
-      jdbc {
-        driver = 'org.h2.Driver'
-        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-        user = 'sa'
-        password = ''
-      }
-      generator {
-        database {
-          name = 'org.jooq.meta.h2.H2Database'
+    sample {
+      generationTool {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        jdbc {
+          driver = 'org.h2.Driver'
+          url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+          user = 'sa'
+          password = ''
         }
-        target {
-          packageName = 'nu.studer.sample-pkg'
+        generator {
+          database {
+            name = 'org.jooq.meta.h2.H2Database'
+          }
+          target {
+            packageName = 'nu.studer.sample-pkg'
+          }
         }
       }
     }
@@ -712,19 +720,21 @@ jooqVersion = '3.13.4'
 jooqEdition = 'OSS'
 
 jooq {
-  main {
-    generationTool {
-      logging = org.jooq.meta.jaxb.Logging.WARN
-      jdbc {
-        driver = 'org.h2.Driver'
-        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-        user = 'sa'
-        password = ''
-      }
-      generator {
-        name = 'org.jooq.codegen.DefaultGenerator'
-        generate {
-          missing = true
+  configurations {
+    main {
+      generationTool {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        jdbc {
+          driver = 'org.h2.Driver'
+          url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+          user = 'sa'
+          password = ''
+        }
+        generator {
+          name = 'org.jooq.codegen.DefaultGenerator'
+          generate {
+            missing = true
+          }
         }
       }
     }
@@ -754,16 +764,18 @@ jooqVersion = '3.13.4'
 jooqEdition = 'OSS'
 
 jooq {
-  main {
-    generationTool {
-      logging = org.jooq.meta.jaxb.Logging.WARN
-      jdbc {
-        driver = 'org.h2.Driver'
-        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-        user = 'sa'
-        password = ''
-      }
-      missing {
+  configurations {
+    main {
+      generationTool {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        jdbc {
+          driver = 'org.h2.Driver'
+          url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+          user = 'sa'
+          password = ''
+        }
+        missing {
+        }
       }
     }
   }
@@ -790,25 +802,27 @@ dependencies {
 }
 
 jooq {
-  main {
-    generationTool {
-      logging = org.jooq.meta.jaxb.Logging.WARN
-      jdbc {
-        driver = 'org.h2.Driver'
-        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-        user = 'sa'
-        password = ''
-      }
-      generator {
-        name = 'org.jooq.codegen.DefaultGenerator'
-        strategy {
-          name = 'nu.studer.sample.SampleGeneratorStrategy'  // use the custom generator strategy
+  configurations {
+    main {
+      generationTool {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        jdbc {
+          driver = 'org.h2.Driver'
+          url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+          user = 'sa'
+          password = ''
         }
-        database {
-          name = 'org.jooq.meta.h2.H2Database'
-        }
-        generate {
-          javaTimeTypes = true
+        generator {
+          name = 'org.jooq.codegen.DefaultGenerator'
+          strategy {
+            name = 'nu.studer.sample.SampleGeneratorStrategy'  // use the custom generator strategy
+          }
+          database {
+            name = 'org.jooq.meta.h2.H2Database'
+          }
+          generate {
+            javaTimeTypes = true
+          }
         }
       }
     }
@@ -868,33 +882,35 @@ dependencies {
 }
 
 jooq {
-  main {
-    generationTool {
-      logging = org.jooq.meta.jaxb.Logging.WARN
-      jdbc {
-        driver = 'org.h2.Driver'
-        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-        user = 'sa'
-        password = ''
-      }
-      generator {
-        strategy {
-          matchers {
-            tables {
-              table {
-                pojoClass {
-                  transform = 'PASCAL'
-                  expression = '\$0_POJO'
+  configurations {
+    main {
+      generationTool {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        jdbc {
+          driver = 'org.h2.Driver'
+          url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+          user = 'sa'
+          password = ''
+        }
+        generator {
+          strategy {
+            matchers {
+              tables {
+                table {
+                  pojoClass {
+                    transform = 'PASCAL'
+                    expression = '\$0_POJO'
+                  }
                 }
               }
             }
           }
-        }
-        database {
-          name = 'org.jooq.meta.h2.H2Database'
-        }
-        generate {
-          javaTimeTypes = true
+          database {
+            name = 'org.jooq.meta.h2.H2Database'
+          }
+          generate {
+            javaTimeTypes = true
+          }
         }
       }
     }
@@ -927,27 +943,29 @@ def calculateDriver() {
 }
 
 jooq {
-  main {
-    generationTool {
-      logging = org.jooq.meta.jaxb.Logging.WARN
-      jdbc {
-        driver = calculateDriver()
-        url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-        user = userSA
-        password = ''
-      }
-      generator {
-        name = 'org.jooq.codegen.DefaultGenerator'
-        strategy {
-          name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+  configurations {
+    main {
+      generationTool {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        jdbc {
+          driver = calculateDriver()
+          url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+          user = userSA
+          password = ''
         }
-        database {
-          name = 'org.jooq.meta.h2.H2Database'
-          includes = '.*'
-          excludes = ''
-        }
-        generate {
-          javaTimeTypes = true
+        generator {
+          name = 'org.jooq.codegen.DefaultGenerator'
+          strategy {
+            name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+          }
+          database {
+            name = 'org.jooq.meta.h2.H2Database'
+            includes = '.*'
+            excludes = ''
+          }
+          generate {
+            javaTimeTypes = true
+          }
         }
       }
     }

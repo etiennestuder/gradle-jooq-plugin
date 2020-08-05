@@ -2,7 +2,6 @@ package nu.studer.gradle.jooq;
 
 import nu.studer.gradle.jooq.property.JooqEditionProperty;
 import nu.studer.gradle.jooq.property.JooqVersionProperty;
-import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
@@ -42,15 +41,14 @@ public class JooqPlugin implements Plugin<Project> {
         // use the configured jOOQ version on all jOOQ dependencies
         enforceJooqEditionAndVersion(project);
 
-        // add rocker DSL extension
-        NamedDomainObjectContainer<JooqConfig> container = project.container(JooqConfig.class, name -> project.getObjects().newInstance(JooqConfig.class, name));
-        project.getExtensions().add("jooq", container);
+        // add jOOQ DSL extension
+        JooqExtension jooqExtension = project.getExtensions().create("jooq", JooqExtension.class);
 
         // create configuration for the runtime classpath of the jooq code generator (shared by all jooq configuration domain objects)
         final Configuration runtimeConfiguration = createJooqGeneratorRuntimeConfiguration(project);
 
-        // create a rocker task for each rocker configuration domain object
-        container.configureEach(config -> {
+        // create a jooq task for each jooq configuration domain object
+        jooqExtension.getConfigurations().configureEach(config -> {
             String taskName = "generate" + (config.name.equals("main") ? "" : capitalize(config.name)) + "Jooq";
             TaskProvider<JooqGenerate> jooq = project.getTasks().register(taskName, JooqGenerate.class, config, runtimeConfiguration);
             jooq.configure(task -> {
