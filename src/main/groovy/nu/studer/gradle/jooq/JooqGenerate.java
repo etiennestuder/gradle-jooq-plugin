@@ -38,6 +38,7 @@ import org.gradle.process.JavaExecSpec;
 import org.jooq.Constants;
 import org.jooq.codegen.GenerationTool;
 import org.jooq.meta.jaxb.Configuration;
+import org.jooq.meta.jaxb.Strategy;
 import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
@@ -144,6 +145,9 @@ public class JooqGenerate extends DefaultTask {
 
     @TaskAction
     public void generate() {
+        // avoid schema-violating XML being created due to the default value (name) being written even when matchers are configured
+        ensureStrategyIsValid(jooqConfiguration.getGenerator().getStrategy());
+
         // set target directory to the defined default value if no explicit value has been configured
         jooqConfiguration.getGenerator().getTarget().setDirectory(outputDir.get().getAsFile().getAbsolutePath());
 
@@ -159,6 +163,12 @@ public class JooqGenerate extends DefaultTask {
         // invoke custom result handler
         if (execResultHandler != null) {
             execResultHandler.execute(execResult);
+        }
+    }
+
+    private void ensureStrategyIsValid(Strategy strategy) {
+        if (strategy.getMatchers() != null) {
+            strategy.setName(null);
         }
     }
 

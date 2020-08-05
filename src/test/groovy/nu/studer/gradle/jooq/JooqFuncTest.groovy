@@ -535,7 +535,7 @@ generateJooq {
         foo.text.contains("public Integer A() {") // instead of getA, as the sample generator strategy removed the get prefix
     }
 
-    void "accepts matcher strategies when name is explicitly set to null"() {
+    void "accepts matcher strategies even when name is not explicitly set to null"() {
         given:
         buildFile << buildWithMatcherStrategies()
 
@@ -879,7 +879,6 @@ jooq {
       }
       generator {
         strategy {
-          name = null
           matchers {
             tables {
               table {
