@@ -1,13 +1,13 @@
 buildscript {
     configurations['classpath'].resolutionStrategy.eachDependency {
         if (requested.group == 'org.jooq' && requested.name == 'jooq-codegen') {
-            useVersion '3.12.4'
+            useVersion '3.13.1'
         }
     }
 }
 
 plugins {
-    id 'nu.studer.jooq' version '4.2'
+    id 'nu.studer.jooq' version '5.0'
 }
 
 apply plugin: 'java'
@@ -17,34 +17,39 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq'
-    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqGenerator 'com.h2database:h2:1.4.200'
 }
 
 jooq {
-    version = '3.12.4'
-    sample(sourceSets.main) {
-        jdbc {
-            driver = 'org.h2.Driver'
-            url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-            user = 'sa'
-            password = ''
-        }
-        generator {
-            name = 'org.jooq.codegen.DefaultGenerator'
-            database {
-                name = 'org.jooq.meta.h2.H2Database'
-                includes = '.*'
-                excludes = ''
-            }
-            target {
-                packageName = 'nu.studer.sample'
+    version = '3.13.1'
+
+    configurations {
+        main {
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.INFO
+                jdbc {
+                    driver = 'org.h2.Driver'
+                    url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+                    user = 'sa'
+                    password = ''
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.h2.H2Database'
+                        includes = '.*'
+                        excludes = ''
+                    }
+                    target {
+                        packageName = 'nu.studer.sample'
+                    }
+                }
             }
         }
     }
 }
 
-tasks.generateSampleJooqSchemaSource.with {
+tasks.generateJooq.with {
     def out = new ByteArrayOutputStream()
     javaExecSpec = { JavaExecSpec s ->
         s.standardOutput = out

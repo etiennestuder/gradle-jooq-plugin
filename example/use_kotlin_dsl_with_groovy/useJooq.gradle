@@ -5,7 +5,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath('nu.studer:gradle-jooq-plugin:4.2')
+        classpath('nu.studer:gradle-jooq-plugin:5.0')
     }
 }
 
@@ -17,27 +17,31 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq'
-    jooqRuntime 'com.h2database:h2:1.4.193'
+    jooqGenerator 'com.h2database:h2:1.4.200'
 }
 
 jooq {
-    sample(sourceSets.main) {
-        jdbc {
-            driver = 'org.h2.Driver'
-            url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-            user = 'sa'
-            password = ''
-        }
-        generator {
-            name = 'org.jooq.codegen.DefaultGenerator'
-            database {
-                name = 'org.jooq.meta.h2.H2Database'
-                includes = '.*'
-                excludes = ''
-            }
-            target {
-                packageName = 'nu.studer.sample'
+    configurations {
+        main {
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.INFO
+                jdbc {
+                    driver = 'org.h2.Driver'
+                    url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+                    user = 'sa'
+                    password = ''
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.h2.H2Database'
+                        includes = '.*'
+                        excludes = ''
+                    }
+                    target {
+                        packageName = 'nu.studer.sample'
+                    }
+                }
             }
         }
     }

@@ -1,8 +1,8 @@
 import nu.studer.gradle.jooq.JooqEdition
 
 plugins {
-    id("nu.studer.jooq")
-    id("java-library")
+    id("nu.studer.jooq") version "5.0"
+    id("java")
 }
 
 repositories {
@@ -10,37 +10,42 @@ repositories {
 }
 
 dependencies {
-    jooqRuntime("com.h2database:h2:1.4.193")
+    jooqGenerator("com.h2database:h2:1.4.200")
 }
 
 jooq {
-    version = "3.13.4"
-    edition = JooqEdition.OSS
-    "sample"(sourceSets["main"]) {
-        jdbc {
-            driver = "org.h2.Driver"
-            url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
-            user = "sa"
-            password = ""
-        }
-        generator {
-            name = "org.jooq.codegen.DefaultGenerator"
-            database {
-                name = "org.jooq.meta.h2.H2Database"
-                includes = ".*"
-                excludes = ""
-            }
-            generate {
-                isDeprecated = false
-                isRecords = false
-                isImmutablePojos = false
-                isFluentSetters = false
-            }
-            target {
-                packageName = "nu.studer.sample"
-            }
-            strategy {
-                name = "org.jooq.codegen.DefaultGeneratorStrategy"
+    version.set("3.13.4")
+    edition.set(JooqEdition.OSS)
+
+    configurations {
+        create("main") {
+            jooqConfiguration.apply {
+                logging = org.jooq.meta.jaxb.Logging.INFO
+                jdbc.apply {
+                    driver = "org.h2.Driver"
+                    url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
+                    user = "sa"
+                    password = ""
+                }
+                generator.apply {
+                    name = "org.jooq.codegen.DefaultGenerator"
+                    database.apply {
+                        name = "org.jooq.meta.h2.H2Database"
+                        includes = ".*"
+                        excludes = ""
+                    }
+                    generate.apply {
+                        isDeprecated = false
+                        isRecords = false
+                        isImmutablePojos = false
+                        isFluentSetters = false
+                    }
+                    target.apply {
+                        packageName = "nu.studer.sample"
+                        directory = "src/generated/jooq"
+                    }
+                    strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
+                }
             }
         }
     }
