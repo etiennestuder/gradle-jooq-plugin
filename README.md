@@ -246,7 +246,6 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Running on JDK 9 and higher with all JAXB dependencies already added by the plugin: [here](example/run_jdk9).
 + Running on JDK 11 and higher with manual addition of the annotation API: [here](example/run_jdk11).
 + Configuring the jOOQ code generation via Kotlin DSL: [here](example/use_kotlin_dsl).
-+ Configuring the jOOQ code generation via Groovy DSL in a Kotlin DSL build: [here](example/use_kotlin_dsl).
 
 # Changelog
 + 5.0 - Change DSL. Support Gradle Kotlin DSL. Add normalization hook. Make Gradle 6.1 the minimum compatible version. Upgrade to jOOQ 3.13.4.
