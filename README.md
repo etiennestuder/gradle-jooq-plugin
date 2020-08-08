@@ -201,30 +201,6 @@ forcedTypes = [
 ]
 ```
 
-### Defining matchers
-
-When using `matchers`, the `name` element must be set to `null` explicitly:
-
-```groovy
-strategy {
-  name = null
-  matchers {
-    tables {
-      table {
-        pojoClass {
-          transform = 'PASCAL'
-          expression = '\$0_POJO'
-        }
-      }
-    }
-  }
-}
-```
-
-Background: the plugin consumes JAXB classes generated from the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd). The `name` on the `Strategy` element
-has a default value and that's an issue since is part of an XSD `choice` element, i.e. only one element can be present. This is the only `choice` element
-in the whole XSD, so this workaround only needs to be applied here.
-
 ### Defining the jOOQ version when the Spring boot plugin is applied
 
 When applying the [spring-boot-gradle-plugin](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin),
