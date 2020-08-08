@@ -249,6 +249,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Configuring the jOOQ code generation via Groovy DSL in a Kotlin DSL build: [here](example/use_kotlin_dsl).
 
 # Changelog
++ 5.0 - Change DSL. Support Gradle Kotlin DSL. Add normalization hook. Make Gradle 6.1 the minimum compatible version. Upgrade to jOOQ 3.13.4.
 + 4.2 - Add new jOOQ editions for Java 8 and Java 6. Upgrade to jOOQ 3.13.1.
 + 4.1 - Global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set
 + 4.0 - Make Gradle 5.0 the minimum compatible version. Upgrade to jOOQ 3.12.3.
@@ -269,6 +270,10 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + 2.0.1 - Bug fixes
 + 2.0.0 - Make jOOQ version used for code generation independent from jOOQ version used by gradle-jooq plugin
 + 1.0.6 - Upgrade to jOOQ 3.6.2
+
+# Feedback and Contributions
+
+Both feedback and contributions are very welcome.
 
 # Acknowledgements
 
