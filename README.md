@@ -167,7 +167,7 @@ jooq {
 ### Configuring a sequence of elements
 
 Resemblance of the jOOQ configuration DSL with the Groovy language is coincidental. Complex types that include
-sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.11.2.xsd) must be defined in the DSL's nesting style:
+sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.13.0.xsd) must be defined in the DSL's nesting style:
 
 ```groovy
 forcedTypes {
