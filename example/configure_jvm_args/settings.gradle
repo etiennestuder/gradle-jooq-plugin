@@ -2,4 +2,4 @@ plugins {
     id 'com.gradle.enterprise' version '3.4'
 }
 
-rootProject.name = 'jooq-example-add-jvm-args'
+rootProject.name = 'jooq-example-configure-jvm-args'

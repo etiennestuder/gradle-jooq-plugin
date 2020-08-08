@@ -2,4 +2,4 @@ plugins {
     id 'com.gradle.enterprise' version '3.4'
 }
 
-rootProject.name = 'jooq-example-remove-task-dependency'
+rootProject.name = 'jooq-example-configure-task-dependencies'

@@ -2,6 +2,6 @@ plugins {
     id 'com.gradle.enterprise' version '3.4'
 }
 
-rootProject.name = 'jooq-example-use-custom-generator'
+rootProject.name = 'jooq-example-configure-custom-generator-strategy'
 
 include 'custom-generator-strategy'
