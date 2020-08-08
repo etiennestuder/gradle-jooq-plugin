@@ -1,8 +1,9 @@
+import nu.studer.gradle.jooq.JooqEdition
+
 plugins {
     id 'nu.studer.jooq' version '5.0'
+    id 'java'
 }
-
-apply plugin: 'java'
 
 repositories {
     jcenter()
@@ -13,6 +14,9 @@ dependencies {
 }
 
 jooq {
+    version = '3.13.4'
+    edition = JooqEdition.OSS
+
     configurations {
         main {
             generationTool {
@@ -30,9 +34,17 @@ jooq {
                         includes = '.*'
                         excludes = ''
                     }
+                    generate {
+                        deprecated = false
+                        records = false
+                        immutablePojos = false
+                        fluentSetters = false
+                    }
                     target {
                         packageName = 'nu.studer.sample'
+                        directory = 'src/generated/jooq'
                     }
+                    strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
                 }
             }
         }

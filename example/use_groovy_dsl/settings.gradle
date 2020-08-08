@@ -2,4 +2,4 @@ plugins {
     id 'com.gradle.enterprise' version '3.4'
 }
 
-rootProject.name = 'jooq-example-run-on-jdk9'
+rootProject.name = 'jooq-example-use-groovy-dsl'

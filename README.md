@@ -239,12 +239,12 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 
 # Samples
 
++ Configuring the jOOQ code generation via Gradle Groovy DSL: [here](example/use_groovy_dsl).
++ Configuring the jOOQ code generation via Gradle Kotlin DSL: [here](example/use_kotlin_dsl).
 + Passing JVM args to the jOOQ code generation process: [here](example/add_jvm_args).
 + Removing the implicit task dependency between the compile task and the jOOQ source generation task: [here](example/remove_task_dependency).
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).
 + Specifying applied jOOQ config XML schema version: [here](example/specify_jooq_config_xml_schema_version).
-+ Running on JDK 9 and higher with all JAXB dependencies already added by the plugin: [here](example/run_jdk9).
-+ Configuring the jOOQ code generation via Kotlin DSL: [here](example/use_kotlin_dsl).
 
 # Changelog
 + 5.0 - Change DSL. Support Gradle Kotlin DSL. Add normalization hook. Make Gradle 6.1 the minimum compatible version. Upgrade to jOOQ 3.13.4.
