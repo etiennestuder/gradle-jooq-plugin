@@ -4,4 +4,4 @@ plugins {
 
 rootProject.name = 'jooq-example-use-custom-generator'
 
-include 'custom-generator'
+include 'custom-generator-strategy'
