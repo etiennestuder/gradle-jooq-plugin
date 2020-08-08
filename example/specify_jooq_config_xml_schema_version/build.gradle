@@ -8,9 +8,8 @@ buildscript {
 
 plugins {
     id 'nu.studer.jooq' version '5.0'
+    id 'java'
 }
-
-apply plugin: 'java'
 
 repositories {
     jcenter()
