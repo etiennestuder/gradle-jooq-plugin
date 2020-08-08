@@ -14,7 +14,7 @@ dependencies {
 jooq {
     configurations {
         main {
-            // omits the task dependency from compileJava to generateSampleJooqSchemaSource
+            // omits the task dependency from compileJava to generateJooq
             generateSchemaSourceOnCompilation = false
 
             generationTool {
