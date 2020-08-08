@@ -244,7 +244,6 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Using a custom generator strategy defined in the same Gradle project: [here](example/use_custom_generator).
 + Specifying applied jOOQ config XML schema version: [here](example/specify_jooq_config_xml_schema_version).
 + Running on JDK 9 and higher with all JAXB dependencies already added by the plugin: [here](example/run_jdk9).
-+ Running on JDK 11 and higher with manual addition of the annotation API: [here](example/run_jdk11).
 + Configuring the jOOQ code generation via Kotlin DSL: [here](example/use_kotlin_dsl).
 
 # Changelog
