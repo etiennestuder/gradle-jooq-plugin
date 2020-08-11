@@ -50,48 +50,102 @@ The following Gradle features are supported by the jOOQ plugin:
 | 5.0+           | 6.1+                       | Yes                           | Yes |
 | 4.0            | 5.0+, 6.0+                 | No                            | No |
 
-# Applying the plugin
+# Configuration
+
+## Applying the plugin
 
 Apply the `nu.studer.jooq` plugin to your Gradle project.
 
+### Gradle Groovy DSL
+
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '4.2'
+    id 'nu.studer.jooq' version '5.0'
 }
 ```
 
-**Please note that due to non-backward compatible API changes in jOOQ between 3.10.x and 3.11.x, you must apply the following plugin version in your Gradle build:**
-* **jOOQ library <= 3.10.x: gradle-jooq plugin 2.0.11**
-* **jOOQ library >= 3.11.x: gradle-jooq plugin 3.0.0 or higher**
+### Gradle Kotlin DSL
 
-# Defining your database drivers
+```kotlin
+plugins {
+    id("nu.studer.jooq") version "5.0"
+}
+```
 
-Depending on which database you are connecting to, you need to put the corresponding driver on the generator's classpath.
+## Adding the database driver
+
+Add the database driver of the database that the jOOQ code generation tool will introspect to the `jooqGenerator` configuration. This ensures that the database driver
+is on the classpath when the jOOQ code generation tool is executed. Optionally, you can add additional dependencies that are required to run the jOOQ code generation tool.
+
+### Gradle Groovy DSL
 
 ```groovy
 dependencies {
-    jooqRuntime 'org.postgresql:postgresql:42.2.12'
+    jooqGenerator 'org.postgresql:postgresql:42.2.14'
 }
 ```
 
-# Specifying the jOOQ version and edition
+### Gradle Kotlin DSL
 
-This plugin supports existing and future jOOQ versions. It also supports the different editions like open source, pro, and trial.
+```kotlin
+dependencies {
+    jooqGenerator("org.postgresql:postgresql:42.2.14")
+}
+```
+
+## Specifying the jOOQ version and edition
+
+This jOOQ plugin supports existing and future versions of jOOQ. It also supports the different jOOQ
+[editions](https://github.com/etiennestuder/gradle-jooq-plugin/blob/master/src/main/groovy/nu/studer/gradle/jooq/JooqEdition.java) like open source, pro, and trial. The
+plugin ensures that all your jOOQ dependencies declared explicitly and those pulled in transitively use the specified version and edition.
+
+Note that the `org.jooq:jooq` dependency of the specified version and edition is automatically added to the `implementation` configuration of the source set that matches the
+name of the declared jOOQ configuration.
+
+### Gradle Groovy DSL
 
 ```groovy
 jooq {
-  version = '3.13.4' // the default (can be omitted)
-  edition = 'OSS'    // the default (can be omitted), other allowed values are PRO, PRO_JAVA_8, PRO_JAVA_6, TRIAL, TRIAL_JAVA_8, TRIAL_JAVA_6
+  version = '3.13.4'  // the default (can be omitted)
+  edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
 }
 ```
 
-The plugin ensures that all your dependencies use the version and edition
-specified in the `jooq` configuration. So when you declare a compile dependency
-on jOOQ, you can omit the version:
+### Gradle Kotlin DSL
+
+```kotlin
+jooq {
+  version.set("3.13.4")  // the default (can be omitted)
+  edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // the default (can be omitted)
+}
+```
+
+## Enforcing the jOOQ configuration XML schema version
+
+Enforce a certain version of the jOOQ configuration XML schema by declaring what version of the jOOQ code generation tool to
+make available to the jOOQ plugin at configuration time, i.e. in the DSL.
+
+### Gradle Groovy DSL
 
 ```groovy
-dependencies {
-  implementation 'org.jooq:jooq'
+buildscript {
+    configurations['classpath'].resolutionStrategy.eachDependency {
+        if (requested.group == 'org.jooq' && requested.name == 'jooq-codegen') {
+            useVersion '3.13.4'
+        }
+    }
+}
+```
+
+### Gradle Kotlin DSL
+
+```kotlin
+buildscript {
+    configurations["classpath"].resolutionStrategy.eachDependency {
+        if (requested.group == "org.jooq" && requested.name == "jooq-codegen") {
+            useVersion("3.13.4")
+        }
+    }
 }
 ```
 
