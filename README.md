@@ -4,21 +4,51 @@ gradle-jooq-plugin
 > The work on this software project is in no way associated with my employer nor with the role I'm having at my employer. Any requests for changes will be decided upon exclusively by myself based on my personal preferences. I maintain this project as much or as little as my spare time permits.
 
 # Overview
-[Gradle](http://www.gradle.org) plugin that integrates [jOOQ](http://www.jooq.org). For each jOOQ configuration declared
-in the build, the plugin adds a task to generate the jOOQ Java sources from a given database schema and includes the
-generated sources in the specified source set. Multiple configurations are supported. The code generation tasks fully
-participate in the Gradle uptodate checks. The plugin can be applied on both Java projects and Android projects.
+[Gradle](http://www.gradle.org) plugin that integrates the jOOQ code generation tool. For each named jOOQ configuration declared
+in the build, the plugin adds a task to generate the jOOQ Java sources from the specified database schema and includes the
+generated Java sources in the matching source set, if existing. The code generation tasks participate in [incremental builds](https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:up_to_date_checks), in [task configuration avoidance](https://docs.gradle.org/current/userguide/task_configuration_avoidance.html), in [task output caching](https://docs.gradle.org/current/userguide/build_cache.html) by the Gradle Build Cache, and in [build
+configuration caching](https://docs.gradle.org/nightly/userguide/configuration_cache.html) by the Gradle Configuration Cache.
+The plugin can be applied on both Java projects and Android projects.
 
-You can find out more details about the actual jOOQ source code generation in the
-[jOOQ documentation](http://www.jooq.org/doc/latest/manual/code-generation).
+You can find more details about the actual jOOQ source code generation in the [jOOQ documentation](http://www.jooq.org/doc/latest/manual/code-generation).
 
-The plugin is hosted on the [Gradle Plugin portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
+The jOOQ plugin is hosted at [Bintray's JCenter](https://bintray.com/etienne/gradle-plugins/gradle-jooq-plugin), also available from
+the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
 
 ## Build scan
 
 Recent build scan: https://gradle.com/s/bkc4davu2dvu4
 
 Find out more about build scans for Gradle and Maven at https://scans.gradle.com.
+
+# Functionality
+
+The following functionality is provided by the jOOQ plugin:
+
+ * Generate Java sources from a given database schema
+ * Add the generated Java sources to the name-matching source set, if existing
+ * Wire task dependencies such that the Java sources are generated before the Java compile task of the name-matching source set compiles them, if existing
+ * Provide a configuration option to suppress automatic task wiring between the Java compile task and the jOOQ source generation task
+
+The following Gradle configuration changes are contributed by the jOOQ plugin:
+
+ * Add the `org.jooq:jooq-codegen` dependency needed to execute the jOOQ code generation tool to the new `jooqGenerate` configuration
+ * Add the `org.jooq:jooq` dependency to the name-matching `implementation` configuration to successfully compile the Java sources generated from the database schema
+ * Use the customizable jOOQ version across all resolved `org.jooq*:jooq*` dependencies
+
+The following Gradle features are supported by the jOOQ plugin:
+
+ * `JooqGenerate` task instances participate in task configuration avoidance
+ * `JooqGenerate` task instances participate in configuration caching
+ * `JooqGenerate` task instances participate in incremental builds
+ * `JooqGenerate` task instances participate in task output caching (if the task gets explicitly marked as cacheable)
+
+# Compatibility
+
+| Plugin version | Compatible Gradle versions | Support for Gradle Kotlin DSL | Support for Gradle Configuration Cache |
+| -------------- |--------------------------- | ----------------------------  | -------------------------------------- |
+| 5.0+           | 6.1+                       | Yes                           | Yes |
+| 4.0            | 5.0+, 6.0+                 | No                            | No |
 
 # Applying the plugin
 
