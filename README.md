@@ -243,7 +243,14 @@ My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _
 outputs, and it also keeps the door open to let Gradle cache the generated sources which can be a significant build performance gain. The rationale is explained very
 well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
 
-# Samples
+# Invocation
+
+## Invoke Jooq task
+
+You can generate the Java jOOQ sources for a given jOOQ configuration by invoking the command `generate<configName>Jooq`, e.g. `generateTestJooq`. The only exception
+being _main_ that is abbreviated to `generateJooq`, similarly to how it is done for the `JavaCompile` tasks contributed by the `java` plugin.
+
+# Examples
 
 + Configuring the jOOQ code generation via Gradle Groovy DSL: [here](example/use_groovy_dsl).
 + Configuring the jOOQ code generation via Gradle Kotlin DSL: [here](example/use_kotlin_dsl).
@@ -253,6 +260,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 + Specifying applied jOOQ config XML schema version: [here](example/specify_jooq_config_xml_schema_version).
 
 # Changelog
+
 + 5.0 - Change DSL. Support Gradle Kotlin DSL. Add normalization hook. Make Gradle 6.1 the minimum compatible version. Upgrade to jOOQ 3.13.4.
 + 4.2 - Add new jOOQ editions for Java 8 and Java 6. Upgrade to jOOQ 3.13.1.
 + 4.1 - Global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set
