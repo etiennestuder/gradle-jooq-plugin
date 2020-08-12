@@ -35,7 +35,6 @@ import org.gradle.api.tasks.TaskExecutionException;
 import org.gradle.process.ExecOperations;
 import org.gradle.process.ExecResult;
 import org.gradle.process.JavaExecSpec;
-import org.jooq.Constants;
 import org.jooq.codegen.GenerationTool;
 import org.jooq.meta.jaxb.Configuration;
 import org.jooq.meta.jaxb.Strategy;
@@ -175,7 +174,7 @@ public class JooqGenerate extends DefaultTask {
     private void writeConfiguration(Configuration config, File file) {
         try (OutputStream fs = new FileOutputStream(file)) {
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + Constants.XSD_CODEGEN));
+            Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + xsdFileName()));
 
             JAXBContext ctx = JAXBContext.newInstance(Configuration.class);
             Marshaller marshaller = ctx.createMarshaller();
@@ -183,6 +182,16 @@ public class JooqGenerate extends DefaultTask {
 
             marshaller.marshal(config, fs);
         } catch (IOException | JAXBException | SAXException e) {
+            throw new TaskExecutionException(JooqGenerate.this, e);
+        }
+    }
+
+    private String xsdFileName() {
+        // use reflection to avoid inlining of the String constant org.jooq.Constants.XSD_CODEGEN
+        try {
+            Class<?> aClass = Class.forName("org.jooq.Constants");
+            return (String) aClass.getDeclaredField("XSD_CODEGEN").get(null);
+        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
             throw new TaskExecutionException(JooqGenerate.this, e);
         }
     }
