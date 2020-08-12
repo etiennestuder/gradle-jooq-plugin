@@ -7,7 +7,7 @@ buildscript {
 }
 
 plugins {
-    id 'nu.studer.jooq' version '5.0'
+    id 'nu.studer.jooq' version '5.0.1'
     id 'java'
 }
 
