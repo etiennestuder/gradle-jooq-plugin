@@ -317,6 +317,7 @@ being _main_ that is abbreviated to `generateJooq`, similarly to how it is done 
 
 # Changelog
 
++ 5.0.1 - Support dependency substitution to use different versions of the jOOQ dependencies than those pulled in by the jOOQ plugin.
 + 5.0 - Change DSL. Support Gradle Kotlin DSL. Add normalization hook. Make Gradle 6.1 the minimum compatible version. Upgrade to jOOQ 3.13.4.
 + 4.2 - Add new jOOQ editions for Java 8 and Java 6. Upgrade to jOOQ 3.13.1.
 + 4.1 - Global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set
