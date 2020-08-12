@@ -132,7 +132,7 @@ make available to the jOOQ plugin at configuration time, i.e. in the DSL of the 
 ```groovy
 buildscript {
     configurations['classpath'].resolutionStrategy.eachDependency {
-        if (requested.group == 'org.jooq' && requested.name == 'jooq-codegen') {
+        if (requested.group == 'org.jooq') {
             useVersion '3.12.4'
         }
     }
