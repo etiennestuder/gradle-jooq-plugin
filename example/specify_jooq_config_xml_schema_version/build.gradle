@@ -1,7 +1,7 @@
 buildscript {
     configurations['classpath'].resolutionStrategy.eachDependency {
         if (requested.group == 'org.jooq' && requested.name == 'jooq-codegen') {
-            useVersion '3.13.1'
+            useVersion '3.12.4'
         }
     }
 }
@@ -20,7 +20,7 @@ dependencies {
 }
 
 jooq {
-    version = '3.13.1'
+    version = '3.12.4'
 
     configurations {
         main {
