@@ -4,11 +4,14 @@ gradle-jooq-plugin
 > The work on this software project is in no way associated with my employer nor with the role I'm having at my employer. Any requests for changes will be decided upon exclusively by myself based on my personal preferences. I maintain this project as much or as little as my spare time permits.
 
 # Overview
-[Gradle](http://www.gradle.org) plugin that integrates the jOOQ code generation tool. For each named jOOQ configuration declared
-in the build, the plugin adds a task to generate the jOOQ Java sources from the specified database schema and includes the
-generated Java sources in the matching source set, if existing. The code generation tasks participate in [incremental builds](https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:up_to_date_checks), in [task configuration avoidance](https://docs.gradle.org/current/userguide/task_configuration_avoidance.html), in [task output caching](https://docs.gradle.org/current/userguide/build_cache.html) by the Gradle Build Cache, and in [build
-configuration caching](https://docs.gradle.org/nightly/userguide/configuration_cache.html) by the Gradle Configuration Cache.
-The plugin can be applied on both Java projects and Android projects.
+[Gradle](http://www.gradle.org) plugin that integrates the jOOQ code generation tool.
+
+For each named jOOQ configuration declared in the build, the plugin adds a task to generate the jOOQ Java sources from the specified database schema and includes the
+generated Java sources in the matching source set, if existing. The code generation tasks participate
+in [task configuration avoidance](https://docs.gradle.org/current/userguide/task_configuration_avoidance.html),
+in [build configuration caching](https://docs.gradle.org/nightly/userguide/configuration_cache.html),
+in [incremental builds](https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:up_to_date_checks),
+and in [task output caching](https://docs.gradle.org/current/userguide/build_cache.html). The plugin can be applied on both Java projects and Android projects.
 
 You can find more details about the actual jOOQ source code generation in the [jOOQ documentation](http://www.jooq.org/doc/latest/manual/code-generation).
 
@@ -95,9 +98,8 @@ dependencies {
 
 ## Specifying the jOOQ version and edition
 
-This jOOQ plugin supports existing and future versions of jOOQ. It also supports the different jOOQ
-[editions](https://github.com/etiennestuder/gradle-jooq-plugin/blob/master/src/main/groovy/nu/studer/gradle/jooq/JooqEdition.java) like open source, pro, and trial. The
-plugin ensures that all your jOOQ dependencies declared explicitly and those pulled in transitively use the specified version and edition.
+Specify the version and [edition](https://github.com/etiennestuder/gradle-jooq-plugin/blob/master/src/main/groovy/nu/studer/gradle/jooq/JooqEdition.java) that should be
+applied to all jOOQ dependencies that are declared in your project either explicitly or pulled in transitively.
 
 Note that the `org.jooq:jooq` dependency of the specified version and edition is automatically added to the `implementation` configuration of the source set that matches the
 name of the declared jOOQ configuration.
@@ -123,7 +125,7 @@ jooq {
 ## Enforcing the jOOQ configuration XML schema version
 
 Enforce a certain version of the jOOQ configuration XML schema by declaring what version of the jOOQ code generation tool to
-make available to the jOOQ plugin at configuration time, i.e. in the DSL.
+make available to the jOOQ plugin at configuration time, i.e. in the DSL of the jOOQ plugin.
 
 ### Gradle Groovy DSL
 
@@ -131,7 +133,7 @@ make available to the jOOQ plugin at configuration time, i.e. in the DSL.
 buildscript {
     configurations['classpath'].resolutionStrategy.eachDependency {
         if (requested.group == 'org.jooq' && requested.name == 'jooq-codegen') {
-            useVersion '3.13.4'
+            useVersion '3.12.4'
         }
     }
 }
@@ -143,7 +145,7 @@ buildscript {
 buildscript {
     configurations["classpath"].resolutionStrategy.eachDependency {
         if (requested.group == "org.jooq" && requested.name == "jooq-codegen") {
-            useVersion("3.13.4")
+            useVersion("3.12.4")
         }
     }
 }
