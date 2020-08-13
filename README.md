@@ -53,6 +53,8 @@ The following Gradle features are supported by the jOOQ plugin:
 | 5.0+           | 6.1+                       | Yes                           | Yes |
 | 4.0            | 5.0+, 6.0+                 | No                            | No |
 
+See the [Migration](#migration) section on how to migrate your build from jOOQ plugin 4.x to 5.x.
+
 # Configuration
 
 ## Applying the plugin
@@ -221,7 +223,7 @@ jooq {
 }
 ```
 
-See the [examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin.
+See the [Examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin.
 
 ### Gradle Kotlin DSL
 
@@ -277,7 +279,7 @@ jooq {
 }
 ```
 
-See the [examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin.
+See the [Examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin.
 
 ## Avoiding configuration pitfalls
 
