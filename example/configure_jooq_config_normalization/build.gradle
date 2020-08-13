@@ -1,0 +1,61 @@
+plugins {
+    id 'nu.studer.jooq' version '5.0.1'
+    id 'java'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    jooqGenerator 'com.h2database:h2:1.4.200'
+}
+
+jooq {
+    configurations {
+        main {
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.INFO
+                jdbc {
+                    driver = 'org.h2.Driver'
+                    url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+                    user = 'sa'
+                    password = ''
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.h2.H2Database'
+                        includes = '.*'
+                        excludes = ''
+                    }
+                    target {
+                        packageName = 'nu.studer.sample'
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.generateJooq.with {
+    // configure normalization of jOOQ config to avoid unnecessary build cache misses
+    generationToolNormalization = { org.jooq.meta.jaxb.Configuration c ->
+        c.jdbc.user = ''
+        c.jdbc.password = ''
+    }
+    def out = new ByteArrayOutputStream()
+    javaExecSpec = { JavaExecSpec s ->
+        s.standardOutput = out
+        s.errorOutput = out
+        s.ignoreExitValue = true
+    }
+    execResultHandler = { ExecResult r ->
+        if (r.exitValue != 0) {
+            throw new RuntimeException('jOOQ source code generation failed:\n\n' + out.toString())
+        }
+    }
+}
+
+
+
