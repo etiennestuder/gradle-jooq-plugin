@@ -38,7 +38,7 @@ jooq {
     }
 }
 
-tasks.generateJooq.with {
+tasks.named('generateJooq').configure {
     // add additional JVM arguments
     javaExecSpec = { JavaExecSpec s ->
         s.jvmArgs '-Xmx512M'
