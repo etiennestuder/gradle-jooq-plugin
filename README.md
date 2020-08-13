@@ -169,6 +169,8 @@ jooq {
 
     configurations {
         main {  // name of the jOOQ configuration
+            generateSchemaSourceOnCompilation = true  // default (can be omitted)
+
             generationTool {
                 logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc {
@@ -219,6 +221,8 @@ jooq {
 }
 ```
 
+See the [examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin.
+
 ### Gradle Kotlin DSL
 
 ```kotlin
@@ -228,6 +232,8 @@ jooq {
 
     configurations {
         create("main") {  // name of the jOOQ configuration
+            generateSchemaSourceOnCompilation.set(true)  // default (can be omitted)
+
             jooqConfiguration.apply {
                 logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc.apply {
@@ -269,12 +275,27 @@ jooq {
         }
     }
 }
-
 ```
 
-## Configuration pitfalls
+See the [examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin.
 
-### Configuring a sequence of elements
+## Migrating from gradle-jooq-plugin 4.x to 5.x
+
+## Avoiding configuration pitfalls
+
+### Explicitly setting the jOOQ version property expected by the Spring boot plugin
+
+When applying the [spring-boot-gradle-plugin](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin),
+it is not sufficient to declare the jOOQ version that you want to pull in via `jooq.version = '3.13.4'` since the dependency management rules of the spring-boot-gradle-plugin
+take precedence. You also have to set `ext['jooq.version'] = '3.13.4'` to pull in your requested version of jOOQ.
+
+### Generating sources into shared folders, e.g. src/main/java
+
+My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This avoids overlapping
+outputs, and it also keeps the door open to let Gradle cache the generated sources which can be a significant build performance gain. The rationale is explained very
+well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
+
+### Configuring a sequence of elements using the Gradle Groovy DSL
 
 Resemblance of the jOOQ configuration DSL with the Groovy language is coincidental. Complex types that include
 sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.13.0.xsd) must be defined in the DSL's nesting style:
@@ -311,18 +332,6 @@ forcedTypes = [
 ]
 ```
 
-### Defining the jOOQ version when the Spring boot plugin is applied
-
-When applying the [spring-boot-gradle-plugin](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin),
-it is not sufficient to declare the jOOQ version that you want to pull in via `jooq.version = '3.13.4'` since the dependency management rules of the spring-boot-gradle-plugin
-take precedence. You also have to set `ext['jooq.version'] = '3.13.4'` to pull in your requested version of jOOQ.
-
-### Generating sources into shared folders, e.g. src/main/java
-
-My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This avoids overlapping
-outputs, and it also keeps the door open to let Gradle cache the generated sources which can be a significant build performance gain. The rationale is explained very
-well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
-
 # Execution
 
 ## Generate jOOQ sources
@@ -337,17 +346,7 @@ sources are automatically added to the source set with the name that matches the
 
 By default, the code generation tasks are automatically configured as dependencies of the corresponding source compilation tasks provided by the `JavaBasePlugin` plugin. Hence,
 running a build that eventually needs to compile sources will first trigger the required jOOQ code generation tasks. This auto-triggering of the code generation when compiling
-the containing source set can be turned off by setting `generateSchemaSourceOnCompilation` to `false`.
-
-```groovy
-jooq {
-  configurations {
-    main {
-      generateSchemaSourceOnCompilation = false
-    }
-  }
-}
-```
+the containing source set can be turned off by setting `generateSchemaSourceOnCompilation` to `false` on the jOOQ configuration.
 
 ## Delete generated jOOQ sources
 
