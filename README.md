@@ -418,6 +418,7 @@ Both feedback and contributions are very welcome.
 # Acknowledgements
 
 + [wolfs](https://github.com/wolfs) (design)
++ [jonnybbb](https://github.com/jonnybbb) (pr)
 + [Sineaggi](https://github.com/Sineaggi) (pr)
 + [martintreurnicht](https://github.com/martintreurnicht) (pr)
 + [anuraaga](https://github.com/anuraaga) (pr)
