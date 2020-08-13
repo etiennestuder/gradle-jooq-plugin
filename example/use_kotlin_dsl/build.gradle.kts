@@ -1,4 +1,6 @@
 import nu.studer.gradle.jooq.JooqEdition
+import org.jooq.meta.jaxb.ForcedType
+import org.jooq.meta.jaxb.Property
 
 plugins {
     id("nu.studer.jooq") version "5.0.1"
@@ -26,13 +28,22 @@ jooq {
                     url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
                     user = "sa"
                     password = ""
+                    properties.add(Property().withKey("PAGE_SIZE").withValue("2048"))
                 }
                 generator.apply {
                     name = "org.jooq.codegen.DefaultGenerator"
                     database.apply {
                         name = "org.jooq.meta.h2.H2Database"
-                        includes = ".*"
-                        excludes = ""
+                        forcedTypes.addAll(arrayOf(
+                            ForcedType()
+                                .withName("varchar")
+                                .withIncludeExpression(".*")
+                                .withIncludeTypes("JSONB?"),
+                            ForcedType()
+                                .withName("varchar")
+                                .withIncludeExpression(".*")
+                                .withIncludeTypes("INET")
+                        ).toList())
                     }
                     generate.apply {
                         isDeprecated = false

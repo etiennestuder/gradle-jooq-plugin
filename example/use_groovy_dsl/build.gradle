@@ -26,13 +26,29 @@ jooq {
                     url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
                     user = 'sa'
                     password = ''
+                    properties {
+                        property {
+                            key = 'PAGE_SIZE'
+                            value = 2048
+                        }
+                    }
                 }
                 generator {
                     name = 'org.jooq.codegen.DefaultGenerator'
                     database {
                         name = 'org.jooq.meta.h2.H2Database'
-                        includes = '.*'
-                        excludes = ''
+                        forcedTypes {
+                            forcedType {
+                                name = 'varchar'
+                                includeExpression = '.*'
+                                includeTypes = 'JSONB?'
+                            }
+                            forcedType {
+                                name = 'varchar'
+                                includeExpression = '.*'
+                                includeTypes = 'INET'
+                            }
+                        }
                     }
                     generate {
                         deprecated = false
