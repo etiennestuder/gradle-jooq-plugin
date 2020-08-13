@@ -279,8 +279,6 @@ jooq {
 
 See the [examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin.
 
-## Migrating from gradle-jooq-plugin 4.x to 5.x
-
 ## Avoiding configuration pitfalls
 
 ### Explicitly setting the jOOQ version property expected by the Spring boot plugin
@@ -334,7 +332,7 @@ forcedTypes = [
 
 # Execution
 
-## Generate jOOQ sources
+## Generating the jOOQ sources
 
 You can generate the jOOQ sources for a given jOOQ configuration by invoking the task `generate<configName>Jooq`, e.g. `generateTestJooq`. The only exception
 being _main_ that is abbreviated to `generateJooq`, similarly to how it is done for the `JavaCompile` tasks contributed by the `java` plugin. The generated jOOQ
@@ -348,7 +346,7 @@ By default, the code generation tasks are automatically configured as dependenci
 running a build that eventually needs to compile sources will first trigger the required jOOQ code generation tasks. This auto-triggering of the code generation when compiling
 the containing source set can be turned off by setting `generateSchemaSourceOnCompilation` to `false` on the jOOQ configuration.
 
-## Delete generated jOOQ sources
+## Deleting the generated jOOQ sources
 
 You can delete the generated jOOQ sources by invoking the task rule `cleanGenerate<configName>Jooq`, e.g. `cleanGenerateTestJooq`. The only exception
 being _main_ that is abbreviated to `cleanGenerateJooq`, similarly to how it is done for the `JavaCompile` tasks contributed by the `java` plugin. The
@@ -358,6 +356,22 @@ jOOQ plugin or not.
 ```console
 ./gradlew cleanGenerateJooq
 ```
+
+# Migration
+
+## Migrating from jOOQ plugin 4.x to 5.x
+
+When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
+
+- Rename the configuration provided the jOOQ plugin from `jooqRuntime` to `jooqGenerator`
+- Set the `edition` property as a [JooqEdition](https://github.com/etiennestuder/gradle-jooq-plugin/blob/master/src/main/groovy/nu/studer/gradle/jooq/JooqEdition.java) enum
+ value instead of a String value
+- Wrap the entirety of your jOOQ configurations with a `configurations` block
+- Rename the jOOQ configuration to the name of the previously passed source set
+- Move the `generateSchemaSourceOnCompilation` property assignment from the `jooq` block to the desired jOOQ configuration
+- Wrap the configuration of the generation tool with a `generationTool` block
+- Rename any references to the jOOQ task type from `JooqTask` to `JooqGenerate`
+- Rename any references to the jOOQ tasks from `generate<configName>JooqSchemaSource` to `generate<configName>Jooq`
 
 # Examples
 
