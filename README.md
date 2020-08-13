@@ -6,7 +6,7 @@ gradle-jooq-plugin
 # Overview
 [Gradle](http://www.gradle.org) plugin that integrates the jOOQ code generation tool.
 
-For each named jOOQ configuration declared in the build, the plugin adds a task to generate the jOOQ Java sources from the specified database schema and includes the
+For each named jOOQ configuration declared in the build, the plugin adds a task to generate the jOOQ sources from the specified database schema and includes the
 generated Java sources in the matching source set, if existing. The code generation tasks participate
 in [task configuration avoidance](https://docs.gradle.org/current/userguide/task_configuration_avoidance.html),
 in [build configuration caching](https://docs.gradle.org/nightly/userguide/configuration_cache.html),
@@ -151,72 +151,125 @@ buildscript {
 }
 ```
 
-# Configuration
+## Configuring the jOOQ generation tool
 
-The example below shows a jOOQ configuration that creates the jOOQ Java sources from a PostgreSQL database schema and
-includes them in the `main` source set.
+Configure the jOOQ generation tool via `jooq` extension, made available by the jOOQ plugin. The full set of configuration options when using jOOQ 3.13.x can
+be seen on the jOOQ generation tool's [Configuration](https://github.com/jOOQ/jOOQ/blob/version-3.13.0/jOOQ-meta/src/main/java/org/jooq/meta/jaxb/Configuration.java) class, or
+on the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.13.0.xsd).
 
-By default, the generated sources are written to `build/generated-src/jooq/<configurationName>`. The
-output directory can be configured by explicitly setting the `directory` attribute of the `target` configuration.
+By default, the generated sources are written to `<projectDir>/build/generated-src/jooq/<configurationName>`. The target directory can be changed by
+explicitly setting the `directory` attribute of the `target` configuration of the `generator` configuration.
 
-See the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.13.0.xsd) for the full set of configuration options.
+### Gradle Groovy DSL
 
 ```groovy
 jooq {
-  version = '3.13.4'
-  edition = 'OSS'
-  generateSchemaSourceOnCompilation = true
-  sample(sourceSets.main) {
-    jdbc {
-      driver = 'org.postgresql.Driver'
-      url = 'jdbc:postgresql://localhost:5432/sample'
-      user = 'some_user'
-      password = 'secret'
-      properties {
-        property {
-          key = 'ssl'
-          value = 'true'
+    version = '3.13.4'  // default (can be omitted)
+    edition = nu.studer.gradle.jooq.JooqEdition.OSS  // default (can be omitted)
+
+    configurations {
+        main {  // name of the jOOQ configuration
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.WARN
+                jdbc {
+                    driver = 'org.postgresql.Driver'
+                    url = 'jdbc:postgresql://localhost:5432/sample'
+                    user = 'some_user'
+                    password = 'some_secret'
+                    properties {
+                        property {
+                            key = 'ssl'
+                            value = 'true'
+                        }
+                    }
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.postgres.PostgresDatabase'
+                        inputSchema = 'public'
+                        forcedTypes {
+                            forcedType {
+                                name = 'varchar'
+                                includeExpression = '.*'
+                                includeTypes = 'JSONB?'
+                            }
+                            forcedType {
+                                name = 'varchar'
+                                includeExpression = '.*'
+                                includeTypes = 'INET'
+                            }
+                        }
+                    }
+                    generate {
+                        deprecated = false
+                        records = true
+                        immutablePojos = true
+                        fluentSetters = true
+                    }
+                    target {
+                        packageName = 'nu.studer.sample'
+                        directory = 'build/generated-src/jooq/main'  // default (can be omitted)
+                    }
+                    strategy.name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+                }
+            }
         }
-      }
     }
-    generator {
-      name = 'org.jooq.codegen.DefaultGenerator'
-      strategy {
-        name = 'org.jooq.codegen.DefaultGeneratorStrategy'
-        // ...
-      }
-      database {
-        name = 'org.jooq.meta.postgres.PostgresDatabase'
-        inputSchema = 'public'
-        forcedTypes {
-          forcedType {
-            name = 'varchar'
-            expression = '.*'
-            types = 'JSONB?'
-          }
-          forcedType {
-            name = 'varchar'
-            expression = '.*'
-            types = 'INET'
-          }
-        }
-        // ...
-      }
-      generate {
-        relations = true
-        deprecated = false
-        records = true
-        immutablePojos = true
-        fluentSetters = true
-        // ...
-      }
-      target {
-        packageName = 'nu.studer.sample'
-        // directory = ...
-      }
-    }
-  }
 }
+```
+
+### Gradle Kotlin DSL
+
+```kotlin
+jooq {
+    version.set("3.13.4")  // default (can be omitted)
+    edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // default (can be omitted)
+
+    configurations {
+        create("main") {  // name of the jOOQ configuration
+            jooqConfiguration.apply {
+                logging = org.jooq.meta.jaxb.Logging.WARN
+                jdbc.apply {
+                    driver = "org.postgresql.Driver"
+                    url = "jdbc:postgresql://localhost:5432/sample"
+                    user = "some_user"
+                    password = "some_secret"
+                    properties.add(Property().withKey("ssl").withValue("true"))
+                }
+                generator.apply {
+                    name = "org.jooq.codegen.DefaultGenerator"
+                    database.apply {
+                        name = "org.jooq.meta.postgres.PostgresDatabase"
+                        inputSchema = "public"
+                        forcedTypes.addAll(arrayOf(
+                            ForcedType()
+                                .withName("varchar")
+                                .withIncludeExpression(".*")
+                                .withIncludeTypes("JSONB?"),
+                            ForcedType()
+                                .withName("varchar")
+                                .withIncludeExpression(".*")
+                                .withIncludeTypes("INET")
+                        ).toList())
+                    }
+                    generate.apply {
+                        isDeprecated = false
+                        isRecords = true
+                        isImmutablePojos = true
+                        isFluentSetters = true
+                    }
+                    target.apply {
+                        packageName = "nu.studer.sample"
+                        directory = "build/generated-src/jooq/main"  // default (can be omitted)
+                    }
+                    strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
+                }
+            }
+        }
+    }
+}
+
 ```
 
 ## Configuration pitfalls
