@@ -14,11 +14,11 @@ dependencies {
 jooq {
     configurations {
         main {
-            // omits the task dependency from compileJava to generateJooq
+            // omit task dependency from compileJava to generateJooq
             generateSchemaSourceOnCompilation = false
 
             generationTool {
-                logging = org.jooq.meta.jaxb.Logging.INFO
+                logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc {
                     driver = 'org.h2.Driver'
                     url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
@@ -37,20 +37,6 @@ jooq {
                     }
                 }
             }
-        }
-    }
-}
-
-tasks.generateJooq.with {
-    def out = new ByteArrayOutputStream()
-    javaExecSpec = { JavaExecSpec s ->
-        s.standardOutput = out
-        s.errorOutput = out
-        s.ignoreExitValue = true
-    }
-    execResultHandler = { ExecResult r ->
-        if (r.exitValue != 0) {
-            throw new RuntimeException('jOOQ source code generation failed:\n\n' + out.toString())
         }
     }
 }

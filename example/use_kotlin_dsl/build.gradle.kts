@@ -20,7 +20,7 @@ jooq {
     configurations {
         create("main") {
             jooqConfiguration.apply {
-                logging = org.jooq.meta.jaxb.Logging.INFO
+                logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc.apply {
                     driver = "org.h2.Driver"
                     url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
