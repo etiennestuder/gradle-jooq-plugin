@@ -39,7 +39,7 @@ jooq {
 }
 
 tasks.generateJooq.with {
-    // configure normalization of jOOQ config to avoid unnecessary build cache misses
+    // normalize any parts of the jOOQ config to ensure relocatability (if task has been made cacheable)
     generationToolNormalization = { org.jooq.meta.jaxb.Configuration c ->
         c.jdbc.user = ''
         c.jdbc.password = ''

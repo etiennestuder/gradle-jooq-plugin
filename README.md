@@ -270,10 +270,6 @@ My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _
 outputs, and it also keeps the door open to let Gradle cache the generated sources which can be a significant build performance gain. The rationale is explained very
 well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
 
-# Caching
-
- TODOD
-
 # Execution
 
 ## Generate jOOQ sources
@@ -318,6 +314,7 @@ jOOQ plugin or not.
 + Passing JVM args to the jOOQ code generation process: [here](example/configure_jvm_args).
 + Using a custom generator strategy defined in the same Gradle multi-module project: [here](example/configure_custom_generator_strategy).
 + Suppressing the task dependency between the compile task and the jOOQ source generation task: [here](example/configure_task_dependencies).
++ Normalizing the jOOQ config to ensure relocatability: [here](example/configure_jooq_config_normalization).
 + Specifying applied jOOQ config XML schema version: [here](example/specify_jooq_config_xml_schema_version).
 
 # Changelog
