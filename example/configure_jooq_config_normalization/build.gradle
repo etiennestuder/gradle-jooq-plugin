@@ -45,6 +45,3 @@ tasks.named('generateJooq').configure {
         c.jdbc.password = ''
     }
 }
-
-
-

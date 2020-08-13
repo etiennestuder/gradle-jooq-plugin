@@ -44,6 +44,3 @@ tasks.named('generateJooq').configure {
         s.jvmArgs '-Xmx512M'
     }
 }
-
-
-
