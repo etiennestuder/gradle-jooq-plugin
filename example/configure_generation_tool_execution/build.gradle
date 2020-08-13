@@ -1,0 +1,58 @@
+import java.util.concurrent.atomic.AtomicReference
+
+plugins {
+    id 'nu.studer.jooq' version '5.0.1'
+    id 'java'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    jooqGenerator 'com.h2database:h2:1.4.200'
+}
+
+jooq {
+    configurations {
+        main {
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.INFO
+                jdbc {
+                    driver = 'org.h2.Driver'
+                    url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+                    user = 'sa'
+                    password = ''
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.h2.H2Database'
+                        includes = '.*'
+                        excludes = ''
+                    }
+                    target {
+                        packageName = 'nu.studer.sample'
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.named('generateJooq').configure {
+    // customize execution of the code generation tool (only show output if code generation failed)
+    AtomicReference<OutputStream> outRef = new AtomicReference()
+    javaExecSpec = { JavaExecSpec s ->
+        outRef.set(new ByteArrayOutputStream())
+        s.standardOutput = outRef.get()
+        s.errorOutput = outRef.get()
+        s.ignoreExitValue = true
+    }
+    execResultHandler = { ExecResult r ->
+        def out = outRef.getAndSet(null)
+        if (r.exitValue != 0) {
+            throw new RuntimeException('jOOQ source code generation failed:\n\n' + out.toString())
+        }
+    }
+}

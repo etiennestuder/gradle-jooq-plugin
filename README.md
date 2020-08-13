@@ -314,6 +314,7 @@ jOOQ plugin or not.
 + Passing JVM args to the jOOQ code generation process: [here](example/configure_jvm_args).
 + Using a custom generator strategy defined in the same Gradle multi-module project: [here](example/configure_custom_generator_strategy).
 + Suppressing the task dependency between the compile task and the jOOQ source generation task: [here](example/configure_task_dependencies).
++ Customizing the execution of the code generation tool: [here](example/configure_generation_tool_execution).
 + Normalizing the jOOQ config to ensure relocatability: [here](example/configure_jooq_config_normalization).
 + Specifying applied jOOQ config XML schema version: [here](example/specify_jooq_config_xml_schema_version).
 
