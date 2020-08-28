@@ -62,6 +62,21 @@ public class JooqPlugin implements Plugin<Project> {
     }
 
     /**
+     * Adds the configuration that holds the classpath to use for invoking jOOQ. Users can add their JDBC driver and any generator extensions they might have. Explicitly add JAXB
+     * dependencies since they have been removed from JDK 9 and higher. Explicitly add Activation dependency since it has been removed from JDK 11 and higher.
+     */
+    private static Configuration createJooqGeneratorRuntimeConfiguration(Project project) {
+        Configuration jooqGeneratorRuntime = project.getConfigurations().create("jooqGenerator");
+        jooqGeneratorRuntime.setDescription("The classpath used to invoke the jOOQ code generator. Add your JDBC driver, generator extensions, and additional dependencies here.");
+        project.getDependencies().add(jooqGeneratorRuntime.getName(), "org.jooq:jooq-codegen");
+        project.getDependencies().add(jooqGeneratorRuntime.getName(), "javax.xml.bind:jaxb-api:2.3.1");
+        project.getDependencies().add(jooqGeneratorRuntime.getName(), "com.sun.xml.bind:jaxb-core:2.3.0.1");
+        project.getDependencies().add(jooqGeneratorRuntime.getName(), "com.sun.xml.bind:jaxb-impl:2.3.0.1");
+        project.getDependencies().add(jooqGeneratorRuntime.getName(), "javax.activation:activation:1.1.1");
+        return jooqGeneratorRuntime;
+    }
+
+    /**
      * Forces the jOOQ version and edition selected by the user throughout all dependency configurations.
      */
     private static void enforceJooqEditionAndVersion(Project project, JooqExtension jooqExtension) {
@@ -76,21 +91,6 @@ public class JooqPlugin implements Plugin<Project> {
                 }
             })
         );
-    }
-
-    /**
-     * Adds the configuration that holds the classpath to use for invoking jOOQ. Users can add their JDBC driver and any generator extensions they might have. Explicitly add JAXB
-     * dependencies since they have been removed from JDK 9 and higher. Explicitly add Activation dependency since it has been removed from JDK 11 and higher.
-     */
-    private static Configuration createJooqGeneratorRuntimeConfiguration(Project project) {
-        Configuration jooqGeneratorRuntime = project.getConfigurations().create("jooqGenerator");
-        jooqGeneratorRuntime.setDescription("The classpath used to invoke the jOOQ code generator. Add your JDBC driver, generator extensions, and additional dependencies here.");
-        project.getDependencies().add(jooqGeneratorRuntime.getName(), "org.jooq:jooq-codegen");
-        project.getDependencies().add(jooqGeneratorRuntime.getName(), "javax.xml.bind:jaxb-api:2.3.1");
-        project.getDependencies().add(jooqGeneratorRuntime.getName(), "com.sun.xml.bind:jaxb-core:2.3.0.1");
-        project.getDependencies().add(jooqGeneratorRuntime.getName(), "com.sun.xml.bind:jaxb-impl:2.3.0.1");
-        project.getDependencies().add(jooqGeneratorRuntime.getName(), "javax.activation:activation:1.1.1");
-        return jooqGeneratorRuntime;
     }
 
 }
