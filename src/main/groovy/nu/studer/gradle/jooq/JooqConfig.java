@@ -72,15 +72,5 @@ public class JooqConfig {
         applyClosureToDelegate(closure, delegate);
     }
 
-    @Override
-    public String toString() {
-        return "JooqConfig{" +
-            "name='" + name + '\'' +
-            ", jooqConfiguration=" + jooqConfiguration +
-            ", generateSchemaSourceOnCompilation=" + generateSchemaSourceOnCompilation +
-            ", outputDir=" + outputDir +
-            '}';
-    }
-
 }
 
