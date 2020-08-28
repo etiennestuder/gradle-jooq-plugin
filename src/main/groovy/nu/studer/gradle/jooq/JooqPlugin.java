@@ -26,7 +26,7 @@ public class JooqPlugin implements Plugin<Project> {
     public void apply(Project project) {
         // abort if old Gradle version is not supported
         if (GradleVersion.current().getBaseVersion().compareTo(GradleVersion.version("6.1")) < 0) {
-            throw new IllegalStateException("This version of the jooq plugin is not compatible with Gradle < 6.0");
+            throw new IllegalStateException("This version of the jooq plugin is not compatible with Gradle < 6.1");
         }
 
         // apply Java base plugin, making it possible to also use the jOOQ plugin for Android builds
