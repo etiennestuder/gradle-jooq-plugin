@@ -37,6 +37,8 @@ import org.gradle.process.ExecResult;
 import org.gradle.process.JavaExecSpec;
 import org.jooq.codegen.GenerationTool;
 import org.jooq.meta.jaxb.Configuration;
+import org.jooq.meta.jaxb.Generator;
+import org.jooq.meta.jaxb.Jdbc;
 import org.jooq.meta.jaxb.Strategy;
 import org.xml.sax.SAXException;
 
@@ -144,8 +146,8 @@ public class JooqGenerate extends DefaultTask {
 
     @TaskAction
     public void generate() {
-        // avoid schema-violating XML being created due to the default value (name) being written even when matchers are configured
-        ensureStrategyIsValid(jooqConfiguration.getGenerator().getStrategy());
+        // avoid excessive and/or schema-violating XML being created due to the serialization of default values
+        trimConfiguration(jooqConfiguration);
 
         // set target directory to the defined default value if no explicit value has been configured
         jooqConfiguration.getGenerator().getTarget().setDirectory(outputDir.get().getAsFile().getAbsolutePath());
@@ -165,9 +167,30 @@ public class JooqGenerate extends DefaultTask {
         }
     }
 
-    private void ensureStrategyIsValid(Strategy strategy) {
-        if (strategy.getMatchers() != null) {
-            strategy.setName(null);
+    private void trimConfiguration(Configuration configuration) {
+        // avoid default value (name) being written even when matchers are configured
+        Generator generator = configuration.getGenerator();
+        if (generator != null) {
+            Strategy strategy = generator.getStrategy();
+            if (strategy != null && strategy.getMatchers() != null) {
+                strategy.setName(null);
+            }
+        }
+
+        // avoid JDBC element being written when it has an empty configuration
+        Jdbc jdbc = configuration.getJdbc();
+        if (jdbc != null) {
+            if (jdbc.getDriver() == null
+                && jdbc.getUrl() == null
+                && jdbc.getSchema() == null
+                && jdbc.getUser() == null
+                && jdbc.getUsername() == null
+                && jdbc.getPassword() == null
+                && jdbc.isAutoCommit() == null
+                && jdbc.getProperties().isEmpty()
+            ) {
+                configuration.setJdbc(null);
+            }
         }
     }
 

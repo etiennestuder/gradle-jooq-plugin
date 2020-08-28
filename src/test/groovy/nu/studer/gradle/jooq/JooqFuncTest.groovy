@@ -548,6 +548,19 @@ generateJooq {
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
+    void "accepts empty JDBC configuration even when not explicitly set to null"() {
+        given:
+        def sqlSchemaFile = file('src/main/resources/schema.sql')
+        sqlSchemaFile << 'CREATE TABLE jooq_test.foo (a INT);'
+        buildFile << buildWithNoJdbc(sqlSchemaFile)
+
+        when:
+        def result = runWithArguments('build')
+
+        then:
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+    }
+
     void "parses DSL with variables and methods references"() {
         given:
         buildFile << buildWithVariablesAndMethods()
@@ -898,6 +911,45 @@ jooq {
           }
           generate {
             javaTimeTypes = true
+          }
+        }
+      }
+    }
+  }
+}
+"""
+    }
+
+    private static String buildWithNoJdbc(def sqlFile) {
+        """
+plugins {
+    id 'nu.studer.jooq'
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    jooqGenerator 'org.jooq:jooq-meta-extensions'
+}
+
+jooq {
+  configurations {
+    main {
+      generationTool {
+        logging = org.jooq.meta.jaxb.Logging.WARN
+        generator {
+          database {
+            name = 'org.jooq.meta.extensions.ddl.DDLDatabase'
+            properties {
+              property {
+                key = 'scripts'
+                value = '$sqlFile.absolutePath'
+              }
+            }
           }
         }
       }
