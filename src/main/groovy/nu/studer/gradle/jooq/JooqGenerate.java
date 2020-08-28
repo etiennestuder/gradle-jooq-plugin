@@ -167,6 +167,7 @@ public class JooqGenerate extends DefaultTask {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void trimConfiguration(Configuration configuration) {
         // avoid default value (name) being written even when matchers are configured
         Generator generator = configuration.getGenerator();
