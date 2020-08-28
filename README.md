@@ -388,6 +388,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 # Changelog
 
++ 5.0.2 - Do not write out JDBC configuration when empty.
 + 5.0.1 - Support dependency substitution to use different versions of the jOOQ dependencies than those pulled in by the jOOQ plugin.
 + 5.0 - Change DSL. Support Gradle Kotlin DSL. Add normalization hook. Make Gradle 6.1 the minimum compatible version. Upgrade to jOOQ 3.13.4.
 + 4.2 - Add new jOOQ editions for Java 8 and Java 6. Upgrade to jOOQ 3.13.1.
