@@ -48,10 +48,10 @@ The following Gradle features are supported by the jOOQ plugin:
 
 # Compatibility
 
-| Plugin version | Compatible Gradle versions  | Support for Gradle Kotlin DSL | Support for Gradle Configuration Cache |
-| -------------- | --------------------------- | ----------------------------- | -------------------------------------- |
-| 5.0+           | 6.1+                        | Yes                           | Yes |
-| 4.0            | 5.0+, 6.0+                  | No                            | No |
+|Plugin version|Compatible Gradle versions|Support for Gradle Kotlin DSL|Support for Gradle Configuration Cache|
+|--------------|---------------------------|----------------------------|--------------------------------------|
+| 5.0+         | 6.1+                      | Yes                        | Yes |
+| 4.0          | 5.0+, 6.0+                | No                         | No |
 
 See the [Migration](#migration) section on how to migrate your build from jOOQ plugin 4.x to 5.x.
 
@@ -393,7 +393,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 # Changelog
 
 + 5.0.2 - Do not write out JDBC configuration when empty.
-+ 5.0.1 - Support dependency substitution to use different versions of the jOOQ dependencies than those pulled in by the jOOQ plugin.
++ 5.0.1 - Support dependency substitution to use different versions of jOOQ dependencies than those pulled in by the jOOQ plugin.
 + 5.0 - Change DSL. Support Gradle Kotlin DSL. Add normalization hook. Make Gradle 6.1 the minimum version. Upgrade to jOOQ 3.13.4.
 + 4.2 - Add new jOOQ editions for Java 8 and Java 6. Upgrade to jOOQ 3.13.1.
 + 4.1 - Global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set
