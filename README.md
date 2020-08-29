@@ -286,8 +286,8 @@ See the [Examples](#examples) section for complete, exemplary build scripts that
 ### Synchronizing the jOOQ version between the Spring Boot plugin and the jOOQ plugin
 
 When applying the [spring-boot-gradle-plugin](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin),
-it is not sufficient to declare the jOOQ version that you want to pull in via `jooq.version = '3.13.4'` since the dependency management rules of the spring-boot-gradle-plugin
-take precedence. You also have to set `ext['jooq.version'] = '3.13.4'` to have Spring Boot pull in your requested version of jOOQ.
+if you want the Spring Boot plugin to pull in the same version of jOOQ as defined by the jOOQ plugin, you have to explicitly set `ext['jooq.version'] = jooq.version.get()` since
+the dependency management rules of the Spring Boot plugin take precedence.
 
 The other way around, if you want the jOOQ plugin to pull in the same version of jOOQ as defined by the Spring Boot plugin, you have to explicitly
 set `jooq.version = dependencyManagement.importedProperties['jooq.version']`.
