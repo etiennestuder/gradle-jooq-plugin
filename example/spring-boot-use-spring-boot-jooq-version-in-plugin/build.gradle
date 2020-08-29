@@ -1,0 +1,83 @@
+import nu.studer.gradle.jooq.JooqEdition
+
+plugins {
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'nu.studer.jooq' version '5.0.2'
+    id 'java'
+}
+
+group = 'nu.studer.gradle.jooq.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-jooq'
+    runtimeOnly 'com.h2database:h2'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    jooqGenerator 'com.h2database:h2:1.4.200'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jooq {
+    version = dependencyManagement.importedProperties['jooq.version']
+    edition = JooqEdition.OSS
+
+    configurations {
+        main {
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.WARN
+                jdbc {
+                    driver = 'org.h2.Driver'
+                    url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+                    user = 'sa'
+                    password = ''
+                    properties {
+                        property {
+                            key = 'PAGE_SIZE'
+                            value = 2048
+                        }
+                    }
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.h2.H2Database'
+                        forcedTypes {
+                            forcedType {
+                                name = 'varchar'
+                                includeExpression = '.*'
+                                includeTypes = 'JSONB?'
+                            }
+                            forcedType {
+                                name = 'varchar'
+                                includeExpression = '.*'
+                                includeTypes = 'INET'
+                            }
+                        }
+                    }
+                    generate {
+                        deprecated = false
+                        records = false
+                        immutablePojos = false
+                        fluentSetters = false
+                    }
+                    target {
+                        packageName = 'nu.studer.sample'
+                        directory = 'src/generated/jooq'
+                    }
+                    strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
+                }
+            }
+        }
+    }
+}
