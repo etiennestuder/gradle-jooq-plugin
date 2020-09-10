@@ -389,7 +389,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 + Customizing the execution of the code generation tool: [here](example/configure_generation_tool_execution).
 + Normalizing the jOOQ config to ensure relocatability: [here](example/configure_jooq_config_normalization).
 + Specifying applied jOOQ config XML schema version: [here](example/specify_jooq_config_xml_schema_version).
-+ Use spring boot jooq version in plugin: [here](example/spring-boot-use-spring-boot-jooq-version-in-plugin).
++ Using Spring Boot's jOOQ version in the jOOQ plugin: [here](example/configure_jooq_version_from_spring_boot).
 
 # Changelog
 

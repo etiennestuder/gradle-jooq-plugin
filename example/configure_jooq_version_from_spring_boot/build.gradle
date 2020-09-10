@@ -7,12 +7,8 @@ plugins {
     id 'java'
 }
 
-group = 'nu.studer.gradle.jooq.example'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -29,6 +25,7 @@ test {
 }
 
 jooq {
+    // use jOOQ version defined in Spring Boot
     version = dependencyManagement.importedProperties['jooq.version']
     edition = JooqEdition.OSS
 
@@ -52,28 +49,11 @@ jooq {
                     name = 'org.jooq.codegen.DefaultGenerator'
                     database {
                         name = 'org.jooq.meta.h2.H2Database'
-                        forcedTypes {
-                            forcedType {
-                                name = 'varchar'
-                                includeExpression = '.*'
-                                includeTypes = 'JSONB?'
-                            }
-                            forcedType {
-                                name = 'varchar'
-                                includeExpression = '.*'
-                                includeTypes = 'INET'
-                            }
-                        }
-                    }
-                    generate {
-                        deprecated = false
-                        records = false
-                        immutablePojos = false
-                        fluentSetters = false
+                        includes = '.*'
+                        excludes = ''
                     }
                     target {
                         packageName = 'nu.studer.sample'
-                        directory = 'src/generated/jooq'
                     }
                     strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
                 }
