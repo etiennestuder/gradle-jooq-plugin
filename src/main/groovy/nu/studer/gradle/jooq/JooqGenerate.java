@@ -17,6 +17,7 @@ package nu.studer.gradle.jooq;
 
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.Task;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.DirectoryProperty;
@@ -27,6 +28,7 @@ import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
+import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
@@ -66,6 +68,7 @@ public class JooqGenerate extends DefaultTask {
     private final Provider<Configuration> normalizedJooqConfiguration;
     private final ConfigurableFileCollection runtimeClasspath;
     private final DirectoryProperty outputDir;
+    private final Property<Boolean> upToDateable;
     private Action<? super Configuration> generationToolNormalization;
     private Action<? super JavaExecSpec> javaExecSpec;
     private Action<? super ExecResult> execResultHandler;
@@ -82,10 +85,19 @@ public class JooqGenerate extends DefaultTask {
         this.normalizedJooqConfiguration = normalizedJooqConfigurationProvider(objects, providers);
         this.runtimeClasspath = objects.fileCollection().from(runtimeClasspath);
         this.outputDir = objects.directoryProperty().value(config.getOutputDir());
+        this.upToDateable = objects.property(Boolean.class).convention(Boolean.FALSE);
 
         this.projectLayout = projectLayout;
         this.execOperations = execOperations;
         this.fileSystemOperations = fileSystemOperations;
+
+        // do not use lambda due to a bug in Gradle 6.5
+        getOutputs().upToDateWhen(new Spec<Task>() {
+            @Override
+            public boolean isSatisfiedBy(Task task) {
+                return upToDateable.get();
+            }
+        });
     }
 
     private Provider<Configuration> normalizedJooqConfigurationProvider(ObjectFactory objects, ProviderFactory providers) {
@@ -115,6 +127,11 @@ public class JooqGenerate extends DefaultTask {
     @OutputDirectory
     public Provider<Directory> getOutputDir() {
         return outputDir;
+    }
+
+    @Internal
+    public Property<Boolean> getUpToDateable() {
+        return upToDateable;
     }
 
     @Internal

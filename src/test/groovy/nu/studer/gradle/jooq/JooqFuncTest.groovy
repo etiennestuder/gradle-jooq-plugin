@@ -663,6 +663,8 @@ jooq {
     }
   }
 }
+
+tasks.named('generateJooq').configure { upToDateable = true }
 """
     }
 
