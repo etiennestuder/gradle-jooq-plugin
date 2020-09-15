@@ -21,6 +21,7 @@ import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.file.FileSystemOperations;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.provider.Property;
@@ -71,11 +72,12 @@ public class JooqGenerate extends DefaultTask {
 
     private final ProjectLayout projectLayout;
     private final ExecOperations execOperations;
+    private final FileSystemOperations fileSystemOperations;
 
     private static final Action<Configuration> OUTPUT_DIRECTORY_NORMALIZATION = c -> c.getGenerator().getTarget().setDirectory(null);
 
     @Inject
-    public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations) {
+    public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations, FileSystemOperations fileSystemOperations) {
         this.jooqConfiguration = config.getJooqConfiguration();
         this.normalizedJooqConfiguration = normalizedJooqConfigurationProvider(objects, providers);
         this.runtimeClasspath = objects.fileCollection().from(runtimeClasspath);
@@ -83,6 +85,7 @@ public class JooqGenerate extends DefaultTask {
 
         this.projectLayout = projectLayout;
         this.execOperations = execOperations;
+        this.fileSystemOperations = fileSystemOperations;
     }
 
     private Provider<Configuration> normalizedJooqConfigurationProvider(ObjectFactory objects, ProviderFactory providers) {
@@ -151,6 +154,9 @@ public class JooqGenerate extends DefaultTask {
 
         // set target directory to the defined default value if no explicit value has been configured
         jooqConfiguration.getGenerator().getTarget().setDirectory(outputDir.get().getAsFile().getAbsolutePath());
+
+        // clean target directory to ensure no stale files are still around
+        fileSystemOperations.delete(spec -> spec.delete(outputDir.get()));
 
         // define a config file to which the jOOQ code generation configuration is written to
         File configFile = new File(getTemporaryDir(), "config.xml");

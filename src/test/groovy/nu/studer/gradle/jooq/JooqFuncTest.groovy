@@ -326,6 +326,29 @@ task dummy {}
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
+    void "cleans output before each run"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+
+        when:
+        def result = runWithArguments('generateJooq')
+
+        then:
+        fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+
+        when:
+        buildFile.delete()
+        buildFile << buildWithJooqPluginDSL('different.target.pkg.name')
+
+        result = runWithArguments('build')
+
+        then:
+        fileExists('build/generated-src/jooq/main/different/target/pkg/name/jooq_test/tables/Foo.java')
+        !fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+    }
+
     void "task output is cacheable if jooq generate task is marked as cacheable"() {
         given:
         buildFile << buildWithJooqPluginDSL()
