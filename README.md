@@ -65,7 +65,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '5.0.2'
+    id 'nu.studer.jooq' version '5.0.3'
 }
 ```
 
@@ -73,7 +73,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("nu.studer.jooq") version "5.0.2"
+    id("nu.studer.jooq") version "5.0.3"
 }
 ```
 
@@ -393,6 +393,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 # Changelog
 
++ 5.0.3 - Clean output directory before generating jOOQ sources.
 + 5.0.2 - Do not write out JDBC configuration when empty.
 + 5.0.1 - Support dependency substitution to use different versions of jOOQ dependencies than those pulled in by the jOOQ plugin.
 + 5.0 - Change DSL. Support Gradle Kotlin DSL. Add normalization hook. Make Gradle 6.1 the minimum version. Upgrade to jOOQ 3.13.4.
