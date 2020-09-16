@@ -15,8 +15,12 @@ import java.sql.DriverManager
 @Unroll
 class JooqFuncTest extends BaseFuncTest {
 
+    private static final ALL_INPUTS_DECLARED_JOOQ_TASK = """
+tasks.named('generateJooq').configure { allInputsDeclared = true }
+"""
+
     private static final CACHE_JOOQ_TASK = """
-generateJooq.outputs.cacheIf { true }
+tasks.named('generateJooq').configure { outputs.cacheIf { true } }
 """
 
     @AutoCleanup
@@ -270,9 +274,27 @@ task dummy {}
 
     }
 
-    void "participates in incremental build"() {
+    void "does not participate in incremental build by default"() {
         given:
         buildFile << buildWithJooqPluginDSL()
+
+        when:
+        def result = runWithArguments('generateJooq')
+
+        then:
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+
+        when:
+        result = runWithArguments('generateJooq')
+
+        then:
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+    }
+
+    void "participates in incremental build if explicitly configured"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+        buildFile << ALL_INPUTS_DECLARED_JOOQ_TASK
 
         when:
         def result = runWithArguments('generateJooq')
@@ -349,9 +371,10 @@ task dummy {}
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
-    void "task output is cacheable if jooq generate task is marked as cacheable"() {
+    void "task output is cacheable if jooq generate task is marked as cacheable and all inputs declared"() {
         given:
         buildFile << buildWithJooqPluginDSL()
+        buildFile << ALL_INPUTS_DECLARED_JOOQ_TASK
         buildFile << CACHE_JOOQ_TASK
 
         when:
@@ -367,9 +390,10 @@ task dummy {}
         result.task(':generateJooq').outcome == TaskOutcome.FROM_CACHE
     }
 
-    void "task inputs are relocatable if jooq generate task is marked as cacheable"() {
+    void "task inputs are relocatable if jooq generate task is marked as cacheable and all inputs declared"() {
         given:
         buildFile << buildWithJooqPluginDSL(null, new File(workspaceDir, 'src/generated/jooq').absolutePath)
+        buildFile << ALL_INPUTS_DECLARED_JOOQ_TASK
         buildFile << CACHE_JOOQ_TASK
 
         and:
@@ -379,6 +403,7 @@ task dummy {}
 
         def otherBuildFile = file("$otherProject/build.gradle")
         otherBuildFile << buildWithJooqPluginDSL(null, new File(workspaceDir, "$otherProject/src/generated/jooq").absolutePath)
+        otherBuildFile << ALL_INPUTS_DECLARED_JOOQ_TASK
         otherBuildFile << CACHE_JOOQ_TASK
 
         when:
@@ -446,6 +471,7 @@ generateJooq {
 
         when: // apply normalization
         buildFile << buildWithJooqPluginDSL('some.place')
+        buildFile << ALL_INPUTS_DECLARED_JOOQ_TASK
         buildFile << packageIgnoringConfigNormalization
         def result = runWithArguments('generateJooq')
 
@@ -456,6 +482,7 @@ generateJooq {
         when: // apply normalization
         buildFile.delete()
         buildFile << buildWithJooqPluginDSL('some.other.place')
+        buildFile << ALL_INPUTS_DECLARED_JOOQ_TASK
         buildFile << packageIgnoringConfigNormalization
         result = runWithArguments('generateJooq')
 
@@ -465,6 +492,7 @@ generateJooq {
         when: // do not apply normalization
         buildFile.delete()
         buildFile << buildWithJooqPluginDSL('yet.another.place')
+        buildFile << ALL_INPUTS_DECLARED_JOOQ_TASK
         result = runWithArguments('generateJooq')
 
         then:
@@ -663,8 +691,6 @@ jooq {
     }
   }
 }
-
-tasks.named('generateJooq').configure { allInputsDeclared = true }
 """
     }
 
