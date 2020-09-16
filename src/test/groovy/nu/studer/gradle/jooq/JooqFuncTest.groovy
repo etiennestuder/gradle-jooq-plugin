@@ -664,7 +664,7 @@ jooq {
   }
 }
 
-tasks.named('generateJooq').configure { upToDateable = true }
+tasks.named('generateJooq').configure { allInputsDeclared = true }
 """
     }
 

@@ -68,7 +68,7 @@ public class JooqGenerate extends DefaultTask {
     private final Provider<Configuration> normalizedJooqConfiguration;
     private final ConfigurableFileCollection runtimeClasspath;
     private final DirectoryProperty outputDir;
-    private final Property<Boolean> upToDateable;
+    private final Property<Boolean> allInputsDeclared;
     private Action<? super Configuration> generationToolNormalization;
     private Action<? super JavaExecSpec> javaExecSpec;
     private Action<? super ExecResult> execResultHandler;
@@ -85,7 +85,7 @@ public class JooqGenerate extends DefaultTask {
         this.normalizedJooqConfiguration = normalizedJooqConfigurationProvider(objects, providers);
         this.runtimeClasspath = objects.fileCollection().from(runtimeClasspath);
         this.outputDir = objects.directoryProperty().value(config.getOutputDir());
-        this.upToDateable = objects.property(Boolean.class).convention(Boolean.FALSE);
+        this.allInputsDeclared = objects.property(Boolean.class).convention(Boolean.FALSE);
 
         this.projectLayout = projectLayout;
         this.execOperations = execOperations;
@@ -95,7 +95,7 @@ public class JooqGenerate extends DefaultTask {
         getOutputs().upToDateWhen(new Spec<Task>() {
             @Override
             public boolean isSatisfiedBy(Task task) {
-                return upToDateable.get();
+                return allInputsDeclared.get();
             }
         });
     }
@@ -130,8 +130,8 @@ public class JooqGenerate extends DefaultTask {
     }
 
     @Internal
-    public Property<Boolean> getUpToDateable() {
-        return upToDateable;
+    public Property<Boolean> getAllInputsDeclared() {
+        return allInputsDeclared;
     }
 
     @Internal
