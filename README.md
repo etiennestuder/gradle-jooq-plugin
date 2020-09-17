@@ -404,6 +404,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 + Passing JVM args to the jOOQ code generation process: [here](example/configure_jvm_args).
 + Using a custom generator strategy defined in the same Gradle multi-module project: [here](example/configure_custom_generator_strategy).
 + Suppressing the task dependency between the compile task and the jOOQ source generation task: [here](example/configure_task_dependencies).
++ Participating in incremental build and build caching: [here](example/configure_incremental_build_and_build_caching_participation).
 + Customizing the execution of the code generation tool: [here](example/configure_generation_tool_execution).
 + Normalizing the jOOQ config to ensure relocatability: [here](example/configure_jooq_config_normalization).
 + Specifying applied jOOQ config XML schema version: [here](example/specify_jooq_config_xml_schema_version).
