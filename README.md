@@ -287,6 +287,9 @@ If you configure the state of the database schema from which to derive the jOOQ 
 jOOQ task as having all its inputs declared by setting the `allInputsDeclared` task property to `true`. The jOOQ task will then participate
 in Gradle's incremental build feature. The `allInputsDeclared` task property is `false` by default.
 
+See [here](example/configure_incremental_build_and_build_caching_participation) for a complete example on how to enable participation in
+incremental build and build caching.
+
 ### Gradle Groovy DSL
 
 ```groovy
