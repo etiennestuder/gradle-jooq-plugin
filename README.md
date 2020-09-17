@@ -298,8 +298,8 @@ incremental build and build caching.
 
 ### Gradle Kotlin DSL
 
-```groovy
-    tasks.named('generateJooq').configure { allInputsDeclared.set(true) }
+```kotlin
+    tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") { allInputsDeclared.set(true) }
 ```
 
 ## Avoiding configuration pitfalls
