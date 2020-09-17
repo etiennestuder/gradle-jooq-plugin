@@ -43,7 +43,7 @@ The following Gradle features are supported by the jOOQ plugin:
 
  * `JooqGenerate` task instances participate in task configuration avoidance
  * `JooqGenerate` task instances participate in configuration caching
- * `JooqGenerate` task instances participate in incremental builds
+ * `JooqGenerate` task instances participate in incremental builds (if the task gets explicitly marked as all inputs being declared)
  * `JooqGenerate` task instances participate in task output caching (if the task gets explicitly marked as cacheable)
 
 # Compatibility
@@ -65,7 +65,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '5.0.3'
+    id 'nu.studer.jooq' version '5.1.0'
 }
 ```
 
@@ -73,7 +73,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("nu.studer.jooq") version "5.0.3"
+    id("nu.studer.jooq") version "5.1.0"
 }
 ```
 
@@ -281,6 +281,24 @@ jooq {
 
 See the [Examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin.
 
+## Configuring the jOOQ generation task to participate in incremental builds
+
+If you configure the state of the database schema from which to derive the jOOQ sources as an input to the jOOQ task, you can mark the
+jOOQ task as having all its inputs declared by setting the `allInputsDeclared` task property to `true`. The jOOQ task will then participate
+in Gradle's incremental build feature. The `allInputsDeclared` task property is `false` by default.
+
+### Gradle Groovy DSL
+
+```groovy
+    tasks.named('generateJooq').configure { allInputsDeclared = true }
+```
+
+### Gradle Kotlin DSL
+
+```groovy
+    tasks.named('generateJooq').configure { allInputsDeclared.set(true) }
+```
+
 ## Avoiding configuration pitfalls
 
 ### Synchronizing the jOOQ version between the Spring Boot Gradle plugin and the jOOQ Gradle plugin
@@ -393,6 +411,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 # Changelog
 
++ 5.1.0 - Require explicit opt-in to participate in incremental builds.
 + 5.0.3 - Clean output directory before generating jOOQ sources.
 + 5.0.2 - Do not write out JDBC configuration when empty.
 + 5.0.1 - Support dependency substitution to use different versions of jOOQ dependencies than those pulled in by the jOOQ plugin.
