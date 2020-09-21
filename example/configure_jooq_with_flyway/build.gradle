@@ -1,0 +1,69 @@
+plugins {
+    id 'org.flywaydb.flyway' version '6.5.6'
+    id 'nu.studer.jooq' version '5.1.0'
+    id 'java'
+}
+
+repositories {
+    jcenter()
+}
+
+configurations {
+    flywayMigration
+}
+
+dependencies {
+    flywayMigration 'com.h2database:h2:1.4.200'
+    jooqGenerator 'com.h2database:h2:1.4.200'
+}
+
+flyway {
+    url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+    user = 'sa'
+    password = ''
+    configurations = ['flywayMigration']
+    ignoreFutureMigrations = false // fail-fast if the database has a version that is newer than the latest available migration
+}
+
+jooq {
+    configurations {
+        main {
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.WARN
+                jdbc {
+                    driver = 'org.h2.Driver'
+                    url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+                    user = 'sa'
+                    password = ''
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.h2.H2Database'
+                        includes = '.*'
+                        excludes = ''
+                    }
+                    target {
+                        packageName = 'nu.studer.sample'
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.named('generateJooq').configure {
+    // make task participate in incremental builds (which is also a prerequisite for participating in build caching)
+    allInputsDeclared = true
+
+    // make task participate in build caching
+    outputs.cacheIf { true }
+
+    // Trigger a migration of the Flyway table
+    dependsOn(tasks.named('flywayMigrate'))
+    
+    // Declare migration scripts as inputs
+    inputs.files(fileTree('src/main/resources/db/migration'))
+            .withPropertyName('migrations')
+            .withPathSensitivity(PathSensitivity.RELATIVE)
+}
