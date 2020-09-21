@@ -404,6 +404,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 + Configuring the jOOQ code generation via Gradle Groovy DSL: [here](example/use_groovy_dsl).
 + Configuring the jOOQ code generation via Gradle Kotlin DSL: [here](example/use_kotlin_dsl).
++ Extracting the jOOQ configuration into a precompiled script plugin: [here](example/extract_precompiled_script_plugin).
 + Passing JVM args to the jOOQ code generation process: [here](example/configure_jvm_args).
 + Using a custom generator strategy defined in the same Gradle multi-module project: [here](example/configure_custom_generator_strategy).
 + Suppressing the task dependency between the compile task and the jOOQ source generation task: [here](example/configure_task_dependencies).
