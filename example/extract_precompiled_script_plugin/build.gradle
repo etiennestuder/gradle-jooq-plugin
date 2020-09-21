@@ -1,0 +1,20 @@
+plugins {
+    // apply precompiled script plugin
+    id 'jooq-convention'
+}
+
+// modify the jooq configuration defined in the precompiled script plugin (optional)
+jooq {
+    configurations {
+        main {
+            generationTool {
+                generator {
+                    target {
+                        directory = 'src/generated/jooq'
+                    }
+                }
+            }
+
+        }
+    }
+}
