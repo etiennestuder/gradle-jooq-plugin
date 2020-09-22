@@ -413,6 +413,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 + Normalizing the jOOQ config to ensure relocatability: [here](example/configure_jooq_config_normalization).
 + Specifying applied jOOQ config XML schema version: [here](example/specify_jooq_config_xml_schema_version).
 + Using Spring Boot's jOOQ version in the jOOQ plugin: [here](example/configure_jooq_version_from_spring_boot).
++ Using Flyway in combination with jOOQ to generate the schema and jOOQ sources: [here](example/configure_jooq_with_flyway).
 
 # Changelog
 

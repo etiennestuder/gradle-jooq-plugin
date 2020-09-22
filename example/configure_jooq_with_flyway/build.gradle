@@ -18,11 +18,10 @@ dependencies {
 }
 
 flyway {
+    configurations = ['flywayMigration']
     url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
     user = 'sa'
     password = ''
-    configurations = ['flywayMigration']
-    ignoreFutureMigrations = false // fail-fast if the database has a version that is newer than the latest available migration
 }
 
 jooq {
@@ -32,9 +31,9 @@ jooq {
                 logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc {
                     driver = 'org.h2.Driver'
-                    url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
-                    user = 'sa'
-                    password = ''
+                    url = flyway.url
+                    user = flyway.user
+                    password = flyway.password
                 }
                 generator {
                     name = 'org.jooq.codegen.DefaultGenerator'
@@ -52,17 +51,19 @@ jooq {
     }
 }
 
+// configure jOOQ task such that it only executes when something has changed that potentially affects the generated JOOQ sources
+// - the jOOQ configuration has changed (Jdbc, Generator, Strategy, etc.)
+// - the classpath used to execute the jOOQ generation tool has changed (jOOQ library, database driver, strategy classes, etc.)
+// - the schema files from which the schema is generated and which is used by jOOQ to generate the sources have changed (scripts added, modified, etc.)
 tasks.named('generateJooq').configure {
-    // make task participate in incremental builds (which is also a prerequisite for participating in build caching)
-    allInputsDeclared = true
+    // ensure database schema has been prepared by Flyway before generating the jOOQ sources
+    dependsOn tasks.named('flywayMigrate')
 
-    // make task participate in build caching
+    // make jOOQ task participate in incremental builds and build caching
+    allInputsDeclared = true
     outputs.cacheIf { true }
 
-    // Trigger a migration of the Flyway table
-    dependsOn(tasks.named('flywayMigrate'))
-    
-    // Declare migration scripts as inputs
+    // declare Flyway migration scripts as inputs on the jOOQ task
     inputs.files(fileTree('src/main/resources/db/migration'))
             .withPropertyName('migrations')
             .withPathSensitivity(PathSensitivity.RELATIVE)
