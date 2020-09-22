@@ -59,12 +59,12 @@ tasks.named('generateJooq').configure {
     // ensure database schema has been prepared by Flyway before generating the jOOQ sources
     dependsOn tasks.named('flywayMigrate')
 
+    // declare Flyway migration scripts as inputs on the jOOQ task
+    inputs.files(fileTree('src/main/resources/db/migration'))
+        .withPropertyName('migrations')
+        .withPathSensitivity(PathSensitivity.RELATIVE)
+
     // make jOOQ task participate in incremental builds and build caching
     allInputsDeclared = true
     outputs.cacheIf { true }
-
-    // declare Flyway migration scripts as inputs on the jOOQ task
-    inputs.files(fileTree('src/main/resources/db/migration'))
-            .withPropertyName('migrations')
-            .withPathSensitivity(PathSensitivity.RELATIVE)
 }
