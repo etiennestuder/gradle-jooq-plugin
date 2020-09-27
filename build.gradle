@@ -1,6 +1,7 @@
 plugins {
     id 'nu.studer.plugindev' version '1.0.12'
     id 'nu.studer.credentials' version '2.1'
+    id 'org.nosphere.gradle.github.actions' version '1.2.0'
     id 'java-library'
     id 'groovy'
 }
