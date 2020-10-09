@@ -62,5 +62,7 @@ jooq {
 }
 
 // wire generated sources into the same source set
-sourceSets.main.java.srcDir tasks.named('generateFirstJooq').flatMap { it.getOutputDir() }
-sourceSets.main.java.srcDir tasks.named('generateSecondJooq').flatMap { it.getOutputDir() }
+sourceSets.main.java.srcDirs (
+    tasks.named('generateFirstJooq').flatMap { it.outputDir },
+    tasks.named('generateSecondJooq').flatMap { it.outputDir }
+)
