@@ -1,0 +1,66 @@
+plugins {
+    id 'nu.studer.jooq' version '5.1.1'
+    id 'java'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.jooq:jooq' // manually add jOOQ dependency
+    jooqGenerator 'com.h2database:h2:1.4.200'
+}
+
+jooq {
+    configurations {
+        first {
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.WARN
+                jdbc {
+                    driver = 'org.h2.Driver'
+                    url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+                    user = 'sa'
+                    password = ''
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.h2.H2Database'
+                        includes = '.*'
+                        excludes = ''
+                    }
+                    target {
+                        packageName = 'nu.studer.sample.first'
+                    }
+                }
+            }
+        }
+        second {
+            generationTool {
+                logging = org.jooq.meta.jaxb.Logging.WARN
+                jdbc {
+                    driver = 'org.h2.Driver'
+                    url = 'jdbc:h2:~/test;AUTO_SERVER=TRUE'
+                    user = 'sa'
+                    password = ''
+                }
+                generator {
+                    name = 'org.jooq.codegen.DefaultGenerator'
+                    database {
+                        name = 'org.jooq.meta.h2.H2Database'
+                        includes = '.*'
+                        excludes = ''
+                    }
+                    target {
+                        packageName = 'nu.studer.sample.second'
+                    }
+                }
+            }
+        }
+    }
+}
+
+// wire generated sources into the same source set
+sourceSets.main.java.srcDir tasks.named('generateFirstJooq').flatMap { it.getOutputDir() }
+sourceSets.main.java.srcDir tasks.named('generateSecondJooq').flatMap { it.getOutputDir() }
