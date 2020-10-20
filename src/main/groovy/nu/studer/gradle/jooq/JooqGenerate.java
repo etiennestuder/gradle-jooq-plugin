@@ -19,9 +19,7 @@ import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
 import org.gradle.api.Task;
-import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.Directory;
-import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileSystemOperations;
 import org.gradle.api.file.ProjectLayout;
@@ -68,8 +66,9 @@ public class JooqGenerate extends DefaultTask {
 
     private final Configuration jooqConfiguration;
     private final Provider<Configuration> normalizedJooqConfiguration;
-    private final ConfigurableFileCollection runtimeClasspath;
-    private final DirectoryProperty outputDir;
+    private final FileCollection runtimeClasspath;
+    private final Provider<Directory> outputDir;
+
     private final Property<Boolean> allInputsDeclared;
     private Action<? super Configuration> generationToolNormalization;
     private Action<? super JavaExecSpec> javaExecSpec;
