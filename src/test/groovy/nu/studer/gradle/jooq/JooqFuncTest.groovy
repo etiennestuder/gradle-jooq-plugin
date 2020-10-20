@@ -114,7 +114,7 @@ dependencies {
 }
 
 jooq {
-    version.set("3.13.4")
+    version.set("3.13.5")
     configurations {
         create("main") {
             jooqConfiguration.apply {
@@ -239,7 +239,7 @@ afterEvaluate {
 
     void "can set custom jOOQ edition"() {
         given:
-        buildFile << buildWithJooqPluginDSL(null, null, null, null, JooqEdition.TRIAL)
+        buildFile << buildWithJooqPluginDSL(null, null, null, '3.13.4', JooqEdition.TRIAL)
 
         when:
         def result = runWithArguments('dependencies')
@@ -725,7 +725,7 @@ dependencies {
 }
 
 jooq {
-  version = '3.13.4'
+  version = '3.13.5'
   edition = nu.studer.gradle.jooq.JooqEdition.OSS
   configurations {
     main {
@@ -788,8 +788,6 @@ dependencies {
 }
 
 jooq {
-  version = '3.13.4'
-  edition = nu.studer.gradle.jooq.JooqEdition.OSS
   configurations {
     main {
       generationTool {
@@ -830,8 +828,6 @@ dependencies {
 }
 
 jooq {
-  version = '3.13.4'
-  edition = nu.studer.gradle.jooq.JooqEdition.OSS
   configurations {
     main {
       generationTool {
@@ -907,7 +903,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq-codegen:3.13.4'
+    implementation 'org.jooq:jooq-codegen:3.13.5'
 }
 """
     }

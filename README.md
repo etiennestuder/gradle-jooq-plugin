@@ -114,7 +114,7 @@ name of the declared jOOQ configuration.
 
 ```groovy
 jooq {
-  version = '3.13.4'  // the default (can be omitted)
+  version = '3.13.5'  // the default (can be omitted)
   edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
 }
 ```
@@ -123,7 +123,7 @@ jooq {
 
 ```kotlin
 jooq {
-  version.set("3.13.4")  // the default (can be omitted)
+  version.set("3.13.5")  // the default (can be omitted)
   edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // the default (can be omitted)
 }
 ```
@@ -170,7 +170,7 @@ explicitly setting the `directory` attribute of the `target` configuration of th
 
 ```groovy
 jooq {
-    version = '3.13.4'  // default (can be omitted)
+    version = '3.13.5'  // default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // default (can be omitted)
 
     configurations {
@@ -233,7 +233,7 @@ See the [Examples](#examples) section for complete, exemplary build scripts that
 
 ```kotlin
 jooq {
-    version.set("3.13.4")  // default (can be omitted)
+    version.set("3.13.5")  // default (can be omitted)
     edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // default (can be omitted)
 
     configurations {
