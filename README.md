@@ -69,7 +69,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '5.1.1'
+    id 'nu.studer.jooq' version '5.2'
 }
 ```
 
@@ -77,7 +77,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("nu.studer.jooq") version "5.1.1"
+    id("nu.studer.jooq") version "5.2"
 }
 ```
 
@@ -422,6 +422,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 # Changelog
 
++ 5.2 - Fail build if cleaning of output directory is set to false in the jOOQ configuration. Upgrade to jOOQ 3.13.5.
 + 5.1.1 - Expose org.jooq:jooq-codegen library as `compile` dependency instead of `runtime` dependency
 + 5.1.0 - Require explicit opt-in to participate in incremental builds.
 + 5.0.3 - Clean output directory before generating jOOQ sources.
