@@ -17,6 +17,7 @@ package nu.studer.gradle.jooq;
 
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
+import org.gradle.api.GradleException;
 import org.gradle.api.Task;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.Directory;
@@ -43,6 +44,7 @@ import org.jooq.meta.jaxb.Configuration;
 import org.jooq.meta.jaxb.Generator;
 import org.jooq.meta.jaxb.Jdbc;
 import org.jooq.meta.jaxb.Strategy;
+import org.jooq.meta.jaxb.Target;
 import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
@@ -166,6 +168,9 @@ public class JooqGenerate extends DefaultTask {
 
     @TaskAction
     public void generate() {
+        // abort if cleaning of output directory is disabled
+        ensureTargetIsCleaned(jooqConfiguration);
+
         // avoid excessive and/or schema-violating XML being created due to the serialization of default values
         trimConfiguration(jooqConfiguration);
 
@@ -187,6 +192,20 @@ public class JooqGenerate extends DefaultTask {
         // invoke custom result handler
         if (execResultHandler != null) {
             execResultHandler.execute(execResult);
+        }
+    }
+
+    private void ensureTargetIsCleaned(Configuration configuration) {
+        Generator generator = configuration.getGenerator();
+        if (generator != null) {
+            Target target = generator.getTarget();
+            if (target != null) {
+                if (!target.isClean()) {
+                    throw new GradleException(
+                        "generator.target.clean must not be set to false. " +
+                            "Disabling the cleaning of the output directory can lead to unexpected behavior in a Gradle build.");
+                }
+            }
         }
     }
 

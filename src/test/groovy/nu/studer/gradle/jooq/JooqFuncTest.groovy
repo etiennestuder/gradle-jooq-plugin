@@ -371,6 +371,20 @@ task dummy {}
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
+    void "throws error when cleaning of output is set to false in the jOOQ configuration"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+        buildFile << """
+jooq.configurations.main.jooqConfiguration.generator.target.clean = false
+"""
+
+        when:
+        def result = runAndFailWithArguments('generateJooq')
+
+        then:
+        result.output.contains "generator.target.clean must not be set to false. Disabling the cleaning of the output directory can lead to unexpected behavior in a Gradle build."
+    }
+
     void "task output is cacheable if jooq generate task is marked as cacheable and all inputs declared"() {
         given:
         buildFile << buildWithJooqPluginDSL()
