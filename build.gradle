@@ -13,9 +13,9 @@ dependencies {
     api 'org.jooq:jooq-codegen:3.13.5'
 
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'org.glassfish.jaxb:jaxb-core:2.3.0.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
     implementation 'javax.activation:activation:1.1.1'
-    implementation 'com.sun.xml.bind:jaxb-core:2.3.0.1'
-    implementation 'com.sun.xml.bind:jaxb-impl:2.3.0.1'
 
     testImplementation 'com.h2database:h2:1.4.200'
     testImplementation 'org.spockframework:spock-core:2.0-M3-groovy-2.5'

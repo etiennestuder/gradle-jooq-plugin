@@ -70,8 +70,8 @@ public class JooqPlugin implements Plugin<Project> {
         jooqGeneratorRuntime.setDescription("The classpath used to invoke the jOOQ code generator. Add your JDBC driver, generator extensions, and additional dependencies here.");
         project.getDependencies().add(jooqGeneratorRuntime.getName(), "org.jooq:jooq-codegen");
         project.getDependencies().add(jooqGeneratorRuntime.getName(), "javax.xml.bind:jaxb-api:2.3.1");
-        project.getDependencies().add(jooqGeneratorRuntime.getName(), "com.sun.xml.bind:jaxb-core:2.3.0.1");
-        project.getDependencies().add(jooqGeneratorRuntime.getName(), "com.sun.xml.bind:jaxb-impl:2.3.0.1");
+        project.getDependencies().add(jooqGeneratorRuntime.getName(), "org.glassfish.jaxb:jaxb-core:2.3.0.1");
+        project.getDependencies().add(jooqGeneratorRuntime.getName(), "org.glassfish.jaxb:jaxb-runtime:2.3.3");
         project.getDependencies().add(jooqGeneratorRuntime.getName(), "javax.activation:activation:1.1.1");
         return jooqGeneratorRuntime;
     }
