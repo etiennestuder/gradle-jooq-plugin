@@ -114,7 +114,7 @@ dependencies {
 }
 
 jooq {
-    version.set("3.13.5")
+    version.set("3.14.1")
     configurations {
         create("main") {
             jooqConfiguration.apply {
@@ -725,7 +725,7 @@ dependencies {
 }
 
 jooq {
-  version = '3.13.5'
+  version = '3.14.1'
   edition = nu.studer.gradle.jooq.JooqEdition.OSS
   configurations {
     main {
@@ -903,7 +903,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq-codegen:3.13.5'
+    implementation 'org.jooq:jooq-codegen:3.14.1'
 }
 """
     }
