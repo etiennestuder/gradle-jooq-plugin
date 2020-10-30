@@ -22,3 +22,9 @@ jobs:
            wrapper-cache-enabled: true
            dependencies-cache-enabled: true
            configuration-cache-enabled: false
+       - name: Expose build scan id
+         uses: actions/upload-artifact@v2
+         with:
+           name: build-scan-id
+           path: scan-journal.log
+
