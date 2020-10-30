@@ -1,5 +1,3 @@
-import com.gradle.scan.plugin.PublishedBuildScan
-
 plugins {
     id 'com.gradle.enterprise' version '3.4.1'
 }
@@ -14,10 +12,6 @@ gradleEnterprise {
         publishAlways()
         obfuscation {
             ipAddresses { addresses -> addresses.collect { address -> '0.0.0.0' } }
-        }
-
-        buildScanPublished { PublishedBuildScan scan ->
-            file('scan-journal.log') << scan.buildScanUri
         }
     }
 }
