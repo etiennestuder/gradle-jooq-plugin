@@ -16,7 +16,7 @@ dependencies {
 }
 
 jooq {
-    version.set("3.14.1")
+    version.set("3.14.7")
     edition.set(JooqEdition.OSS)
 
     configurations {
