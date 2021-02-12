@@ -422,12 +422,13 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 # Changelog
 
++ 5.2.1 - Upgrade to jOOQ 3.14.7
 + 5.2 - Fail build if cleaning of output directory is set to false in the jOOQ configuration. Upgrade to jOOQ 3.13.5.
 + 5.1.1 - Expose org.jooq:jooq-codegen library as `compile` dependency instead of `runtime` dependency
-+ 5.1.0 - Require explicit opt-in to participate in incremental builds.
-+ 5.0.3 - Clean output directory before generating jOOQ sources.
-+ 5.0.2 - Do not write out JDBC configuration when empty.
-+ 5.0.1 - Support dependency substitution to use different versions of jOOQ dependencies than those pulled in by the jOOQ plugin.
++ 5.1.0 - Require explicit opt-in to participate in incremental builds
++ 5.0.3 - Clean output directory before generating jOOQ sources
++ 5.0.2 - Do not write out JDBC configuration when empty
++ 5.0.1 - Support dependency substitution to use different versions of jOOQ dependencies than those pulled in by the jOOQ plugin
 + 5.0 - Change DSL. Support Gradle Kotlin DSL. Add normalization hook. Make Gradle 6.1 the minimum version. Upgrade to jOOQ 3.13.4.
 + 4.2 - Add new jOOQ editions for Java 8 and Java 6. Upgrade to jOOQ 3.13.1.
 + 4.1 - Global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set
