@@ -53,6 +53,8 @@ def testAll = tasks.create('testAll') {
 }
 
 List<String> testedGradleVersions = []
+testedGradleVersions << "6.8.2"
+testedGradleVersions << "6.7.1"
 testedGradleVersions << "6.6.1"
 testedGradleVersions << "6.5.1"
 testedGradleVersions << "6.4.1"
