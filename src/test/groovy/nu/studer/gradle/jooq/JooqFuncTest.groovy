@@ -55,11 +55,11 @@ tasks.named('generateJooq').configure { outputs.cacheIf { true } }
 
     void "can invoke jOOQ task from configuration DSL with Gradle configuration cache enabled"() {
         given:
-        gradleVersion = GradleVersion.version('6.5')
+        gradleVersion = GradleVersion.version('6.8.2')
         buildFile << buildWithJooqPluginDSL()
 
         when:
-        def result = runWithArguments('generateJooq', '--configuration-cache=on')
+        def result = runWithArguments('generateJooq', '--configuration-cache')
 
         then:
         fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
@@ -68,7 +68,7 @@ tasks.named('generateJooq').configure { outputs.cacheIf { true } }
 
         when:
         new File(workspaceDir, 'build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java').delete()
-        result = runWithArguments('generateJooq', '--configuration-cache=on')
+        result = runWithArguments('generateJooq', '--configuration-cache')
 
         then:
         fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
