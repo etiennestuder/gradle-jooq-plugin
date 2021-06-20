@@ -39,13 +39,6 @@ plugindev {
     done()
 }
 
-bintray {
-    user = credentials.BINTRAY_USER
-    key = credentials.BINTRAY_API_KEY
-    pkg.repo = 'gradle-plugins'
-    dryRun = false
-}
-
 def testAll = tasks.create('testAll') {
     description = 'Runs the Gradle cross-version tests.'
     group = 'Verification'
