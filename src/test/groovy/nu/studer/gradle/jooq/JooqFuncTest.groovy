@@ -55,7 +55,7 @@ tasks.named('generateJooq').configure { outputs.cacheIf { true } }
 
     void "can invoke jOOQ task from configuration DSL with Gradle configuration cache enabled"() {
         given:
-        gradleVersion = GradleVersion.version('7.1')
+        gradleVersion = GradleVersion.version('6.9')
         buildFile << buildWithJooqPluginDSL()
 
         when:
