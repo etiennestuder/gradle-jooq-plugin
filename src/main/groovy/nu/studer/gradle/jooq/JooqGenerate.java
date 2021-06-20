@@ -263,7 +263,7 @@ public class JooqGenerate extends DefaultTask {
 
     private ExecResult executeJooq(final File configFile) {
         return execOperations.javaexec(spec -> {
-            spec.getMainClass().set("org.jooq.codegen.GenerationTool");
+            spec.setMain("org.jooq.codegen.GenerationTool");
             spec.setClasspath(runtimeClasspath);
             spec.setWorkingDir(projectLayout.getProjectDirectory());
             spec.args(configFile);
