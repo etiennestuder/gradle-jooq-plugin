@@ -18,8 +18,7 @@ dependencies {
     implementation 'javax.activation:activation:1.1.1'
 
     testImplementation 'com.h2database:h2:1.4.200'
-    testImplementation 'org.spockframework:spock-core:2.0-M4-groovy-2.5'
-    testImplementation 'org.spockframework:spock-junit4:2.0-M4-groovy-2.5'
+    testImplementation('org.spockframework:spock-core:2.0-groovy-3.0')
 }
 
 java {
