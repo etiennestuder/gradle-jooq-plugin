@@ -26,6 +26,11 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+tasks.withType(Test).configureEach {
+    maxParallelForks = 2
+    useJUnitPlatform()
+}
+
 plugindev {
     pluginImplementationClass 'nu.studer.gradle.jooq.JooqPlugin'
     pluginDescription 'Gradle plugin that integrates jOOQ. For each configuration, the plugin adds a task to generate the sources from a given database schema and includes the generated sources in the specified source set. Multiple configurations are supported. The code generation tasks fully participate in the Gradle uptodate checks.'
@@ -62,9 +67,4 @@ testedGradleVersions.each { version ->
         systemProperty 'testContext.gradleVersion', version
         testAll.dependsOn(it)
     }
-}
-
-tasks.withType(Test).configureEach {
-    maxParallelForks = 2
-    useJUnitPlatform()
 }
