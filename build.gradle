@@ -53,13 +53,6 @@ List<String> testedGradleVersions = []
 testedGradleVersions << "7.1"
 testedGradleVersions << "7.0.2"
 testedGradleVersions << "6.9"
-testedGradleVersions << "6.8.3"
-testedGradleVersions << "6.7.1"
-testedGradleVersions << "6.6.1"
-testedGradleVersions << "6.5.1"
-testedGradleVersions << "6.4.1"
-testedGradleVersions << "6.3"
-testedGradleVersions << "6.2.2"
 testedGradleVersions << "6.1.1"
 
 testedGradleVersions.each { version ->
