@@ -10,7 +10,7 @@ group = 'nu.studer'
 version = '5.2.2-DEV'
 
 dependencies {
-    api 'org.jooq:jooq-codegen:3.14.7'
+    api 'org.jooq:jooq-codegen:3.14.11'
 
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
     implementation 'org.glassfish.jaxb:jaxb-core:2.3.0.1'
