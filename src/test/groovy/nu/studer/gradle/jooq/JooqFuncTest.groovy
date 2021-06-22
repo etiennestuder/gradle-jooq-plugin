@@ -903,7 +903,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq-codegen:3.14.11
+    implementation 'org.jooq:jooq-codegen:3.14.11'
 }
 """
     }
