@@ -1,8 +1,8 @@
 plugins {
-    id 'nu.studer.plugindev' version '2.0'
+    id 'nu.studer.plugindev' version '3.0'
+    id 'com.gradle.plugin-publish' version '0.15.0'
     id 'nu.studer.credentials' version '2.1'
     id 'org.nosphere.gradle.github.actions' version '1.2.0'
-    id 'java-library'
     id 'groovy'
 }
 
@@ -21,27 +21,9 @@ dependencies {
     testImplementation 'org.spockframework:spock-core:2.0-groovy-2.5'
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
 tasks.withType(Test).configureEach {
     maxParallelForks = 2
     useJUnitPlatform()
-}
-
-plugindev {
-    pluginImplementationClass 'nu.studer.gradle.jooq.JooqPlugin'
-    pluginDescription 'Gradle plugin that integrates jOOQ. For each configuration, the plugin adds a task to generate the sources from a given database schema and includes the generated sources in the specified source set. Multiple configurations are supported. The code generation tasks fully participate in the Gradle uptodate checks.'
-    pluginLicenses 'Apache-2.0'
-    pluginTags 'gradle', 'plugin', 'jooq'
-    authorId 'etiennestuder'
-    authorName 'Etienne Studer'
-    authorEmail 'etienne@studer.nu'
-    projectUrl 'https://github.com/etiennestuder/gradle-jooq-plugin'
-    projectInceptionYear '2014'
-    done()
 }
 
 def testAll = tasks.create('testAll') {
@@ -50,14 +32,41 @@ def testAll = tasks.create('testAll') {
 }
 
 List<String> testedGradleVersions = []
-testedGradleVersions << "7.1"
-testedGradleVersions << "7.0.2"
-testedGradleVersions << "6.9"
-testedGradleVersions << "6.1.1"
+testedGradleVersions << '7.1'
+testedGradleVersions << '7.0.2'
+testedGradleVersions << '6.9'
+testedGradleVersions << '6.1.1'
 
 testedGradleVersions.each { version ->
     project.tasks.create("test_" + version.replaceAll("[^a-zA-Z0-9]", "_"), Test).with {
         systemProperty 'testContext.gradleVersion', version
         testAll.dependsOn(it)
+    }
+}
+
+gradlePlugin {
+    plugins {
+        pluginDevPlugin {
+            id = 'nu.studer.jooq'
+            implementationClass = 'nu.studer.gradle.jooq.JooqPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/etiennestuder/gradle-jooq-plugin'
+    vcsUrl = 'https://github.com/etiennestuder/gradle-jooq-plugin'
+    description = 'Gradle plugin that integrates jOOQ.'
+    tags = ['jooq']
+
+    plugins {
+        pluginDevPlugin {
+            displayName = 'gradle-plugindev-plugin'
+        }
+    }
+
+    mavenCoordinates {
+        groupId = 'nu.studer'
+        artifactId = 'gradle-jooq-plugin'
     }
 }
