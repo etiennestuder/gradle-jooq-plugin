@@ -61,7 +61,7 @@ pluginBundle {
 
     plugins {
         pluginDevPlugin {
-            displayName = 'gradle-plugindev-plugin'
+            displayName = 'gradle-jooq-plugin'
         }
     }
 
