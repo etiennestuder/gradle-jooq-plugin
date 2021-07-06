@@ -114,7 +114,7 @@ name of the declared jOOQ configuration.
 
 ```groovy
 jooq {
-  version = '3.14.11'  // the default (can be omitted)
+  version = '3.15.0'  // the default (can be omitted)
   edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
 }
 ```
@@ -123,7 +123,7 @@ jooq {
 
 ```kotlin
 jooq {
-  version.set("3.14.11")  // the default (can be omitted)
+  version.set("3.15.0")  // the default (can be omitted)
   edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // the default (can be omitted)
 }
 ```
@@ -170,7 +170,7 @@ explicitly setting the `directory` attribute of the `target` configuration of th
 
 ```groovy
 jooq {
-    version = '3.14.11'  // default (can be omitted)
+    version = '3.15.0'  // default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // default (can be omitted)
 
     configurations {
@@ -233,7 +233,7 @@ See the [Examples](#examples) section for complete, exemplary build scripts that
 
 ```kotlin
 jooq {
-    version.set("3.14.11")  // default (can be omitted)
+    version.set("3.15.0")  // default (can be omitted)
     edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // default (can be omitted)
 
     configurations {
@@ -422,6 +422,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 # Changelog
 
++ 5.2.3 - Upgrade to jOOQ 3.15.0
 + 5.2.2 - Upgrade to jOOQ 3.14.11
 + 5.2.1 - Upgrade to jOOQ 3.14.7
 + 5.2 - Fail build if cleaning of output directory is set to false in the jOOQ configuration. Upgrade to jOOQ 3.13.5.
