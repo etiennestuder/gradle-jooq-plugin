@@ -69,7 +69,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '5.2.1'
+    id 'nu.studer.jooq' version '6.0'
 }
 ```
 
@@ -77,7 +77,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("nu.studer.jooq") version "5.2.1"
+    id("nu.studer.jooq") version "6.0"
 }
 ```
 
@@ -422,7 +422,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 # Changelog
 
-+ 5.2.3 - Upgrade to jOOQ 3.15.0
++ 6.0 - Make Java 11 the minimum version. Upgrade to jOOQ 3.15.0.
 + 5.2.2 - Upgrade to jOOQ 3.14.11
 + 5.2.1 - Upgrade to jOOQ 3.14.7
 + 5.2 - Fail build if cleaning of output directory is set to false in the jOOQ configuration. Upgrade to jOOQ 3.13.5.

@@ -106,7 +106,7 @@ plugins {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -650,7 +650,7 @@ plugins {
 apply plugin: 'java'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -717,7 +717,7 @@ plugins {
 apply plugin: 'java'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -780,7 +780,7 @@ plugins {
 apply plugin: 'java'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -820,7 +820,7 @@ plugins {
 apply plugin: 'java'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -856,7 +856,7 @@ plugins {
 apply plugin: 'java'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -899,7 +899,7 @@ jooq {
 apply plugin: 'java'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -936,7 +936,7 @@ plugins {
 apply plugin: 'java'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -990,7 +990,7 @@ plugins {
 apply plugin: 'java'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
@@ -1029,7 +1029,7 @@ plugins {
 apply plugin: 'java'
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
