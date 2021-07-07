@@ -389,6 +389,12 @@ jOOQ plugin or not.
 
 # Migration
 
+## Migrating from jOOQ plugin 5.x to 6.x
+
+When migrating your build from jOOQ plugin 5.x to 6.x, follow these steps:
+
+- Ensure you run the Gradle build with JDK 11 (or set a [custom Java executable](example/configure_generation_tool_execution/build.gradle))
+
 ## Migrating from jOOQ plugin 4.x to 5.x
 
 When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
