@@ -19,8 +19,7 @@ and in [task output caching](https://docs.gradle.org/current/userguide/build_cac
 
 You can find more details about the actual jOOQ source code generation in the [jOOQ documentation](http://www.jooq.org/doc/latest/manual/code-generation).
 
-The jOOQ plugin is hosted at [Bintray's JCenter](https://bintray.com/etienne/gradle-plugins/gradle-jooq-plugin), also available from
-the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
+The jOOQ plugin is hosted on the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
 
 ## Build scan
 
