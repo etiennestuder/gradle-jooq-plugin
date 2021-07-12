@@ -53,10 +53,11 @@ The following Gradle features are supported by the jOOQ plugin:
 
 |Plugin version|Compatible Gradle versions|Support for Gradle Kotlin DSL|Support for Gradle Configuration Cache| Minimum JDK |
 |--------------|---------------------------|----------------------------|--------------------------------------|-------------|
-| 5.0+         | 6.1+                      | Yes                        | Yes                                  | 11          |
-| 4.0          | 5.0+, 6.0+                | No                         | No                                   |  8          |
+| 6.0+         | 6.1+                      | Yes                        | Yes                                  | 11          |
+| 5.0+         | 6.1+                      | Yes                        | Yes                                  | 8           |
+| 4.0          | 5.0+, 6.0+                | No                         | No                                   | 8           |
 
-See the [Migration](#migration) section on how to migrate your build from jOOQ plugin 4.x to 5.x.
+See the [Migration](#migration) section on how to migrate your build from older to newer jOOQ plugin versions.
 
 # Configuration
 
