@@ -638,6 +638,72 @@ generateJooq {
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
+    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.0')) })
+    void "can invoke jOOQ task and use JVM Toolchains"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+        buildFile << """
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+generateJooq {
+    doFirst {
+       println("Running jooq task with JDK \${it.launcher.get().metadata.languageVersion.asInt()}")
+    }
+}
+"""
+
+        when:
+        def result = runWithArguments('generateJooq', '-Porg.gradle.jvm.toolchain.install.adoptopenjdk.baseUri=https://api.adoptium.net')
+
+        then:
+        fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+        result.output.contains('Running jooq task with JDK 11')
+    }
+
+    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.0')) })
+    void "can invoke jOOQ task from configuration DSL with Gradle configuration cache enabled and use Toolchains"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+        buildFile << """
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+generateJooq {
+    doFirst {
+       println("Running jooq task with JDK \${it.launcher.get().metadata.languageVersion.asInt()}")
+    }
+}
+"""
+
+        when:
+        def result = runWithArguments('generateJooq', '--configuration-cache')
+
+        then:
+        fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        result.output.contains("Calculating task graph as no configuration cache is available for tasks: generateJooq")
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+        result.output.contains('Running jooq task with JDK 11')
+
+        when:
+        new File(workspaceDir, 'build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java').delete()
+        result = runWithArguments('generateJooq', '--configuration-cache')
+
+        then:
+        fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        result.output.contains("Reusing configuration cache.")
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+        result.output.contains('Running jooq task with JDK 11')
+    }
+
+
     private static String buildWithJooqPluginDSL(String targetPackageName = null,
                                                  String targetDirectory = null,
                                                  Boolean generateSchemaSourceOnCompilation = null,
