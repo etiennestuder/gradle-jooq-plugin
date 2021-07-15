@@ -7,7 +7,7 @@ jobs:
         strategy:
             matrix:
                 java-version: [ 11, 16 ]
-                gradle-version: [ 6.1.1, 6.9, 7.0.2, 7.2 ]
+                gradle-version: [ 6.1.1, 6.9, 7.0.2, 7.2, 7.3]
         name: Test JVM/Gradle (${{ matrix.java-version }}, ${{ matrix.gradle-version }})
         steps:
             -   name: Check out project
