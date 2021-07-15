@@ -53,6 +53,33 @@ tasks.named('generateJooq').configure { outputs.cacheIf { true } }
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
+    void "can invoke jOOQ task and use JVM Toolchains"() {
+        given:
+        gradleVersion = GradleVersion.version('6.9')
+        buildFile << buildWithJooqPluginDSL()
+        buildFile << """
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(16)
+    }
+}
+
+generateJooq {
+    doFirst {
+       project.logger.lifecycle("Running jooq task with JDK \${it.launcher.get().metadata.languageVersion.asInt()}")
+    }
+}
+"""
+
+        when:
+        def result = runWithArguments('generateJooq')
+
+        then:
+        fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+        result.output.contains('Running jooq task with JDK 16')
+    }
+
     void "can invoke jOOQ task from configuration DSL with Gradle configuration cache enabled"() {
         given:
         gradleVersion = GradleVersion.version('6.9')
