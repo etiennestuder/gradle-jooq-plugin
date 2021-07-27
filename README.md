@@ -169,9 +169,7 @@ explicitly setting the `directory` attribute of the `target` configuration of th
 ### Gradle Groovy DSL
 
 ```groovy
-import org.jooq.meta.jaxb.ForcedType
 import org.jooq.meta.jaxb.Logging
-import org.jooq.meta.jaxb.Property
 
 jooq {
     version = '3.15.0'  // default (can be omitted)
