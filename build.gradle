@@ -1,5 +1,5 @@
 plugins {
-    id 'nu.studer.plugindev' version '3.0'
+    id 'nu.studer.plugindev' version '4.0'
     id 'com.gradle.plugin-publish' version '0.15.0'
     id 'org.nosphere.gradle.github.actions' version '1.2.0'
     id 'groovy'
