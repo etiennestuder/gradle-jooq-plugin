@@ -15,6 +15,7 @@
  */
 package nu.studer.gradle.jooq;
 
+import nu.studer.gradle.jooq.util.Gradles;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
@@ -263,7 +264,7 @@ public class JooqGenerate extends DefaultTask {
 
     private ExecResult executeJooq(final File configFile) {
         return execOperations.javaexec(spec -> {
-            spec.setMain("org.jooq.codegen.GenerationTool");
+            setMainClass("org.jooq.codegen.GenerationTool", spec);
             spec.setClasspath(runtimeClasspath);
             spec.setWorkingDir(projectLayout.getProjectDirectory());
             spec.args(configFile);
@@ -272,6 +273,19 @@ public class JooqGenerate extends DefaultTask {
                 javaExecSpec.execute(spec);
             }
         });
+    }
+
+    private void setMainClass(String mainClass, JavaExecSpec spec) {
+        if (Gradles.isAtLeastGradleVersion("6.4")) {
+            spec.getMainClass().set(mainClass);
+        } else {
+            setMainClassDeprecated(mainClass, spec);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setMainClassDeprecated(String mainClass, JavaExecSpec spec) {
+        spec.setMain(mainClass);
     }
 
 }
