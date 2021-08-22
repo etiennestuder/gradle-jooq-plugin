@@ -25,6 +25,12 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+tasks.withType(AbstractCompile).configureEach {
+    options.compilerArgs <<
+        "-Werror" <<
+        "-Xlint:all"
+}
+
 tasks.withType(Test).configureEach {
     maxParallelForks = 2
     useJUnitPlatform()
