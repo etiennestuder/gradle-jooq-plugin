@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 public class JooqExtension {
 
-    private static final String DEFAULT_VERSION = "3.15.0";
+    private static final String DEFAULT_VERSION = "3.15.1";
     private static final JooqEdition DEFAULT_EDITION = JooqEdition.OSS;
 
     private final Property<String> version;
