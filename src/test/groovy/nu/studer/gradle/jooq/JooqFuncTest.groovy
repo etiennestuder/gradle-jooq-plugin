@@ -5,6 +5,7 @@ import org.gradle.testkit.runner.TaskOutcome
 import org.gradle.util.GradleVersion
 import org.jooq.Constants
 import spock.lang.AutoCleanup
+import spock.lang.Requires
 import spock.lang.Shared
 import spock.lang.Unroll
 
@@ -53,9 +54,9 @@ tasks.named('generateJooq').configure { outputs.cacheIf { true } }
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
+    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.0')) })
     void "can invoke jOOQ task from configuration DSL with Gradle configuration cache enabled"() {
         given:
-        gradleVersion = GradleVersion.version('6.9')
         buildFile << buildWithJooqPluginDSL()
 
         when:
