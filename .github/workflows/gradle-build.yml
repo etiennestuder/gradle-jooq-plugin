@@ -19,7 +19,7 @@ jobs:
             -   name: Build with Gradle
                 uses: gradle/gradle-build-action@v1
                 with:
-            arguments: build -PtestJavaRuntimeVersion=${{ matrix.java-version }} -PtestGradleVersion=${{ matrix.gradle-version }} -Pgradle-jooq-plugin.acceptGradleTOS=true
-            distributions-cache-enabled: true
-            dependencies-cache-enabled: true
-            configuration-cache-enabled: false
+                    arguments: build -PtestJavaRuntimeVersion=${{ matrix.java-version }} -PtestGradleVersion=${{ matrix.gradle-version }} -Pgradle-jooq-plugin.acceptGradleTOS=true
+                    distributions-cache-enabled: true
+                    dependencies-cache-enabled: true
+                    configuration-cache-enabled: false
