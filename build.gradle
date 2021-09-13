@@ -21,7 +21,7 @@ dependencies {
     implementation 'javax.activation:activation:1.1.1'
 
     testImplementation 'com.h2database:h2:1.4.200'
-    testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
+    testImplementation 'org.spockframework:spock-core:2.0-groovy-2.5'
 }
 
 java {
