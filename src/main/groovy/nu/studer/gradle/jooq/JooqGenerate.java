@@ -29,6 +29,7 @@ import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
 import org.gradle.api.specs.Spec;
+import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
@@ -63,6 +64,7 @@ import static nu.studer.gradle.jooq.util.Objects.cloneObject;
 /**
  * Gradle Task that runs the jOOQ source code generation.
  */
+@CacheableTask
 public class JooqGenerate extends DefaultTask {
 
     private final Configuration jooqConfiguration;
