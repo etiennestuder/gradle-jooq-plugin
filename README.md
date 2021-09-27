@@ -264,11 +264,11 @@ jooq {
                             ForcedType()
                                 .withName("varchar")
                                 .withIncludeExpression(".*")
-                                .withIncludeTypes("JSONB?"),
+                                .withIncludeTypes("(?i:jsonb?)"),
                             ForcedType()
                                 .withName("varchar")
                                 .withIncludeExpression(".*")
-                                .withIncludeTypes("INET")
+                                .withIncludeTypes("(?i:inet)")
                         ).toList())
                     }
                     generate.apply {
