@@ -36,7 +36,6 @@ tasks.withType(AbstractCompile).configureEach {
         "-Xlint:all"
 }
 
-// test
 tasks.withType(JavaCompile).configureEach {
     javaCompiler.set(javaToolchains.compilerFor { spec ->
         spec.languageVersion.set(JavaLanguageVersion.of(11))
