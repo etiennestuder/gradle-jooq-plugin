@@ -638,7 +638,50 @@ generateJooq {
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
-    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.0')) })
+    @Requires({
+        determineGradleVersion().baseVersion >= GradleVersion.version("6.7") &&
+            determineGradleVersion().baseVersion < GradleVersion.version("7.3")
+    })
+    void "invoke jOOQ task and use specific JVM Toolchains fails at execution time"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+        buildFile << """
+generateJooq {
+    launcher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+"""
+        when:
+        def result = runAndFailWithArguments('generateJooq')
+
+        then:
+        !fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        result.task(':generateJooq').outcome == TaskOutcome.FAILED
+        result.output.contains('Toolchain support requires Gradle 7.3')
+    }
+
+    @Requires({ (determineGradleVersion().baseVersion < GradleVersion.version("6.7")) })
+    void "invoke jOOQ task and use JVM Toolchains fails at configuration time"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+        buildFile << """
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+"""
+        when:
+        def result = runAndFailWithArguments('generateJooq')
+
+        then:
+        !fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        result.task(':generateJooq') == null
+        result.output.contains('Could not find method toolchain()')
+    }
+
+    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.3')) })
     void "can invoke jOOQ task and use JVM Toolchains"() {
         given:
         buildFile << buildWithJooqPluginDSL()
@@ -665,18 +708,51 @@ generateJooq {
         result.output.contains('Running jooq task with JDK 11')
     }
 
-    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.0')) })
+    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.3')) })
+    void "can invoke jOOQ task and override JVM Toolchains"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+        buildFile << """
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+generateJooq {
+    launcher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+    doFirst {
+       println("Running jooq task with JDK \${it.launcher.get().metadata.languageVersion.asInt()}")
+    }
+}
+"""
+
+        when:
+        def result = runWithArguments('generateJooq', '-Porg.gradle.jvm.toolchain.install.adoptopenjdk.baseUri=https://api.adoptium.net')
+
+        then:
+        fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+        result.output.contains('Running jooq task with JDK 11')
+    }
+
+    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.3')) })
     void "can invoke jOOQ task from configuration DSL with Gradle configuration cache enabled and use Toolchains"() {
         given:
         buildFile << buildWithJooqPluginDSL()
         buildFile << """
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(8)
     }
 }
 
 generateJooq {
+    launcher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
     doFirst {
        println("Running jooq task with JDK \${it.launcher.get().metadata.languageVersion.asInt()}")
     }

@@ -25,7 +25,6 @@ import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileSystemOperations;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.model.ObjectFactory;
-import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
@@ -39,9 +38,6 @@ import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskExecutionException;
-import org.gradle.jvm.toolchain.JavaLauncher;
-import org.gradle.jvm.toolchain.JavaToolchainService;
-import org.gradle.jvm.toolchain.JavaToolchainSpec;
 import org.gradle.process.ExecOperations;
 import org.gradle.process.ExecResult;
 import org.gradle.process.JavaExecSpec;
@@ -87,12 +83,9 @@ abstract public class JooqGenerate extends DefaultTask {
     private final ProjectLayout projectLayout;
     private final ExecOperations execOperations;
     private final FileSystemOperations fileSystemOperations;
+    private final ToolchainHelper toolchainHelper;
 
     private static final Action<Configuration> OUTPUT_DIRECTORY_NORMALIZATION = c -> c.getGenerator().getTarget().setDirectory(null);
-
-    @Nested
-    @Optional
-    abstract Property<JavaLauncher> getLauncher();
 
     @Inject
     public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations, FileSystemOperations fileSystemOperations) {
@@ -106,11 +99,7 @@ abstract public class JooqGenerate extends DefaultTask {
         this.execOperations = execOperations;
         this.fileSystemOperations = fileSystemOperations;
 
-        // Retrieve and set JVM Toolchain
-        JavaToolchainSpec toolchain = getProject().getExtensions().getByType(JavaPluginExtension.class).getToolchain();
-        JavaToolchainService service = getProject().getExtensions().getByType(JavaToolchainService.class);
-        Provider<JavaLauncher> defaultLauncher = service.launcherFor(toolchain);
-        getLauncher().convention(defaultLauncher);
+        this.toolchainHelper = new ToolchainHelper(this.getProject().getExtensions(), getLauncher());
 
         // do not use lambda due to a bug in Gradle 6.5
         getOutputs().upToDateWhen(new Spec<Task>() {
@@ -184,6 +173,10 @@ abstract public class JooqGenerate extends DefaultTask {
     public void setGenerationToolNormalization(Action<? super Configuration> generationToolNormalization) {
         this.generationToolNormalization = generationToolNormalization;
     }
+
+    @Nested
+    @Optional
+    public abstract Property<Object> getLauncher();
 
     @TaskAction
     public void generate() {
@@ -292,9 +285,7 @@ abstract public class JooqGenerate extends DefaultTask {
             spec.setClasspath(runtimeClasspath);
             spec.setWorkingDir(projectLayout.getProjectDirectory());
             spec.args(configFile);
-            if(getLauncher().isPresent()) {
-                spec.setExecutable(getLauncher().get().getExecutablePath().getAsFile().getAbsolutePath());
-            }
+            toolchainHelper.setExec(spec);
             if (javaExecSpec != null) {
                 javaExecSpec.execute(spec);
             }
