@@ -54,6 +54,20 @@ tasks.named('generateJooq').configure { outputs.cacheIf { true } }
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
+    void "can invoke jOOQ task from configuration DSL with configuration name omitted from task name for 'main' configuration and jOOQ v3.16+"() {
+        given:
+        buildFile << buildWithJooqPluginDSL(null, null, null, '3.16.3', null)
+
+        when:
+        def result = runWithArguments('generateJooq')
+
+        then:
+        fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+
+        and:
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+    }
+
     @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.0')) })
     void "can invoke jOOQ task from configuration DSL with Gradle configuration cache enabled"() {
         given:

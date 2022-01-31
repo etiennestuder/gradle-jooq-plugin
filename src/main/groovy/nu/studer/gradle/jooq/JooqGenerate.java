@@ -49,9 +49,6 @@ import org.xml.sax.SAXException;
 
 import javax.inject.Inject;
 import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.File;
@@ -254,12 +251,18 @@ public class JooqGenerate extends DefaultTask {
 
             Schema schema = sf.newSchema(schemaResourceURL);
 
-            JAXBContext ctx = JAXBContext.newInstance(Configuration.class);
-            Marshaller marshaller = ctx.createMarshaller();
-            marshaller.setSchema(schema);
-
-            marshaller.marshal(config, fs);
-        } catch (IOException | JAXBException | SAXException e) {
+            if (config.getClass().isAnnotationPresent(jakarta.xml.bind.annotation.XmlRootElement.class)) {
+                jakarta.xml.bind.JAXBContext ctx = jakarta.xml.bind.JAXBContext.newInstance(Configuration.class);
+                jakarta.xml.bind.Marshaller marshaller = ctx.createMarshaller();
+                marshaller.setSchema(schema);
+                marshaller.marshal(config, fs);
+            } else {
+                javax.xml.bind.JAXBContext ctx = javax.xml.bind.JAXBContext.newInstance(Configuration.class);
+                javax.xml.bind.Marshaller marshaller = ctx.createMarshaller();
+                marshaller.setSchema(schema);
+                marshaller.marshal(config, fs);
+            }
+        } catch (IOException | jakarta.xml.bind.JAXBException | javax.xml.bind.JAXBException | SAXException e) {
             throw new TaskExecutionException(JooqGenerate.this, e);
         }
     }
