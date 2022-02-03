@@ -23,7 +23,7 @@ The jOOQ plugin is hosted on the [Gradle Plugin Portal](https://plugins.gradle.o
 
 ## Build scan
 
-Recent build scan: https://gradle.com/s/bkc4davu2dvu4
+Recent build scan: https://gradle.com/s/zcltzipq7zzha
 
 Find out more about build scans for Gradle and Maven at https://scans.gradle.com.
 
