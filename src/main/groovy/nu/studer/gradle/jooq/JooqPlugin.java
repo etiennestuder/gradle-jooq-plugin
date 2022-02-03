@@ -83,7 +83,6 @@ public class JooqPlugin implements Plugin<Project> {
         Configuration jooqGeneratorRuntime = project.getConfigurations().create("jooqGenerator");
         jooqGeneratorRuntime.setDescription("The classpath used to invoke the jOOQ code generator. Add your JDBC driver, generator extensions, and additional dependencies here.");
         project.getDependencies().add(jooqGeneratorRuntime.getName(), "org.jooq:jooq-codegen");
-        project.getDependencies().add(jooqGeneratorRuntime.getName(), "org.reactivestreams:reactive-streams:1.0.3");
         return jooqGeneratorRuntime;
     }
 
