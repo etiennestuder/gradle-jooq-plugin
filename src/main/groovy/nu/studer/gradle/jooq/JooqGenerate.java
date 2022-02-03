@@ -62,7 +62,6 @@ import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.Arrays;
 
-
 import static nu.studer.gradle.jooq.util.Objects.cloneObject;
 
 /**
@@ -265,18 +264,14 @@ public class JooqGenerate extends DefaultTask {
 
     private String xsdResourcePath() {
         try {
-            // use reflection to be able to handle different jOOQ versions gracefully. (Even without
-            // this, using reflection here is mandatory to prevent field inlining, i.e. tightly
-            // coupling the plugin version to a particular jOOQ release.)
+            // use reflection to handle different locations of the codegen schema depending on the jOOQ version
+            // and to avoid inlining of the String constant org.jooq.Constants.XSD_CODEGEN
             Class<?> jooqConstants = Class.forName("org.jooq.Constants");
-
             if (Arrays.stream(jooqConstants.getDeclaredFields())
-                    .map(Field::getName)
-                    .anyMatch(s -> s.equals("CP_CODEGEN"))) {
-                // jOOQ >= 3.12.0; we can use the "new" approach of constructing the XSD class path.
+                .map(Field::getName)
+                .anyMatch(s -> s.equals("CP_CODEGEN"))) {
                 return (String) jooqConstants.getDeclaredField("CP_CODEGEN").get(null);
             } else {
-                // For older versions, we resort to the previous hardwired approach.
                 return "/xsd/" + jooqConstants.getDeclaredField("XSD_CODEGEN").get(null);
             }
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
