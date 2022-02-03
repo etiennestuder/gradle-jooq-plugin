@@ -90,7 +90,7 @@ is on the classpath when the jOOQ code generation tool is executed. Optionally, 
 
 ```groovy
 dependencies {
-    jooqGenerator 'org.postgresql:postgresql:42.2.14'
+    jooqGenerator 'org.postgresql:postgresql:42.3.2'
 }
 ```
 
@@ -98,17 +98,15 @@ dependencies {
 
 ```kotlin
 dependencies {
-    jooqGenerator("org.postgresql:postgresql:42.2.14")
+    jooqGenerator("org.postgresql:postgresql:42.3.2")
 }
 ```
 
 ## Specifying the jOOQ version and edition
 
-Specify the version and [edition](https://github.com/etiennestuder/gradle-jooq-plugin/blob/master/src/main/groovy/nu/studer/gradle/jooq/JooqEdition.java) that should be
-applied to all jOOQ dependencies that are declared in your project either explicitly or pulled in transitively.
+Specify the version and [edition](https://github.com/etiennestuder/gradle-jooq-plugin/blob/master/src/main/groovy/nu/studer/gradle/jooq/JooqEdition.java) that should be applied to all jOOQ dependencies that are declared in your project either explicitly or pulled in transitively.
 
-Note that the `org.jooq:jooq` dependency of the specified version and edition is automatically added to the `implementation` configuration of the source set that matches the
-name of the declared jOOQ configuration.
+Note that the `org.jooq:jooq` dependency of the specified version and edition is automatically added to the `implementation` configuration of the source set that matches the name of the declared jOOQ configuration.
 
 ### Gradle Groovy DSL
 
@@ -139,7 +137,7 @@ make available to the jOOQ plugin at configuration time, i.e. in the DSL of the 
 buildscript {
     configurations['classpath'].resolutionStrategy.eachDependency {
         if (requested.group == 'org.jooq') {
-            useVersion '3.12.4'
+            useVersion '3.16.1'
         }
     }
 }
@@ -151,7 +149,7 @@ buildscript {
 buildscript {
     configurations["classpath"].resolutionStrategy.eachDependency {
         if (requested.group == "org.jooq") {
-            useVersion("3.12.4")
+            useVersion("3.16.1")
         }
     }
 }
@@ -159,9 +157,9 @@ buildscript {
 
 ## Configuring the jOOQ generation tool
 
-Configure the jOOQ generation tool via `jooq` extension, made available by the jOOQ plugin. The full set of configuration options when using jOOQ 3.13.x can
-be seen on the jOOQ generation tool's [Configuration](https://github.com/jOOQ/jOOQ/blob/version-3.13.0/jOOQ-meta/src/main/java/org/jooq/meta/jaxb/Configuration.java) class, or
-on the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.13.0.xsd).
+Configure the jOOQ generation tool via `jooq` extension, made available by the jOOQ plugin. The full set of configuration options when using jOOQ 3.16.x can
+be seen on the jOOQ generation tool's [Configuration](https://github.com/jOOQ/jOOQ/blob/version-3.16.3/jOOQ-meta/src/main/java/org/jooq/meta/jaxb/Configuration.java) class, or
+on the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.16.0.xsd).
 
 By default, the generated sources are written to `<projectDir>/build/generated-src/jooq/<configurationName>`. The target directory can be changed by
 explicitly setting the `directory` attribute of the `target` configuration of the `generator` configuration.
