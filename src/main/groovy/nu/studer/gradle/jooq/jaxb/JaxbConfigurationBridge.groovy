@@ -20,7 +20,7 @@ import org.jooq.Constants
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import javax.xml.bind.annotation.XmlElement
+import jakarta.xml.bind.annotation.XmlElement
 import java.lang.reflect.Field
 import java.lang.reflect.ParameterizedType
 

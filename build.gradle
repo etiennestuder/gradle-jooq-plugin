@@ -13,12 +13,11 @@ group = 'nu.studer'
 version = '6.0.2-DEV'
 
 dependencies {
-    api 'org.jooq:jooq-codegen:3.15.1'
+    api 'org.jooq:jooq-codegen:3.16.3'
 
-    implementation 'javax.xml.bind:jaxb-api:2.3.1'
-    implementation 'org.glassfish.jaxb:jaxb-core:2.3.0.1'
-    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
-    implementation 'javax.activation:activation:1.1.1'
+    runtime 'com.sun.xml.bind:jaxb-impl:3.0.0'
+    runtime 'org.glassfish.jaxb:jaxb-core:2.3.0.1'
+    runtime 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
 
     testImplementation 'com.h2database:h2:1.4.200'
     testImplementation 'org.spockframework:spock-core:2.0-groovy-2.5'
