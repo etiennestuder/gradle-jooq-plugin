@@ -228,26 +228,26 @@ afterEvaluate {
 
     void "can set custom jOOQ version"() {
         given:
-        buildFile << buildWithJooqPluginDSL(null, null, null, '3.13.1')
+        buildFile << buildWithJooqPluginDSL(null, null, null, '3.16.1')
 
         when:
         def result = runWithArguments('dependencies')
 
         then:
-        result.output.contains('org.jooq:jooq-codegen -> 3.13.1')
-        result.output.contains('org.jooq:jooq -> 3.13.1')
+        result.output.contains('org.jooq:jooq-codegen -> 3.16.1')
+        result.output.contains('org.jooq:jooq -> 3.16.1')
     }
 
     void "can set custom jOOQ edition"() {
         given:
-        buildFile << buildWithJooqPluginDSL(null, null, null, '3.13.4', JooqEdition.TRIAL)
+        buildFile << buildWithJooqPluginDSL(null, null, null, '3.16.2', JooqEdition.TRIAL)
 
         when:
         def result = runWithArguments('dependencies')
 
         then:
-        result.output.contains('org.jooq:jooq-codegen -> org.jooq.trial:jooq-codegen:3.13.4')
-        result.output.contains('org.jooq:jooq -> org.jooq.trial:jooq:3.13.4')
+        result.output.contains('org.jooq:jooq-codegen -> org.jooq.trial:jooq-codegen:3.16.2')
+        result.output.contains('org.jooq:jooq -> org.jooq.trial:jooq:3.16.2')
     }
 
     void "supports task avoidance"() {
