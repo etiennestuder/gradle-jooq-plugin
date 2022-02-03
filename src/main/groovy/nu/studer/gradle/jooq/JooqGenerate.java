@@ -245,13 +245,11 @@ public class JooqGenerate extends DefaultTask {
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             String resourceFileName = "/xsd/" + xsdFileName();
             URL schemaResourceURL = GenerationTool.class.getResource(resourceFileName);
-
             if (schemaResourceURL == null) {
-                throw new GradleException("Failed to locate schema named " + resourceFileName + ". Is the proper jOOQ version available on the class path?");
+                throw new GradleException("Failed to locate jOOQ codegen schema: " + resourceFileName);
             }
 
             Schema schema = sf.newSchema(schemaResourceURL);
-
             JAXBContext ctx = JAXBContext.newInstance(Configuration.class);
             Marshaller marshaller = ctx.createMarshaller();
             marshaller.setSchema(schema);
