@@ -58,9 +58,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.Arrays;
 
 import static nu.studer.gradle.jooq.util.Objects.cloneObject;
 
@@ -263,17 +261,10 @@ public class JooqGenerate extends DefaultTask {
     }
 
     private String xsdResourcePath() {
+        // use reflection to avoid inlining of the String constant org.jooq.Constants.XSD_CODEGEN
         try {
-            // use reflection to handle different locations of the codegen schema depending on the jOOQ version
-            // and to avoid inlining of the String constant org.jooq.Constants.XSD_CODEGEN
             Class<?> jooqConstants = Class.forName("org.jooq.Constants");
-            if (Arrays.stream(jooqConstants.getDeclaredFields())
-                .map(Field::getName)
-                .anyMatch(s -> s.equals("CP_CODEGEN"))) {
-                return (String) jooqConstants.getDeclaredField("CP_CODEGEN").get(null);
-            } else {
-                return "/xsd/" + jooqConstants.getDeclaredField("XSD_CODEGEN").get(null);
-            }
+            return (String) jooqConstants.getDeclaredField("CP_CODEGEN").get(null);
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
             throw new TaskExecutionException(JooqGenerate.this, e);
         }
