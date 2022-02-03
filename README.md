@@ -472,6 +472,8 @@ Both feedback and contributions are very welcome.
 
 # Acknowledgements
 
++ [mrozanc](https://github.com/mrozanc) (pr)
++ [perlun](https://github.com/perlun) (pr)
 + [Double-O-Seven](https://github.com/Double-O-Seven) (issue analysis)
 + [wolfs](https://github.com/wolfs) (design)
 + [jonnybbb](https://github.com/jonnybbb) (pr)
