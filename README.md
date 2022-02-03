@@ -394,6 +394,12 @@ jOOQ plugin or not.
 
 # Migration
 
+## Migrating from jOOQ plugin 6.x to 7.x
+
+When migrating your build from jOOQ plugin 6.x to 7.x, follow these steps:
+
+- Ensure you configure the gradle-jooq-plugin with at least jOOQ version 3.16.0 (or just use the implicit default)
+
 ## Migrating from jOOQ plugin 5.x to 6.x
 
 When migrating your build from jOOQ plugin 5.x to 6.x, follow these steps:
