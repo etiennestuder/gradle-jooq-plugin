@@ -58,6 +58,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URL;
 
 import static nu.studer.gradle.jooq.util.Objects.cloneObject;
 
@@ -242,7 +243,14 @@ public class JooqGenerate extends DefaultTask {
     private void writeConfiguration(Configuration config, File file) {
         try (OutputStream fs = new FileOutputStream(file)) {
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = sf.newSchema(GenerationTool.class.getResource("/xsd/" + xsdFileName()));
+            String resourceFileName = "/xsd/" + xsdFileName();
+            URL schemaResourceURL = GenerationTool.class.getResource(resourceFileName);
+
+            if (schemaResourceURL == null) {
+                throw new GradleException("Failed to locate schema named " + resourceFileName + ". Is the proper jOOQ version available on the class path?");
+            }
+
+            Schema schema = sf.newSchema(schemaResourceURL);
 
             JAXBContext ctx = JAXBContext.newInstance(Configuration.class);
             Marshaller marshaller = ctx.createMarshaller();
