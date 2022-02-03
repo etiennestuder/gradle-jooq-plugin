@@ -58,7 +58,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Arrays;
+
 
 import static nu.studer.gradle.jooq.util.Objects.cloneObject;
 
@@ -243,7 +246,7 @@ public class JooqGenerate extends DefaultTask {
     private void writeConfiguration(Configuration config, File file) {
         try (OutputStream fs = new FileOutputStream(file)) {
             SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            String resourceFileName = "/xsd/" + xsdFileName();
+            String resourceFileName = xsdResourcePath();
             URL schemaResourceURL = GenerationTool.class.getResource(resourceFileName);
             if (schemaResourceURL == null) {
                 throw new GradleException("Failed to locate jOOQ codegen schema: " + resourceFileName);
@@ -260,11 +263,22 @@ public class JooqGenerate extends DefaultTask {
         }
     }
 
-    private String xsdFileName() {
-        // use reflection to avoid inlining of the String constant org.jooq.Constants.XSD_CODEGEN
+    private String xsdResourcePath() {
         try {
-            Class<?> aClass = Class.forName("org.jooq.Constants");
-            return (String) aClass.getDeclaredField("XSD_CODEGEN").get(null);
+            // use reflection to be able to handle different jOOQ versions gracefully. (Even without
+            // this, using reflection here is mandatory to prevent field inlining, i.e. tightly
+            // coupling the plugin version to a particular jOOQ release.)
+            Class<?> jooqConstants = Class.forName("org.jooq.Constants");
+
+            if (Arrays.stream(jooqConstants.getDeclaredFields())
+                    .map(Field::getName)
+                    .anyMatch(s -> s.equals("CP_CODEGEN"))) {
+                // jOOQ >= 3.12.0; we can use the "new" approach of constructing the XSD class path.
+                return (String) jooqConstants.getDeclaredField("CP_CODEGEN").get(null);
+            } else {
+                // For older versions, we resort to the previous hardwired approach.
+                return "/xsd/" + jooqConstants.getDeclaredField("XSD_CODEGEN").get(null);
+            }
         } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
             throw new TaskExecutionException(JooqGenerate.this, e);
         }
