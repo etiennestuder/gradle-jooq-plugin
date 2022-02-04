@@ -15,10 +15,10 @@ import org.gradle.process.JavaExecSpec;
  */
 abstract class ToolchainHelper {
 
-    private static final String GRADLE_VERSION_WITH_TOOLCHAIN = "7.3";
+    private static final String INITIAL_TOOLCHAIN_SUPPORT = "6.7";
 
     static void tryConfigureJavaLauncher(Property<Object> launcher, ExtensionContainer extensions) {
-        if (Gradles.isAtLeastGradleVersion(GRADLE_VERSION_WITH_TOOLCHAIN)) {
+        if (Gradles.isAtLeastGradleVersion(INITIAL_TOOLCHAIN_SUPPORT)) {
             JavaToolchainSpec toolchain = extensions.getByType(JavaPluginExtension.class).getToolchain();
             JavaToolchainService service = extensions.getByType(JavaToolchainService.class);
             Provider<JavaLauncher> defaultLauncher = service.launcherFor(toolchain);
@@ -27,10 +27,10 @@ abstract class ToolchainHelper {
     }
 
     static void tryApplyJavaLauncher(Property<Object> launcher, JavaExecSpec spec) {
-        if (Gradles.isAtLeastGradleVersion(GRADLE_VERSION_WITH_TOOLCHAIN) && launcher.isPresent() && launcher.get() instanceof JavaLauncher) {
+        if (Gradles.isAtLeastGradleVersion(INITIAL_TOOLCHAIN_SUPPORT) && launcher.isPresent() && launcher.get() instanceof JavaLauncher) {
             spec.setExecutable(((JavaLauncher) launcher.get()).getExecutablePath().getAsFile().getAbsolutePath());
-        } else if (!Gradles.isAtLeastGradleVersion(GRADLE_VERSION_WITH_TOOLCHAIN) && launcher.isPresent()) {
-            throw new IllegalArgumentException("Toolchain support requires Gradle " + GRADLE_VERSION_WITH_TOOLCHAIN);
+        } else if (!Gradles.isAtLeastGradleVersion(INITIAL_TOOLCHAIN_SUPPORT) && launcher.isPresent()) {
+            throw new IllegalArgumentException("Toolchain support requires Gradle " + INITIAL_TOOLCHAIN_SUPPORT);
         }
     }
 
