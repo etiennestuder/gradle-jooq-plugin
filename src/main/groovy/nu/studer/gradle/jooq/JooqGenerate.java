@@ -25,6 +25,7 @@ import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileSystemOperations;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.model.ObjectFactory;
+import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
@@ -68,38 +69,39 @@ import static nu.studer.gradle.jooq.util.Objects.cloneObject;
  * Gradle Task that runs the jOOQ source code generation.
  */
 @CacheableTask
-abstract public class JooqGenerate extends DefaultTask {
+public abstract class JooqGenerate extends DefaultTask {
 
     private final Configuration jooqConfiguration;
     private final Provider<Configuration> normalizedJooqConfiguration;
     private final FileCollection runtimeClasspath;
     private final Provider<Directory> outputDir;
-
     private final Property<Boolean> allInputsDeclared;
+
     private Action<? super Configuration> generationToolNormalization;
     private Action<? super JavaExecSpec> javaExecSpec;
     private Action<? super ExecResult> execResultHandler;
 
+    private final ToolchainHelper toolchainHelper;
+
     private final ProjectLayout projectLayout;
     private final ExecOperations execOperations;
     private final FileSystemOperations fileSystemOperations;
-    private final ToolchainHelper toolchainHelper;
 
     private static final Action<Configuration> OUTPUT_DIRECTORY_NORMALIZATION = c -> c.getGenerator().getTarget().setDirectory(null);
 
     @Inject
-    public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations, FileSystemOperations fileSystemOperations) {
+    public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ExtensionContainer extensions, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations, FileSystemOperations fileSystemOperations) {
         this.jooqConfiguration = config.getJooqConfiguration();
         this.normalizedJooqConfiguration = normalizedJooqConfigurationProvider(objects, providers);
         this.runtimeClasspath = objects.fileCollection().from(runtimeClasspath);
         this.outputDir = objects.directoryProperty().value(config.getOutputDir());
         this.allInputsDeclared = objects.property(Boolean.class).convention(Boolean.FALSE);
 
+        this.toolchainHelper = new ToolchainHelper(extensions, getLauncher());
+
         this.projectLayout = projectLayout;
         this.execOperations = execOperations;
         this.fileSystemOperations = fileSystemOperations;
-
-        this.toolchainHelper = new ToolchainHelper(this.getProject().getExtensions(), getLauncher());
 
         // do not use lambda due to a bug in Gradle 6.5
         getOutputs().upToDateWhen(new Spec<Task>() {
