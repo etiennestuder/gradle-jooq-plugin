@@ -81,8 +81,6 @@ public abstract class JooqGenerate extends DefaultTask {
     private Action<? super JavaExecSpec> javaExecSpec;
     private Action<? super ExecResult> execResultHandler;
 
-    private final ToolchainHelper toolchainHelper;
-
     private final ProjectLayout projectLayout;
     private final ExecOperations execOperations;
     private final FileSystemOperations fileSystemOperations;
@@ -97,11 +95,12 @@ public abstract class JooqGenerate extends DefaultTask {
         this.outputDir = objects.directoryProperty().value(config.getOutputDir());
         this.allInputsDeclared = objects.property(Boolean.class).convention(Boolean.FALSE);
 
-        this.toolchainHelper = new ToolchainHelper(extensions, getLauncher());
-
         this.projectLayout = projectLayout;
         this.execOperations = execOperations;
         this.fileSystemOperations = fileSystemOperations;
+
+        // Gradle toolchain support is only available as of Gradle 6.7
+        ToolchainHelper.tryConfigureJavaLauncher(getLauncher(), extensions);
 
         // do not use lambda due to a bug in Gradle 6.5
         getOutputs().upToDateWhen(new Spec<Task>() {
@@ -287,7 +286,7 @@ public abstract class JooqGenerate extends DefaultTask {
             spec.setClasspath(runtimeClasspath);
             spec.setWorkingDir(projectLayout.getProjectDirectory());
             spec.args(configFile);
-            toolchainHelper.setExec(spec);
+            ToolchainHelper.tryApplyJavaLauncher(getLauncher(), spec);
             if (javaExecSpec != null) {
                 javaExecSpec.execute(spec);
             }
