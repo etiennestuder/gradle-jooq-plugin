@@ -27,10 +27,10 @@ abstract class ToolchainHelper {
     }
 
     static void tryApplyJavaLauncher(Property<Object> launcher, JavaExecSpec spec) {
-        if (Gradles.isAtLeastGradleVersion(INITIAL_TOOLCHAIN_SUPPORT) && launcher.isPresent() && launcher.get() instanceof JavaLauncher) {
-            spec.setExecutable(((JavaLauncher) launcher.get()).getExecutablePath().getAsFile().getAbsolutePath());
-        } else if (!Gradles.isAtLeastGradleVersion(INITIAL_TOOLCHAIN_SUPPORT) && launcher.isPresent()) {
-            throw new IllegalArgumentException("Toolchain support requires Gradle " + INITIAL_TOOLCHAIN_SUPPORT);
+        if (Gradles.isAtLeastGradleVersion(INITIAL_TOOLCHAIN_SUPPORT)) {
+            if (launcher.isPresent() && launcher.get() instanceof JavaLauncher) {
+                spec.setExecutable(((JavaLauncher) launcher.get()).getExecutablePath().getAsFile().getAbsolutePath());
+            }
         }
     }
 
