@@ -16,6 +16,10 @@ import java.sql.DriverManager
 @Unroll
 class JooqFuncTest extends BaseFuncTest {
 
+    private static final ALL_INPUTS_NOT_DECLARED_JOOQ_TASK = """
+tasks.named('generateJooq').configure { allInputsDeclared = false }
+"""
+
     private static final ALL_INPUTS_DECLARED_JOOQ_TASK = """
 tasks.named('generateJooq').configure { allInputsDeclared = true }
 """
@@ -292,6 +296,24 @@ task dummy {}
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
+    void "does not participate in incremental build if explicitly disabled"() {
+        given:
+        buildFile << buildWithJooqPluginDSL()
+        buildFile << ALL_INPUTS_NOT_DECLARED_JOOQ_TASK
+
+        when:
+        def result = runWithArguments('generateJooq')
+
+        then:
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+
+        when:
+        result = runWithArguments('generateJooq')
+
+        then:
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+    }
+
     void "participates in incremental build if explicitly configured"() {
         given:
         buildFile << buildWithJooqPluginDSL()
@@ -308,6 +330,14 @@ task dummy {}
 
         then:
         result.task(':generateJooq').outcome == TaskOutcome.UP_TO_DATE
+
+        when:
+        buildFile.delete()
+        buildFile << buildWithJooqPluginDSL('different.target.package.name')
+        result = runWithArguments('generateJooq')
+
+        then:
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
     void "detects when jOOQ configuration is different"() {
