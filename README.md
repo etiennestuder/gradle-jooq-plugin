@@ -360,7 +360,8 @@ set `jooq.version = dependencyManagement.importedProperties['jooq.version']`.
 If the code generation fails with exceptions about not finding certain JAXB classes, it is likely due to a 3rd-party plugin or your own build
 adding some dependency rules that enforce certain dependency versions that are not matching what is needed by the jOOQ code generation tool. For
 example, the Spring Dependency Management Gradle plugin will downgrade the `jakarta.xml.bind:jakarta.xml.bind-api` dependency to a version not
-compatible with the jOOQ code generation tool and leads to the error below. This [issue](https://github.com/etiennestuder/gradle-jooq-plugin/issues/209) provides some insights on how to debug such cases.
+compatible with the jOOQ code generation tool and leads to the error below. This [issue](https://github.com/etiennestuder/gradle-jooq-plugin/issues/209)
+provides some insights on how to debug such cases.
 
 `Exception in thread "main" java.lang.NoClassDefFoundError: jakarta/xml/bind/annotation/XmlSchema`
 
