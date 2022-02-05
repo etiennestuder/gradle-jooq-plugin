@@ -28,22 +28,27 @@ jooq {
                     url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
                     user = "sa"
                     password = ""
-                    properties.add(Property().withKey("PAGE_SIZE").withValue("2048"))
+                    properties.add(Property().apply {
+                        key = "PAGE_SIZE"
+                        value = "2048"
+                    })
                 }
                 generator.apply {
                     name = "org.jooq.codegen.DefaultGenerator"
                     database.apply {
                         name = "org.jooq.meta.h2.H2Database"
-                        forcedTypes.addAll(arrayOf(
-                            ForcedType()
-                                .withName("varchar")
-                                .withIncludeExpression(".*")
-                                .withIncludeTypes("JSONB?"),
-                            ForcedType()
-                                .withName("varchar")
-                                .withIncludeExpression(".*")
-                                .withIncludeTypes("INET")
-                        ).toList())
+                        forcedTypes.addAll(listOf(
+                            ForcedType().apply {
+                                name = "varchar"
+                                includeExpression = ".*"
+                                includeTypes = "JSONB?"
+                            },
+                            ForcedType().apply {
+                                name = "varchar"
+                                includeExpression = ".*"
+                                includeTypes = "INET"
+                            }
+                        ))
                     }
                     generate.apply {
                         isDeprecated = false

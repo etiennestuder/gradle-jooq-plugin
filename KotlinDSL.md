@@ -37,35 +37,24 @@ jooqConfiguration.apply {
 
 However, for collection-valued properties, they are initially-empty, and you must:
 
-* instantiate a JAXB element of the correct type
-* add it to the collection
+1. Instantiate a JAXB element of the correct type
+2. Add it to the collection
 
 In the example below, `forcedTypes` is an initially-empty `List<org.jooq.meta.jaxb.ForcedType>` member of `org.jooq.meta.jaxb.Database`:
 
 ```kotlin
 forcedTypes.addAll(listOf(
- ForcedType()
-  .withName("varchar")
-  .withIncludeExpression(".*")
-  .withIncludeTypes("JSONB?"),
- ForcedType()
-  .withName("varchar")
-  .withIncludeExpression(".*")
-  .withIncludeTypes("INET")
-).listOf())
-```
-
-In the next example, `schemata` is an initially-empty `List<org.jooq.meta.jaxb.SchemaMappingType>` member of `org.jooq.meta.jaxb.Database`:
-
-```kotlin
-   schemata.addAll(listOf(
-       SchemaMappingType().apply {  // using 'apply' for consistency
-           inputSchema = "foo"
-       },
-       SchemaMappingType().withInputSchema("bar")  // using withXXX() for brevity
-                                                   // possible only because o.j.m.j.SchemaMappingType happens to be fluent
-                                                   // and not because of any Kotlin extension-method offered by this plugin
-   ))
+    ForcedType().apply {
+        name = "varchar"
+        includeExpression = ".*"
+        includeTypes = "JSONB?"
+    },
+    ForcedType().apply {
+        name = "varchar"
+        includeExpression = ".*"
+        includeTypes = "INET"
+    }
+))
 ```
 
 Familiarity with the [JOOQ Codegen XML Schema](https://www.jooq.org/xsd/jooq-codegen-3.16.0.xsd) and

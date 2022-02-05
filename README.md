@@ -254,23 +254,28 @@ jooq {
                     url = "jdbc:postgresql://localhost:5432/sample"
                     user = "some_user"
                     password = "some_secret"
-                    properties.add(Property().withKey("ssl").withValue("true"))
+                    properties.add(Property().apply {
+                        key = "ssl"
+                        value = "true"
+                    })
                 }
                 generator.apply {
                     name = "org.jooq.codegen.DefaultGenerator"
                     database.apply {
                         name = "org.jooq.meta.postgres.PostgresDatabase"
                         inputSchema = "public"
-                        forcedTypes.addAll(arrayOf(
-                            ForcedType()
-                                .withName("varchar")
-                                .withIncludeExpression(".*")
-                                .withIncludeTypes("JSONB?"),
-                            ForcedType()
-                                .withName("varchar")
-                                .withIncludeExpression(".*")
-                                .withIncludeTypes("INET")
-                        ).toList())
+                        forcedTypes.addAll(listOf(
+                            ForcedType().apply {
+                                name = "varchar"
+                                includeExpression = ".*"
+                                includeTypes = "JSONB?"
+                            },
+                            ForcedType().apply {
+                                name = "varchar"
+                                includeExpression = ".*"
+                                includeTypes = "INET"
+                            }
+                        ))
                     }
                     generate.apply {
                         isDeprecated = false
