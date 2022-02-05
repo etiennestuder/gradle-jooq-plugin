@@ -48,7 +48,7 @@ The following Gradle features are supported by the jOOQ plugin:
  * `JooqGenerate` task instances participate in task configuration avoidance
  * `JooqGenerate` task instances participate in configuration caching
  * `JooqGenerate` task instances participate in incremental builds (if the task gets explicitly marked as all inputs being declared)
- * `JooqGenerate` task instances participate in task output caching (if the task gets explicitly marked as cacheable)
+ * `JooqGenerate` task instances participate in task output caching (if the task gets explicitly marked as all inputs being declared)
  * `JooqGenerate` task instances participate in toolchains (if the task or project is configured with a toolchain)
 
 # Compatibility
@@ -292,11 +292,11 @@ jooq {
 
 See the [Examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin.
 
-## Configuring the jOOQ generation task to participate in incremental builds
+## Configuring the jOOQ generation task to participate in incremental builds and build caching
 
 If you configure the state of the database schema from which to derive the jOOQ sources as an input to the jOOQ task, you can mark the
 jOOQ task as having all its inputs declared by setting the `allInputsDeclared` task property to `true`. The jOOQ task will then participate
-in Gradle's incremental build feature. The `allInputsDeclared` task property is `false` by default.
+in Gradle's incremental build and build caching features. The `allInputsDeclared` task property is `false` by default.
 
 See [here](example/configure_incremental_build_and_build_caching_participation) for a complete example on how to enable participation in
 incremental build and build caching.
