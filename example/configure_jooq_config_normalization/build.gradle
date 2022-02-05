@@ -41,7 +41,6 @@ jooq {
 tasks.named('generateJooq').configure {
     // normalization is only meaningful when the task participates in incremental builds (and build caching)
     allInputsDeclared = true
-    outputs.cacheIf { true }
 
     // normalize any parts of the jOOQ config to ensure relocatability (if task has been made cacheable)
     generationToolNormalization = { org.jooq.meta.jaxb.Configuration c ->

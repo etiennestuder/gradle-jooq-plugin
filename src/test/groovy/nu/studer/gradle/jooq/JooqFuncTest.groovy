@@ -16,16 +16,12 @@ import java.sql.DriverManager
 @Unroll
 class JooqFuncTest extends BaseFuncTest {
 
-    private static final ALL_INPUTS_NOT_DECLARED_JOOQ_TASK = """
-tasks.named('generateJooq').configure { allInputsDeclared = false }
-"""
-
     private static final ALL_INPUTS_DECLARED_JOOQ_TASK = """
 tasks.named('generateJooq').configure { allInputsDeclared = true }
 """
 
-    private static final CACHE_JOOQ_TASK = """
-tasks.named('generateJooq').configure { outputs.cacheIf { true } }
+    private static final ALL_INPUTS_NOT_DECLARED_JOOQ_TASK = """
+tasks.named('generateJooq').configure { allInputsDeclared = false }
 """
 
     @AutoCleanup
@@ -416,11 +412,10 @@ jooq.configurations.main.jooqConfiguration.generator.target.clean = false
         result.output.contains "generator.target.clean must not be set to false. Disabling the cleaning of the output directory can lead to unexpected behavior in a Gradle build."
     }
 
-    void "task output is cacheable if jooq generate task is marked as cacheable and all inputs declared"() {
+    void "task output is cacheable if jooq generate task is marked as all inputs declared"() {
         given:
         buildFile << buildWithJooqPluginDSL()
         buildFile << ALL_INPUTS_DECLARED_JOOQ_TASK
-        buildFile << CACHE_JOOQ_TASK
 
         when:
         def result = runWithArguments('generateJooq', '--build-cache')
@@ -435,11 +430,10 @@ jooq.configurations.main.jooqConfiguration.generator.target.clean = false
         result.task(':generateJooq').outcome == TaskOutcome.FROM_CACHE
     }
 
-    void "task inputs are relocatable if jooq generate task is marked as cacheable and all inputs declared"() {
+    void "task inputs are relocatable if jooq generate task is marked as all inputs declared"() {
         given:
         buildFile << buildWithJooqPluginDSL(null, new File(workspaceDir, 'src/generated/jooq').absolutePath)
         buildFile << ALL_INPUTS_DECLARED_JOOQ_TASK
-        buildFile << CACHE_JOOQ_TASK
 
         and:
         def otherProject = 'other'
@@ -449,7 +443,6 @@ jooq.configurations.main.jooqConfiguration.generator.target.clean = false
         def otherBuildFile = file("$otherProject/build.gradle")
         otherBuildFile << buildWithJooqPluginDSL(null, new File(workspaceDir, "$otherProject/src/generated/jooq").absolutePath)
         otherBuildFile << ALL_INPUTS_DECLARED_JOOQ_TASK
-        otherBuildFile << CACHE_JOOQ_TASK
 
         when:
         def result = gradleRunner('generateJooq', '--build-cache')

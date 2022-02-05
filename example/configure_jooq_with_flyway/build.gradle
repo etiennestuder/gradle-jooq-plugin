@@ -64,7 +64,6 @@ tasks.named('generateJooq').configure {
         .withPropertyName('migrations')
         .withPathSensitivity(PathSensitivity.RELATIVE)
 
-    // make jOOQ task participate in incremental builds and build caching
+    // make jOOQ task participate in incremental builds (and build caching)
     allInputsDeclared = true
-    outputs.cacheIf { true }
 }

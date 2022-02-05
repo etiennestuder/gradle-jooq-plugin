@@ -39,9 +39,6 @@ jooq {
 }
 
 tasks.named('generateJooq').configure {
-    // make jOOQ task participate in incremental builds (which is also a prerequisite for participating in build caching)
+    // make jOOQ task participate in incremental builds (which is also a prerequisite for build caching)
     allInputsDeclared = true
-
-    // make jOOQ task participate in build caching
-    outputs.cacheIf { true }
 }
