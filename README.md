@@ -48,6 +48,7 @@ The following Gradle features are supported by the jOOQ plugin:
  * `JooqGenerate` task instances participate in configuration caching
  * `JooqGenerate` task instances participate in incremental builds (if the task gets explicitly marked as all inputs being declared)
  * `JooqGenerate` task instances participate in task output caching (if the task gets explicitly marked as cacheable)
+ * `JooqGenerate` task instances participate in toolchains (if the task or project is configured with a toolchain)
 
 # Compatibility
 
@@ -310,6 +311,36 @@ incremental build and build caching.
 ```kotlin
     tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") { allInputsDeclared.set(true) }
 ```
+
+## Configuring the jOOQ generation task with a toolchain
+
+If you configure a toolchain on the project to which the jOOQ task belongs, it is automatically used by the jOOQ task. You
+can also configure / override the toolchain on the jOOQ task itself.
+
+See [here](example/configure_toolchain) for a complete example on how to configure the toolchain to be used by the jOOQ task.
+
+### Gradle Groovy DSL
+
+```groovy
+    tasks.named('generateJooq').configure {
+        launcher = javaToolchains.launcherFor {
+            languageVersion = JavaLanguageVersion.of(13)
+        }
+    }
+```
+
+### Gradle Kotlin DSL
+
+```kotlin
+    tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
+        launcher.set(javaToolchains.launcherFor {
+            languageVersion.set(JavaLanguageVersion.of(13))
+        } as Object)
+    }
+```
+
+Configuring the toolchain directly on the `JooqGenerate` task currently leads to an error by Gradle at build time when
+using the Kotlin DSL. Investigation is in progress.
 
 ## Avoiding configuration pitfalls
 
