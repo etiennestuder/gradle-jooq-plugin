@@ -25,6 +25,7 @@ import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileSystemOperations;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.model.ObjectFactory;
+import org.gradle.api.plugins.ExtensionContainer;
 import org.gradle.api.provider.Property;
 import org.gradle.api.provider.Provider;
 import org.gradle.api.provider.ProviderFactory;
@@ -33,6 +34,8 @@ import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Internal;
+import org.gradle.api.tasks.Nested;
+import org.gradle.api.tasks.Optional;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskExecutionException;
@@ -66,14 +69,14 @@ import static nu.studer.gradle.jooq.util.Objects.cloneObject;
  * Gradle Task that runs the jOOQ source code generation.
  */
 @CacheableTask
-public class JooqGenerate extends DefaultTask {
+public abstract class JooqGenerate extends DefaultTask {
 
     private final Configuration jooqConfiguration;
     private final Provider<Configuration> normalizedJooqConfiguration;
     private final FileCollection runtimeClasspath;
     private final Provider<Directory> outputDir;
-
     private final Property<Boolean> allInputsDeclared;
+
     private Action<? super Configuration> generationToolNormalization;
     private Action<? super JavaExecSpec> javaExecSpec;
     private Action<? super ExecResult> execResultHandler;
@@ -85,7 +88,7 @@ public class JooqGenerate extends DefaultTask {
     private static final Action<Configuration> OUTPUT_DIRECTORY_NORMALIZATION = c -> c.getGenerator().getTarget().setDirectory(null);
 
     @Inject
-    public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations, FileSystemOperations fileSystemOperations) {
+    public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ExtensionContainer extensions, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations, FileSystemOperations fileSystemOperations) {
         this.jooqConfiguration = config.getJooqConfiguration();
         this.normalizedJooqConfiguration = normalizedJooqConfigurationProvider(objects, providers);
         this.runtimeClasspath = objects.fileCollection().from(runtimeClasspath);
@@ -95,6 +98,9 @@ public class JooqGenerate extends DefaultTask {
         this.projectLayout = projectLayout;
         this.execOperations = execOperations;
         this.fileSystemOperations = fileSystemOperations;
+
+        // Gradle toolchain support is only available as of Gradle 6.7
+        ToolchainHelper.tryConfigureJavaLauncher(getLauncher(), extensions);
 
         // do not use lambda due to a bug in Gradle 6.5
         getOutputs().upToDateWhen(new Spec<Task>() {
@@ -168,6 +174,10 @@ public class JooqGenerate extends DefaultTask {
     public void setGenerationToolNormalization(Action<? super Configuration> generationToolNormalization) {
         this.generationToolNormalization = generationToolNormalization;
     }
+
+    @Nested
+    @Optional
+    public abstract Property<Object> getLauncher();
 
     @TaskAction
     public void generate() {
@@ -276,7 +286,7 @@ public class JooqGenerate extends DefaultTask {
             spec.setClasspath(runtimeClasspath);
             spec.setWorkingDir(projectLayout.getProjectDirectory());
             spec.args(configFile);
-
+            ToolchainHelper.tryApplyJavaLauncher(getLauncher(), spec);
             if (javaExecSpec != null) {
                 javaExecSpec.execute(spec);
             }

@@ -41,7 +41,7 @@ public class JooqPlugin implements Plugin<Project> {
         // create a jooq task for each jooq configuration domain object
         jooqExtension.getConfigurations().configureEach(config -> {
             String taskName = "generate" + (config.name.equals("main") ? "" : capitalize(config.name)) + "Jooq";
-            TaskProvider<JooqGenerate> jooq = project.getTasks().register(taskName, JooqGenerate.class, config, runtimeConfiguration);
+            TaskProvider<JooqGenerate> jooq = project.getTasks().register(taskName, JooqGenerate.class, config, runtimeConfiguration, project.getExtensions());
             jooq.configure(task -> {
                 task.setDescription(String.format("Generates the jOOQ sources from the %s jOOQ configuration.", config.name));
                 task.setGroup("jOOQ");
