@@ -355,6 +355,15 @@ If you want the Spring Boot plugin to pull in the same version of jOOQ as define
 The other way around, if you want the jOOQ plugin to pull in the same version of jOOQ as defined by the Spring Boot plugin, you have to explicitly
 set `jooq.version = dependencyManagement.importedProperties['jooq.version']`.
 
+### Enforcing dependency versions via dependency rules from third-party plugins or from the build itself
+
+If the code generation fails with exceptions about not finding certain JAXB classes, it is likely due to a 3rd-party plugin or your own build
+adding some dependency rules that enforce certain dependency versions that are not matching what is needed by the jOOQ code generation tool. For
+example, the Spring Dependency Management Gradle plugin will downgrade the `jakarta.xml.bind:jakarta.xml.bind-api` dependency to a version not
+compatible with the jOOQ code generation tool.
+
+`Exception in thread "main" java.lang.NoClassDefFoundError: jakarta/xml/bind/annotation/XmlSchema`
+
 ### Generating sources into shared folders, e.g. src/main/java
 
 My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This avoids overlapping
