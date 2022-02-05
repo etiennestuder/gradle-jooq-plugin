@@ -15,7 +15,8 @@ generated Java sources in the matching source set, if existing. The code generat
 in [task configuration avoidance](https://docs.gradle.org/current/userguide/task_configuration_avoidance.html),
 in [build configuration caching](https://docs.gradle.org/nightly/userguide/configuration_cache.html),
 in [incremental builds](https://docs.gradle.org/current/userguide/more_about_tasks.html#sec:up_to_date_checks),
-and in [task output caching](https://docs.gradle.org/current/userguide/build_cache.html). The plugin can be applied on both Java projects and Android projects.
+in [task output caching](https://docs.gradle.org/current/userguide/build_cache.html),
+and in [toolchains](https://docs.gradle.org/current/userguide/toolchains.html). The plugin can be applied on both Java projects and Android projects.
 
 You can find more details about the actual jOOQ source code generation in the [jOOQ documentation](http://www.jooq.org/doc/latest/manual/code-generation).
 
@@ -339,7 +340,7 @@ See [here](example/configure_toolchain) for a complete example on how to configu
     }
 ```
 
-Configuring the toolchain directly on the `JooqGenerate` task currently leads to an error by Gradle at build time when
+Note: Configuring the toolchain directly on the `JooqGenerate` task currently leads to an error by Gradle at build time when
 using the Kotlin DSL. Investigation is in progress.
 
 ## Avoiding configuration pitfalls
