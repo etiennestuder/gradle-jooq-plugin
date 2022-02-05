@@ -512,6 +512,8 @@ Both feedback and contributions are very welcome.
 
 # Acknowledgements
 
++ [alextu](https://github.com/alextu) (pr)
++ [rpalcolea ](https://github.com/rpalcolea) (pr)
 + [mrozanc](https://github.com/mrozanc) (pr)
 + [perlun](https://github.com/perlun) (pr)
 + [Double-O-Seven](https://github.com/Double-O-Seven) (issue analysis)
