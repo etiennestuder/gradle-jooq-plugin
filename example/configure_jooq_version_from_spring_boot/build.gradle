@@ -3,7 +3,7 @@ import nu.studer.gradle.jooq.JooqEdition
 plugins {
     id 'org.springframework.boot' version '2.6.3'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'nu.studer.jooq' version '7.0'
+    id 'nu.studer.jooq' version '7.1'
     id 'java'
 }
 

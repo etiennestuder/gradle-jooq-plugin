@@ -1,6 +1,6 @@
 plugins {
     id 'org.flywaydb.flyway' version '6.5.6'
-    id 'nu.studer.jooq' version '7.0'
+    id 'nu.studer.jooq' version '7.1'
     id 'java'
 }
 

@@ -70,7 +70,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '7.0'
+    id 'nu.studer.jooq' version '7.1'
 }
 ```
 
@@ -78,7 +78,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("nu.studer.jooq") version "7.0"
+    id("nu.studer.jooq") version "7.1"
 }
 ```
 
@@ -440,6 +440,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 # Changelog
 
++ 7.1 - Add support for Gradle Toolchain.
 + 7.0 - Upgrade to jOOQ 3.16.3 and make jOOQ 3.16.x the minimum version. Update used 3rd-party dependencies.
 + 6.0.1 - Avoid deprecation warnings at Gradle runtime. Upgrade to jOOQ 3.15.1.
 + 6.0 - Make Java 11 the minimum version. Upgrade to jOOQ 3.15.0.
