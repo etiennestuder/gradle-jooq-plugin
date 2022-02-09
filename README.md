@@ -348,8 +348,6 @@ Note: `(launcher::set)(...)` workarounds an ambiguous overloading issue with the
 
 See [here](example/configure_toolchain_kotlin_dsl) for a complete example on how to configure the toolchain to be used by the jOOQ task using Kotlin DSL.
 
-
-
 ## Avoiding configuration pitfalls
 
 ### Synchronizing the jOOQ version between the Spring Boot Gradle plugin and the jOOQ Gradle plugin
@@ -481,7 +479,8 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 + Extracting the jOOQ configuration into a script file: [here](example/extract_script_file).
 + Extracting the jOOQ configuration into a precompiled script plugin: [here](example/extract_precompiled_script_plugin).
 + Passing JVM args to the jOOQ code generation process: [here](example/configure_jvm_args).
-+ Configuring a JVM toolchain to run the jOOQ code generation process: [here](example/configure_toolchain).
++ Configuring a JVM toolchain to run the jOOQ code generation process via Gradle DSL: [here](example/configure_toolchain).
++ Configuring a JVM toolchain to run the jOOQ code generation process via Kotlin DSL: [here](example/configure_toolchain_kotlin_dsl).
 + Using a custom generator strategy defined in the same Gradle multi-module project: [here](example/configure_custom_generator_strategy).
 + Suppressing the task dependency between the compile task and the jOOQ source generation task: [here](example/configure_task_dependencies).
 + Declaring multiple configurations whose outputs are all added to the same source set: [here](example/configure_different_jooq_sources_for_same_target_source_set).
