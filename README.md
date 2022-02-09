@@ -339,14 +339,16 @@ See [here](example/configure_toolchain) for a complete example on how to configu
 
 ```kotlin
     tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
-        launcher.set(javaToolchains.launcherFor {
+        (launcher::set)(javaToolchains.launcherFor {
             languageVersion.set(JavaLanguageVersion.of(13))
-        } as Object)
+        })
     }
 ```
+Note: `(launcher::set)(...)` workarounds an ambiguous overloading issue with the Kotlin compiler.
 
-Note: Configuring the toolchain directly on the `JooqGenerate` task currently leads to an error by Gradle at build time when
-using the Kotlin DSL. Investigation is in progress.
+See [here](example/configure_toolchain_kotlin_dsl) for a complete example on how to configure the toolchain to be used by the jOOQ task using Kotlin DSL.
+
+
 
 ## Avoiding configuration pitfalls
 
