@@ -1,7 +1,3 @@
-import nu.studer.gradle.jooq.JooqEdition
-import org.jooq.meta.jaxb.ForcedType
-import org.jooq.meta.jaxb.Property
-
 plugins {
     id("nu.studer.jooq") version "7.1"
     id("java")
@@ -16,10 +12,7 @@ dependencies {
 }
 
 jooq {
-    version.set("3.16.3")
-    edition.set(JooqEdition.OSS)
-
-    configurations {
+   configurations {
         create("main") {
             jooqConfiguration.apply {
                 logging = org.jooq.meta.jaxb.Logging.WARN
@@ -28,52 +21,32 @@ jooq {
                     url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
                     user = "sa"
                     password = ""
-                    properties.add(Property().apply {
-                        key = "PAGE_SIZE"
-                        value = "2048"
-                    })
                 }
                 generator.apply {
                     name = "org.jooq.codegen.DefaultGenerator"
                     database.apply {
                         name = "org.jooq.meta.h2.H2Database"
-                        forcedTypes.addAll(listOf(
-                            ForcedType().apply {
-                                name = "varchar"
-                                includeExpression = ".*"
-                                includeTypes = "JSONB?"
-                            },
-                            ForcedType().apply {
-                                name = "varchar"
-                                includeExpression = ".*"
-                                includeTypes = "INET"
-                            }
-                        ))
-                    }
-                    generate.apply {
-                        isDeprecated = false
-                        isRecords = false
-                        isImmutablePojos = false
-                        isFluentSetters = false
+                        includes = ".*"
+                        excludes = ""
                     }
                     target.apply {
                         packageName = "nu.studer.sample"
-                        directory = "src/generated/jooq"
                     }
-                    strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
                 }
             }
         }
     }
 }
 
+// by default, generateJooq will use the configured java toolchain, if any
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(13))
+        languageVersion.set(JavaLanguageVersion.of(11))
     }
 }
 
 tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
+    // generateJooq can be configured to use a different/specific toolchain
     (launcher::set)(javaToolchains.launcherFor {
         languageVersion.set(JavaLanguageVersion.of(13))
     })
