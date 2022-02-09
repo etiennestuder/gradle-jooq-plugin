@@ -323,8 +323,6 @@ incremental build and build caching.
 If you configure a toolchain on the project to which the jOOQ task belongs, it is automatically used by the jOOQ task. You
 can also configure / override the toolchain on the jOOQ task itself.
 
-See [here](example/configure_toolchain) for a complete example on how to configure the toolchain to be used by the jOOQ task.
-
 ### Gradle Groovy DSL
 
 ```groovy
@@ -335,6 +333,8 @@ See [here](example/configure_toolchain) for a complete example on how to configu
     }
 ```
 
+See [here](example/configure_toolchain_gradle_dsl) for a complete example on how to configure the toolchain to be used by the jOOQ task, using the Gradle DSL.
+
 ### Gradle Kotlin DSL
 
 ```kotlin
@@ -344,9 +344,9 @@ See [here](example/configure_toolchain) for a complete example on how to configu
         })
     }
 ```
-Note: `(launcher::set)(...)` workarounds an ambiguous overloading issue with the Kotlin compiler.
+Note: `(launcher::set)(...)` is a necessary workaround to deal with an ambiguous overloading issue in the Kotlin compiler.
 
-See [here](example/configure_toolchain_kotlin_dsl) for a complete example on how to configure the toolchain to be used by the jOOQ task using Kotlin DSL.
+See [here](example/configure_toolchain_kotlin_dsl) for a complete example on how to configure the toolchain to be used by the jOOQ task, using the Kotlin DSL.
 
 ## Avoiding configuration pitfalls
 
