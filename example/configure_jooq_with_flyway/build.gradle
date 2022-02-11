@@ -1,5 +1,5 @@
 plugins {
-    id 'org.flywaydb.flyway' version '6.5.6'
+    id 'org.flywaydb.flyway' version '8.4.4'
     id 'nu.studer.jooq' version '7.1.1'
     id 'java'
 }
@@ -13,8 +13,8 @@ configurations {
 }
 
 dependencies {
-    flywayMigration 'com.h2database:h2:1.4.200'
-    jooqGenerator 'com.h2database:h2:1.4.200'
+    flywayMigration 'com.h2database:h2:2.1.210'
+    jooqGenerator 'com.h2database:h2:2.1.210'
 }
 
 flyway {
