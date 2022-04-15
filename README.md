@@ -20,7 +20,7 @@ and in [toolchains](https://docs.gradle.org/current/userguide/toolchains.html). 
 
 You can find more details about the actual jOOQ source code generation in the [jOOQ documentation](http://www.jooq.org/doc/latest/manual/code-generation).
 
-The jOOQ plugin is hosted on the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
+The jOOQ plugin is hosted at the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
 
 ## Build scan
 
