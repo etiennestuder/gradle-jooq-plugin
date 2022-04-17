@@ -14,7 +14,7 @@ configurations {
 
 dependencies {
     flywayMigration 'com.h2database:h2:2.1.212'
-    jooqGenerator 'com.h2database:h2:2.1.210'
+    jooqGenerator 'com.h2database:h2:2.1.212'
 }
 
 flyway {
