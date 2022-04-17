@@ -19,6 +19,12 @@ updates:
     schedule:
       interval: "daily"
   - package-ecosystem: "gradle"
+    directory: "/example/configure_custom_generator_strategy/custom-generator-strategy"
+    registries:
+      - gradle-plugin-portal
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
     directory: "/example/configure_different_jooq_sources_for_same_target_source_set"
     registries:
       - gradle-plugin-portal
@@ -80,6 +86,12 @@ updates:
       interval: "daily"
   - package-ecosystem: "gradle"
     directory: "/example/extract_precompiled_script_plugin"
+    registries:
+      - gradle-plugin-portal
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "gradle"
+    directory: "/example/extract_precompiled_script_plugin/buildSrc"
     registries:
       - gradle-plugin-portal
     schedule:
