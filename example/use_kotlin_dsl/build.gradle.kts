@@ -1,7 +1,7 @@
 import nu.studer.gradle.jooq.JooqEdition
-import org.jooq.meta.jaxb.ForcedType
-import org.jooq.meta.jaxb.Property
 import org.jooq.meta.jaxb.Logging
+import org.jooq.meta.jaxb.Property
+import org.jooq.meta.jaxb.ForcedType
 
 plugins {
     id("nu.studer.jooq") version "7.1.1"
