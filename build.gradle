@@ -18,7 +18,7 @@ dependencies {
     runtimeOnly 'org.glassfish.jaxb:jaxb-core:3.0.2'
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
 
-    testImplementation 'com.h2database:h2:2.1.212'
+    testImplementation 'com.h2database:h2:2.1.214'
     testImplementation 'org.spockframework:spock-core:2.1-groovy-2.5'
 }
 

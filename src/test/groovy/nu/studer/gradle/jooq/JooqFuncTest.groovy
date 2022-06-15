@@ -111,7 +111,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator("com.h2database:h2:2.1.212")
+    jooqGenerator("com.h2database:h2:2.1.214")
 }
 
 jooq {
@@ -796,7 +796,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator 'com.h2database:h2:2.1.212'
+    jooqGenerator 'com.h2database:h2:2.1.214'
 }
 
 jooq {
@@ -863,7 +863,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator 'com.h2database:h2:2.1.212'
+    jooqGenerator 'com.h2database:h2:2.1.214'
 }
 
 jooq {
@@ -925,7 +925,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator 'com.h2database:h2:2.1.212'
+    jooqGenerator 'com.h2database:h2:2.1.214'
 }
 
 jooq {
@@ -965,7 +965,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator 'com.h2database:h2:2.1.212'
+    jooqGenerator 'com.h2database:h2:2.1.214'
 }
 
 jooq {
@@ -1001,7 +1001,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator 'com.h2database:h2:2.1.212'
+    jooqGenerator 'com.h2database:h2:2.1.214'
     jooqGenerator project(':custom-generator')  // include sub-project that contains the custom generator strategy
 }
 
@@ -1082,7 +1082,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator 'com.h2database:h2:2.1.212'
+    jooqGenerator 'com.h2database:h2:2.1.214'
 }
 
 jooq {
@@ -1175,7 +1175,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator 'com.h2database:h2:2.1.212'
+    jooqGenerator 'com.h2database:h2:2.1.214'
 }
 
 def userSA = 'sa'

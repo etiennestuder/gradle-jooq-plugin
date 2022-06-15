@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator("com.h2database:h2:2.1.212")
+    jooqGenerator("com.h2database:h2:2.1.214")
 }
 
 jooq {
