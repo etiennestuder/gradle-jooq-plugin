@@ -13,7 +13,7 @@ group = 'nu.studer'
 version = '7.1.2-DEV'
 
 dependencies {
-    api 'org.jooq:jooq-codegen:3.16.7'
+    api 'org.jooq:jooq-codegen:3.17.2'
 
     runtimeOnly 'org.glassfish.jaxb:jaxb-core:3.0.2'
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
