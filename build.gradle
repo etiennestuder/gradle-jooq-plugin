@@ -4,7 +4,7 @@ import static java.lang.Integer.parseInt
 
 plugins {
     id 'nu.studer.plugindev' version '4.1'
-    id 'com.gradle.plugin-publish' version '0.21.0'
+    id 'com.gradle.plugin-publish' version '1.0.0'
     id 'org.nosphere.gradle.github.actions' version '1.3.2'
     id 'groovy'
 }
@@ -66,6 +66,8 @@ gradlePlugin {
     plugins {
         pluginDevPlugin {
             id = 'nu.studer.jooq'
+            displayName = 'gradle-jooq-plugin'
+            description = 'Gradle plugin that integrates jOOQ.'
             implementationClass = 'nu.studer.gradle.jooq.JooqPlugin'
         }
     }
@@ -74,19 +76,7 @@ gradlePlugin {
 pluginBundle {
     website = 'https://github.com/etiennestuder/gradle-jooq-plugin'
     vcsUrl = 'https://github.com/etiennestuder/gradle-jooq-plugin'
-    description = 'Gradle plugin that integrates jOOQ.'
     tags = ['jooq']
-
-    plugins {
-        pluginDevPlugin {
-            displayName = 'gradle-jooq-plugin'
-        }
-    }
-
-    mavenCoordinates {
-        groupId = 'nu.studer'
-        artifactId = 'gradle-jooq-plugin'
-    }
 }
 
 repositories {
