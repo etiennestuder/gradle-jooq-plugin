@@ -22,11 +22,11 @@ dependencies {
     testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
-    }
-}
+//java {
+//    toolchain {
+//        languageVersion = JavaLanguageVersion.of(11)
+//    }
+//}
 
 tasks.withType(AbstractCompile).configureEach {
     options.compilerArgs <<
@@ -36,6 +36,13 @@ tasks.withType(AbstractCompile).configureEach {
 
 tasks.withType(JavaCompile).configureEach {
     javaCompiler.set(javaToolchains.compilerFor { spec ->
+        spec.languageVersion.set(JavaLanguageVersion.of(11))
+        buildScan.value(identityPath.path + "#jvmVersion", spec.languageVersion.get().asInt() as String)
+    } as Provider<? extends JavaCompiler>)
+}
+
+tasks.withType(GroovyCompile).configureEach {
+    javaLauncher.set(javaToolchains.launcherFor { spec ->
         spec.languageVersion.set(JavaLanguageVersion.of(11))
         buildScan.value(identityPath.path + "#jvmVersion", spec.languageVersion.get().asInt() as String)
     } as Provider<? extends JavaCompiler>)
