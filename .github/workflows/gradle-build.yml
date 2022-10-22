@@ -7,8 +7,8 @@ jobs:
         continue-on-error: true
         strategy:
             matrix:
-                java-version: [ 11, 17 ]
-                gradle-version: [ 7.0.2, 7.5.1 ]
+                java-version: [ 11, 16, 17 ]
+                gradle-version: [ 7.0.2, 7.2, 7.3.3, 7.5.1 ]
         name: Test JVM/Gradle (${{ matrix.java-version }}, ${{ matrix.gradle-version }})
         steps:
             -   name: Check out project
