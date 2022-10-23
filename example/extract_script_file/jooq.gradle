@@ -22,9 +22,6 @@ dependencies {
 }
 
 jooq {
-    version = '3.17.4'
-    edition = JooqEdition.OSS
-
     configurations {
         main {
             generationTool {
