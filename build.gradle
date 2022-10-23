@@ -15,7 +15,7 @@ version = '7.1.2-DEV'
 dependencies {
     api 'org.jooq:jooq-codegen:3.17.4'
 
-    runtimeOnly 'org.glassfish.jaxb:jaxb-core:3.0.2'
+    runtimeOnly 'org.glassfish.jaxb:jaxb-core:4.0.1'
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
 
     testImplementation 'com.h2database:h2:2.1.214'
