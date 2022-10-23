@@ -16,7 +16,7 @@ dependencies {
     api 'org.jooq:jooq-codegen:3.17.4'
 
     runtimeOnly 'org.glassfish.jaxb:jaxb-core:3.0.2'
-    runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
+    runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:4.0.1'
 
     testImplementation 'com.h2database:h2:2.1.214'
     testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
