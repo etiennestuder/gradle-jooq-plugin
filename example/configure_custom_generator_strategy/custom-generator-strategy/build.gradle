@@ -5,5 +5,5 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq-codegen:3.16.7'
+    implementation 'org.jooq:jooq-codegen:3.17.4'
 }

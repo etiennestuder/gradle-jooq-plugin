@@ -115,7 +115,7 @@ dependencies {
 }
 
 jooq {
-    version.set("3.16.7")
+    version.set("3.17.4")
     configurations {
         create("main") {
             jooqConfiguration.apply {
@@ -240,14 +240,14 @@ afterEvaluate {
 
     void "can set custom jOOQ edition"() {
         given:
-        buildFile << buildWithJooqPluginDSL(null, null, null, '3.16.2', JooqEdition.TRIAL)
+        buildFile << buildWithJooqPluginDSL(null, null, null, '3.16.1', JooqEdition.TRIAL)
 
         when:
         def result = runWithArguments('dependencies')
 
         then:
-        result.output.contains('org.jooq:jooq-codegen -> org.jooq.trial:jooq-codegen:3.16.2')
-        result.output.contains('org.jooq:jooq -> org.jooq.trial:jooq:3.16.2')
+        result.output.contains('org.jooq:jooq-codegen -> org.jooq.trial:jooq-codegen:3.16.1')
+        result.output.contains('org.jooq:jooq -> org.jooq.trial:jooq:3.16.1')
     }
 
     void "supports task avoidance"() {
@@ -688,7 +688,7 @@ java {
         buildFile << """
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -700,12 +700,12 @@ generateJooq {
 """
 
         when:
-        def result = runWithArguments('generateJooq', '-Porg.gradle.jvm.toolchain.install.adoptopenjdk.baseUri=https://api.adoptium.net')
+        def result = runWithArguments('generateJooq')
 
         then:
         fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
-        result.output.contains('Running jOOQ task with JDK 11')
+        result.output.contains('Running jOOQ task with JDK 17')
     }
 
     @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.3')) })
@@ -715,13 +715,13 @@ generateJooq {
         buildFile << """
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
+        languageVersion = JavaLanguageVersion.of(11)
     }
 }
 
 generateJooq {
     launcher = javaToolchains.launcherFor {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
     doFirst {
        println("Running jOOQ task with JDK \${it.launcher.get().metadata.languageVersion.asInt()}")
@@ -730,12 +730,12 @@ generateJooq {
 """
 
         when:
-        def result = runWithArguments('generateJooq', '-Porg.gradle.jvm.toolchain.install.adoptopenjdk.baseUri=https://api.adoptium.net')
+        def result = runWithArguments('generateJooq')
 
         then:
         fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
-        result.output.contains('Running jOOQ task with JDK 11')
+        result.output.contains('Running jOOQ task with JDK 17')
     }
 
     @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.3')) })
@@ -745,13 +745,13 @@ generateJooq {
         buildFile << """
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
+        languageVersion = JavaLanguageVersion.of(11)
     }
 }
 
 generateJooq {
     launcher = javaToolchains.launcherFor {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
     doFirst {
        println("Running jOOQ task with JDK \${it.launcher.get().metadata.languageVersion.asInt()}")
@@ -766,7 +766,7 @@ generateJooq {
         fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
         result.output.contains("Calculating task graph as no configuration cache is available for tasks: generateJooq")
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
-        result.output.contains('Running jOOQ task with JDK 11')
+        result.output.contains('Running jOOQ task with JDK 17')
 
         when:
         new File(workspaceDir, 'build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java').delete()
@@ -776,7 +776,7 @@ generateJooq {
         fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
         result.output.contains("Reusing configuration cache.")
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
-        result.output.contains('Running jOOQ task with JDK 11')
+        result.output.contains('Running jOOQ task with JDK 17')
     }
 
     private static String buildWithJooqPluginDSL(String targetPackageName = null,
@@ -1006,7 +1006,7 @@ dependencies {
 }
 
 jooq {
-  version = '3.16.7'
+  version = '3.17.4'
   configurations {
     main {
       generationTool {
@@ -1045,7 +1045,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq-codegen:3.16.7'
+    implementation 'org.jooq:jooq-codegen:3.17.4'
 }
 """
     }
