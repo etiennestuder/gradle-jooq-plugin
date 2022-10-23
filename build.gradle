@@ -24,7 +24,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -38,7 +38,7 @@ tasks.withType(Test).configureEach {
     maxParallelForks = 1 // there is currently only a single test class
     useJUnitPlatform()
 
-    String testJavaRuntimeVersion = findProperty('testJavaRuntimeVersion') ?: '11'
+    String testJavaRuntimeVersion = findProperty('testJavaRuntimeVersion') ?: '17'
     String testGradleVersion = findProperty('testGradleVersion') ?: GradleVersion.current().version
 
     javaLauncher.set(javaToolchains.launcherFor { spec ->
