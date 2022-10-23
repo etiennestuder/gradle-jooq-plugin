@@ -49,7 +49,8 @@ tasks.withType(Test).configureEach {
     systemProperty 'testContext.gradleVersion', testGradleVersion
     buildScan.value(identityPath.path + "#gradleVersion", testGradleVersion)
 
-    def incompatibleJavaVsGradleVersions = parseInt(testJavaRuntimeVersion) > 16 && GradleVersion.version(testGradleVersion) < GradleVersion.version('7.3')
+    def incompatibleJavaVsGradleVersions = parseInt(testJavaRuntimeVersion) > 16 && GradleVersion.version(testGradleVersion) < GradleVersion.version('7.3') ||
+        parseInt(testJavaRuntimeVersion) > 15 && GradleVersion.version(testGradleVersion) < GradleVersion.version('7.0')
     if (incompatibleJavaVsGradleVersions) {
         enabled = false
     }
