@@ -500,7 +500,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 # Changelog
 
-+ 8.0 - Make Java 17 the minimum version. Upgrade to jOOQ 3.17.4.
++ 8.0 - Make Gradle 7.0 the minimum compatible version. Make Java 17 the minimum version. Upgrade to jOOQ 3.17.4.
 + 7.1.1 - Upgrade to jOOQ 3.16.4
 + 7.1 - Add support for Gradle Toolchains.
 + 7.0 - Upgrade to jOOQ 3.16.3 and make jOOQ 3.16.x the minimum version. Update used 3rd-party dependencies.
