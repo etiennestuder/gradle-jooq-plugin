@@ -53,12 +53,13 @@ The following Gradle features are supported by the jOOQ plugin:
 
 # Compatibility
 
-|Plugin version|Compatible Gradle versions|Support for Gradle Kotlin DSL|Support for Gradle Configuration Cache| Minimum JDK | Minimum jOOQ |
-|--------------|---------------------------|----------------------------|--------------------------------------|-------------|--------------|
-| 7.0+         | 6.1+, 7.0+                | Yes                        | Yes                                  | 11          | 3.16+        |
-| 6.0+         | 6.1+, 7.0+                | Yes                        | Yes                                  | 11          | <= 3.15      |
-| 5.0+         | 6.1+, 7.0+                | Yes                        | Yes                                  | 8           | <= 3.15      |
-| 4.0          | 5.0+, 6.0+, 7.0+          | No                         | No                                   | 8           | <= 3.15      |
+| Plugin version | Compatible Gradle versions | Support for Gradle Kotlin DSL |Support for Gradle Configuration Cache| Minimum JDK | Minimum jOOQ |
+|----------------|----------------------------|-------------------------------|--------------------------------------|-------------|--------------|
+| 8.0+           | 7.0+                       | Yes                           | Yes                                  | 17          | 3.16+        |
+| 7.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 11          | 3.16+        |
+| 6.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 11          | <= 3.15      |
+| 5.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 8           | <= 3.15      |
+| 4.0            | 5.0+, 6.0+, 7.0+           | No                            | No                                   | 8           | <= 3.15      |
 
 See the [Migration](#migration) section on how to migrate your build from older to newer jOOQ plugin versions.
 
@@ -446,6 +447,12 @@ jOOQ plugin or not.
 
 # Migration
 
+## Migrating from jOOQ plugin 7.x to 8.x
+
+When migrating your build from jOOQ plugin 7.x to 8.x, follow these steps:
+
+- Ensure you run the Gradle build with at least JDK 17
+
 ## Migrating from jOOQ plugin 6.x to 7.x
 
 When migrating your build from jOOQ plugin 6.x to 7.x, follow these steps:
@@ -456,7 +463,7 @@ When migrating your build from jOOQ plugin 6.x to 7.x, follow these steps:
 
 When migrating your build from jOOQ plugin 5.x to 6.x, follow these steps:
 
-- Ensure you run the Gradle build with JDK 11 (or set a [custom Java executable](example/configure_generation_tool_execution/build.gradle))
+- Ensure you run the Gradle build with at least JDK 11
 
 ## Migrating from jOOQ plugin 4.x to 5.x
 
