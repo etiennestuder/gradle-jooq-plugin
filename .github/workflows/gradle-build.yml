@@ -4,6 +4,7 @@ on: [ push, pull_request, workflow_dispatch ]
 jobs:
     build:
         runs-on: ubuntu-latest
+        continue-on-error: true
         strategy:
             matrix:
                 java-version: [ 17 ]
