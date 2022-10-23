@@ -41,13 +41,13 @@ jooq {
 // by default, generateJooq will use the configured java toolchain, if any
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
 tasks.named('generateJooq').configure {
     // generateJooq can be configured to use a different/specific toolchain
     launcher = javaToolchains.launcherFor {
-        languageVersion = JavaLanguageVersion.of(13)
+        languageVersion = JavaLanguageVersion.of(18)
     }
 }

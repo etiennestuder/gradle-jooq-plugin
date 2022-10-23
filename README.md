@@ -329,7 +329,7 @@ can also configure / override the toolchain on the jOOQ task itself.
 ```groovy
     tasks.named('generateJooq').configure {
         launcher = javaToolchains.launcherFor {
-            languageVersion = JavaLanguageVersion.of(13)
+            languageVersion = JavaLanguageVersion.of(18)
         }
     }
 ```
@@ -341,7 +341,7 @@ See [here](example/configure_toolchain_gradle_dsl) for a complete example on how
 ```kotlin
     tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
         (launcher::set)(javaToolchains.launcherFor {
-            languageVersion.set(JavaLanguageVersion.of(13))
+            languageVersion.set(JavaLanguageVersion.of(18))
         })
     }
 ```
