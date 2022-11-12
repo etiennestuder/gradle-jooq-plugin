@@ -1,26 +1,31 @@
 plugins {
-    id 'com.gradle.enterprise' version '3.11.2'
+    id 'com.gradle.enterprise' version '3.11.4'
     id 'com.gradle.common-custom-user-data-gradle-plugin' version '1.8.2'
 }
 
+def isCI = System.getenv('CI') != null
+
 gradleEnterprise {
+    server = 'https://etiennestuder.gradle-enterprise.cloud'
+
     buildScan {
-        def acceptTOSProp = 'gradle-jooq-plugin.acceptGradleTOS'
-        if (settings.hasProperty(acceptTOSProp) && Boolean.valueOf(settings.getProperty(acceptTOSProp))) {
-            termsOfServiceUrl = 'https://gradle.com/terms-of-service'
-            termsOfServiceAgree = 'yes'
-        }
         publishAlways()
-        obfuscation {
-            ipAddresses { addresses -> addresses.collect { address -> '0.0.0.0' } }
-        }
+        publishIfAuthenticated()
+        uploadInBackground = !isCI
+        capture { taskInputFiles = true }
+        obfuscation { ipAddresses { addresses -> addresses.collect { address -> '0.0.0.0' } } }
     }
 }
-
-rootProject.name = 'gradle-jooq-plugin'
 
 buildCache {
     local {
         enabled = true
     }
+
+    remote(gradleEnterprise.buildCache) {
+        enabled = true
+        push = isCI
+    }
 }
+
+rootProject.name = 'gradle-jooq-plugin'
