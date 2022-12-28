@@ -57,18 +57,15 @@ tasks.withType(Test).configureEach {
 }
 
 gradlePlugin {
+    website = 'https://github.com/etiennestuder/gradle-jooq-plugin'
+    vcsUrl = 'https://github.com/etiennestuder/gradle-jooq-plugin'
     plugins {
         pluginDevPlugin {
             id = 'nu.studer.jooq'
             displayName = 'gradle-jooq-plugin'
             description = 'Gradle plugin that integrates jOOQ.'
+            tags.set(['jooq'])
             implementationClass = 'nu.studer.gradle.jooq.JooqPlugin'
         }
     }
-}
-
-pluginBundle {
-    website = 'https://github.com/etiennestuder/gradle-jooq-plugin'
-    vcsUrl = 'https://github.com/etiennestuder/gradle-jooq-plugin'
-    tags = ['jooq']
 }

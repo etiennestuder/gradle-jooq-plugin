@@ -16,6 +16,7 @@
 package nu.studer.gradle.jooq;
 
 import nu.studer.gradle.jooq.util.Gradles;
+import nu.studer.gradle.jooq.util.Objects;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.GradleException;
@@ -53,6 +54,7 @@ import org.xml.sax.SAXException;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Marshaller;
+
 import javax.inject.Inject;
 import javax.xml.XMLConstants;
 import javax.xml.validation.Schema;
@@ -72,7 +74,7 @@ import static nu.studer.gradle.jooq.util.Objects.cloneObject;
 public abstract class JooqGenerate extends DefaultTask {
 
     private final Configuration jooqConfiguration;
-    private final Provider<Configuration> normalizedJooqConfiguration;
+    private final Provider<String> normalizedJooqConfigurationHash;
     private final FileCollection runtimeClasspath;
     private final Provider<Directory> outputDir;
     private final Property<Boolean> allInputsDeclared;
@@ -90,7 +92,7 @@ public abstract class JooqGenerate extends DefaultTask {
     @Inject
     public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ExtensionContainer extensions, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations, FileSystemOperations fileSystemOperations) {
         this.jooqConfiguration = config.getJooqConfiguration();
-        this.normalizedJooqConfiguration = normalizedJooqConfigurationProvider(objects, providers);
+        this.normalizedJooqConfigurationHash = normalizedJooqConfigurationHash(objects, providers);
         this.runtimeClasspath = objects.fileCollection().from(runtimeClasspath);
         this.outputDir = objects.directoryProperty().value(config.getOutputDir());
         this.allInputsDeclared = objects.property(Boolean.class).convention(Boolean.FALSE);
@@ -111,23 +113,23 @@ public abstract class JooqGenerate extends DefaultTask {
         });
     }
 
-    private Provider<Configuration> normalizedJooqConfigurationProvider(ObjectFactory objects, ProviderFactory providers) {
-        Property<Configuration> normalizedConfiguration = objects.property(Configuration.class);
+    private Provider<String> normalizedJooqConfigurationHash(ObjectFactory objects, ProviderFactory providers) {
+        Property<String> normalizedConfiguration = objects.property(String.class);
         normalizedConfiguration.set(providers.provider(() -> {
             Configuration clonedConfiguration = cloneObject(jooqConfiguration);
             OUTPUT_DIRECTORY_NORMALIZATION.execute(clonedConfiguration);
             if (generationToolNormalization != null) {
                 generationToolNormalization.execute(clonedConfiguration);
             }
-            return clonedConfiguration;
+            return Objects.deepHash(clonedConfiguration);
         }));
         normalizedConfiguration.finalizeValueOnRead();
         return normalizedConfiguration;
     }
 
     @Input
-    public Provider<Configuration> getNormalizedJooqConfiguration() {
-        return normalizedJooqConfiguration;
+    public Provider<String> getNormalizedJooqConfigurationHash() {
+        return normalizedJooqConfigurationHash;
     }
 
     @Classpath
@@ -215,8 +217,8 @@ public abstract class JooqGenerate extends DefaultTask {
             if (target != null) {
                 if (!target.isClean()) {
                     throw new GradleException(
-                        "generator.target.clean must not be set to false. " +
-                            "Disabling the cleaning of the output directory can lead to unexpected behavior in a Gradle build.");
+                            "generator.target.clean must not be set to false. " +
+                                    "Disabling the cleaning of the output directory can lead to unexpected behavior in a Gradle build.");
                 }
             }
         }
@@ -237,13 +239,13 @@ public abstract class JooqGenerate extends DefaultTask {
         Jdbc jdbc = configuration.getJdbc();
         if (jdbc != null) {
             if (jdbc.getDriver() == null
-                && jdbc.getUrl() == null
-                && jdbc.getSchema() == null
-                && jdbc.getUser() == null
-                && jdbc.getUsername() == null
-                && jdbc.getPassword() == null
-                && jdbc.isAutoCommit() == null
-                && jdbc.getProperties().isEmpty()
+                    && jdbc.getUrl() == null
+                    && jdbc.getSchema() == null
+                    && jdbc.getUser() == null
+                    && jdbc.getUsername() == null
+                    && jdbc.getPassword() == null
+                    && jdbc.isAutoCommit() == null
+                    && jdbc.getProperties().isEmpty()
             ) {
                 configuration.setJdbc(null);
             }
