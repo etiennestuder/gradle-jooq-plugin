@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator("com.h2database:h2:1.4.200")
+    jooqGenerator("com.h2database:h2:1.4.214")
 }
 
 jooq {
