@@ -1,5 +1,5 @@
 plugins {
-    id 'nu.studer.jooq' version '7.1.1'
+    id 'nu.studer.jooq' version '8.0'
     id 'java'
 }
 
@@ -9,7 +9,7 @@ repositories {
 
 dependencies {
     implementation 'org.jooq:jooq' // manually add jOOQ dependency
-    jooqGenerator 'com.h2database:h2:1.4.214'
+    jooqGenerator 'com.h2database:h2:2.1.214'
 }
 
 jooq {

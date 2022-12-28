@@ -10,11 +10,11 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator 'com.h2database:h2:1.4.214'
+    jooqGenerator 'com.h2database:h2:2.1.214'
 }
 
 jooq {
-    version = '3.16.4'
+    version = '3.17.5'
     edition = JooqEdition.OSS
 
     configurations {

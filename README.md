@@ -20,7 +20,7 @@ and in [toolchains](https://docs.gradle.org/current/userguide/toolchains.html). 
 
 You can find more details about the actual jOOQ source code generation in the [jOOQ documentation](http://www.jooq.org/doc/latest/manual/code-generation).
 
-The jOOQ plugin is hosted on the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
+The jOOQ plugin is hosted at the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
 
 ## Build scan
 
@@ -53,12 +53,13 @@ The following Gradle features are supported by the jOOQ plugin:
 
 # Compatibility
 
-|Plugin version|Compatible Gradle versions|Support for Gradle Kotlin DSL|Support for Gradle Configuration Cache| Minimum JDK | Minimum jOOQ |
-|--------------|---------------------------|----------------------------|--------------------------------------|-------------|--------------|
-| 7.0+         | 6.1+, 7.0+                | Yes                        | Yes                                  | 11          | 3.16+        |
-| 6.0+         | 6.1+, 7.0+                | Yes                        | Yes                                  | 11          | <= 3.15      |
-| 5.0+         | 6.1+, 7.0+                | Yes                        | Yes                                  | 8           | <= 3.15      |
-| 4.0          | 5.0+, 6.0+, 7.0+          | No                         | No                                   | 8           | <= 3.15      |
+| Plugin version | Compatible Gradle versions | Support for Gradle Kotlin DSL |Support for Gradle Configuration Cache| Minimum JDK | Minimum jOOQ |
+|----------------|----------------------------|-------------------------------|--------------------------------------|-------------|--------------|
+| 8.0+           | 7.0+                       | Yes                           | Yes                                  | 17          | 3.16+        |
+| 7.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 11          | 3.16+        |
+| 6.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 11          | <= 3.15      |
+| 5.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 8           | <= 3.15      |
+| 4.0            | 5.0+, 6.0+, 7.0+           | No                            | No                                   | 8           | <= 3.15      |
 
 See the [Migration](#migration) section on how to migrate your build from older to newer jOOQ plugin versions.
 
@@ -72,7 +73,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '7.1.1'
+    id 'nu.studer.jooq' version '8.0'
 }
 ```
 
@@ -80,7 +81,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("nu.studer.jooq") version "7.1.1"
+    id("nu.studer.jooq") version "8.0"
 }
 ```
 
@@ -93,7 +94,7 @@ is on the classpath when the jOOQ code generation tool is executed. Optionally, 
 
 ```groovy
 dependencies {
-    jooqGenerator 'org.postgresql:postgresql:42.3.2'
+    jooqGenerator 'org.postgresql:postgresql:42.5.0'
 }
 ```
 
@@ -101,7 +102,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    jooqGenerator("org.postgresql:postgresql:42.3.2")
+    jooqGenerator("org.postgresql:postgresql:42.5.0")
 }
 ```
 
@@ -115,7 +116,7 @@ Note that the `org.jooq:jooq` dependency of the specified version and edition is
 
 ```groovy
 jooq {
-  version = '3.16.4'  // the default (can be omitted)
+  version = '3.17.5'  // the default (can be omitted)
   edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
 }
 ```
@@ -124,7 +125,7 @@ jooq {
 
 ```kotlin
 jooq {
-  version.set("3.16.4")  // the default (can be omitted)
+  version.set("3.17.5")  // the default (can be omitted)
   edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // the default (can be omitted)
 }
 ```
@@ -160,9 +161,9 @@ buildscript {
 
 ## Configuring the jOOQ generation tool
 
-Configure the jOOQ generation tool via `jooq` extension, made available by the jOOQ plugin. The full set of configuration options when using jOOQ 3.16.x can
-be seen on the jOOQ generation tool's [Configuration](https://github.com/jOOQ/jOOQ/blob/version-3.16.4/jOOQ-meta/src/main/java/org/jooq/meta/jaxb/Configuration.java) class, or
-on the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.16.0.xsd).
+Configure the jOOQ generation tool via `jooq` extension, made available by the jOOQ plugin. The full set of configuration options when using jOOQ 3.17.x can
+be seen on the jOOQ generation tool's [Configuration](https://github.com/jOOQ/jOOQ/tree/version-3.17.5/jOOQ-meta/src/main/java/org/jooq/meta/jaxb) class, or
+on the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.17.0.xsd).
 
 By default, the generated sources are written to `<projectDir>/build/generated-src/jooq/<configurationName>`. The target directory can be changed by
 explicitly setting the `directory` attribute of the `target` configuration of the `generator` configuration.
@@ -173,7 +174,7 @@ explicitly setting the `directory` attribute of the `target` configuration of th
 import org.jooq.meta.jaxb.Logging
 
 jooq {
-    version = '3.16.4'  // default (can be omitted)
+    version = '3.17.5'  // default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // default (can be omitted)
 
     configurations {
@@ -240,7 +241,7 @@ import org.jooq.meta.jaxb.Logging
 import org.jooq.meta.jaxb.Property
 
 jooq {
-    version.set("3.16.4")  // default (can be omitted)
+    version.set("3.17.5")  // default (can be omitted)
     edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // default (can be omitted)
 
     configurations {
@@ -328,7 +329,7 @@ can also configure / override the toolchain on the jOOQ task itself.
 ```groovy
     tasks.named('generateJooq').configure {
         launcher = javaToolchains.launcherFor {
-            languageVersion = JavaLanguageVersion.of(13)
+            languageVersion = JavaLanguageVersion.of(18)
         }
     }
 ```
@@ -340,7 +341,7 @@ See [here](example/configure_toolchain_gradle_dsl) for a complete example on how
 ```kotlin
     tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
         (launcher::set)(javaToolchains.launcherFor {
-            languageVersion.set(JavaLanguageVersion.of(13))
+            languageVersion.set(JavaLanguageVersion.of(18))
         })
     }
 ```
@@ -446,6 +447,12 @@ jOOQ plugin or not.
 
 # Migration
 
+## Migrating from jOOQ plugin 7.x to 8.x
+
+When migrating your build from jOOQ plugin 7.x to 8.x, follow these steps:
+
+- Ensure you run the Gradle build with at least JDK 17
+
 ## Migrating from jOOQ plugin 6.x to 7.x
 
 When migrating your build from jOOQ plugin 6.x to 7.x, follow these steps:
@@ -456,7 +463,7 @@ When migrating your build from jOOQ plugin 6.x to 7.x, follow these steps:
 
 When migrating your build from jOOQ plugin 5.x to 6.x, follow these steps:
 
-- Ensure you run the Gradle build with JDK 11 (or set a [custom Java executable](example/configure_generation_tool_execution/build.gradle))
+- Ensure you run the Gradle build with at least JDK 11
 
 ## Migrating from jOOQ plugin 4.x to 5.x
 
@@ -493,6 +500,8 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 # Changelog
 
++ Next - Upgrade to jOOQ 3.17.5.
++ 8.0 - Make Gradle 7.0 the minimum compatible version. Make Java 17 the minimum version. Upgrade to jOOQ 3.17.4.
 + 7.1.1 - Upgrade to jOOQ 3.16.4
 + 7.1 - Add support for Gradle Toolchains.
 + 7.0 - Upgrade to jOOQ 3.16.3 and make jOOQ 3.16.x the minimum version. Update used 3rd-party dependencies.

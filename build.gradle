@@ -10,21 +10,21 @@ plugins {
 }
 
 group = 'nu.studer'
-version = '7.1.1'
+version = '8.0.1-DEV'
 
 dependencies {
-    api 'org.jooq:jooq-codegen:3.16.4'
+    api 'org.jooq:jooq-codegen:3.17.5'
 
     runtimeOnly 'org.glassfish.jaxb:jaxb-core:3.0.2'
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
 
     testImplementation 'com.h2database:h2:2.1.214'
-    testImplementation 'org.spockframework:spock-core:2.0-groovy-2.5'
+    testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -34,18 +34,11 @@ tasks.withType(AbstractCompile).configureEach {
         "-Xlint:all"
 }
 
-tasks.withType(JavaCompile).configureEach {
-    javaCompiler.set(javaToolchains.compilerFor { spec ->
-        spec.languageVersion.set(JavaLanguageVersion.of(11))
-        buildScan.value(identityPath.path + "#jvmVersion", spec.languageVersion.get().asInt() as String)
-    } as Provider<? extends JavaCompiler>)
-}
-
 tasks.withType(Test).configureEach {
     maxParallelForks = 1 // there is currently only a single test class
     useJUnitPlatform()
 
-    String testJavaRuntimeVersion = findProperty('testJavaRuntimeVersion') ?: '11'
+    String testJavaRuntimeVersion = findProperty('testJavaRuntimeVersion') ?: '17'
     String testGradleVersion = findProperty('testGradleVersion') ?: GradleVersion.current().version
 
     javaLauncher.set(javaToolchains.launcherFor { spec ->
@@ -56,7 +49,8 @@ tasks.withType(Test).configureEach {
     systemProperty 'testContext.gradleVersion', testGradleVersion
     buildScan.value(identityPath.path + "#gradleVersion", testGradleVersion)
 
-    def incompatibleJavaVsGradleVersions = parseInt(testJavaRuntimeVersion) >= 16 && parseInt(testGradleVersion.substring(0, testGradleVersion.indexOf('.'))) < 7
+    def incompatibleJavaVsGradleVersions = parseInt(testJavaRuntimeVersion) > 16 && GradleVersion.version(testGradleVersion) < GradleVersion.version('7.3') ||
+        parseInt(testJavaRuntimeVersion) > 15 && GradleVersion.version(testGradleVersion) < GradleVersion.version('7.0')
     if (incompatibleJavaVsGradleVersions) {
         enabled = false
     }
