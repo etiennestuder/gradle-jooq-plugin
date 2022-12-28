@@ -23,11 +23,23 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Utility class.
  */
 public final class Objects {
+
+    private static final MessageDigest MESSAGE_DIGEST;
+
+    static {
+        try {
+            MESSAGE_DIGEST = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Applies the given closure to the given delegate.
@@ -69,6 +81,37 @@ public final class Objects {
             return clone;
         } catch (IOException | ClassNotFoundException e) {
             throw new GradleException("Cannot deserialize object: " + obj.getClass(), e);
+        }
+    }
+
+    /**
+     * Calculates a hash of the given object from its serialized version.
+     *
+     * @param obj the object for which to calculate the hash
+     * @return the hash
+     */
+    public static String deepHash(Object obj) {
+        try {
+            ByteArrayOutputStream bas = new ByteArrayOutputStream();
+            try (ObjectOutputStream os = new ObjectOutputStream(bas)) {
+                os.writeObject(obj);
+                os.flush();
+            } catch (IOException e) {
+                throw new GradleException("Cannot serialize object: " + obj.getClass(), e);
+            }
+
+            StringBuilder hexString = new StringBuilder();
+            byte[] encodedHash = MESSAGE_DIGEST.digest(bas.toByteArray());
+            for (byte hash : encodedHash) {
+                String hex = Integer.toHexString(0xff & hash);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (GradleException e) {
+            throw new RuntimeException(e);
         }
     }
 
