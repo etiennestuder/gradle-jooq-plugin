@@ -68,5 +68,5 @@ jooqConfiguration.apply {
 ```
 
 Familiarity with the [JOOQ Codegen XML Schema](https://www.jooq.org/xsd/jooq-codegen-3.17.0.xsd) and
-the [`org.jooq.meta.jaxb` package](https://github.com/jOOQ/jOOQ/tree/version-3.17.5/jOOQ-meta/src/main/java/org/jooq/meta/jaxb)
+the [`org.jooq.meta.jaxb` package](https://github.com/jOOQ/jOOQ/tree/version-3.17.6/jOOQ-meta/src/main/java/org/jooq/meta/jaxb)
 will inform your configuration efforts.
