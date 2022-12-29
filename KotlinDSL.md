@@ -58,5 +58,5 @@ forcedTypes.addAll(listOf(
 ```
 
 Familiarity with the [JOOQ Codegen XML Schema](https://www.jooq.org/xsd/jooq-codegen-3.16.0.xsd) and
-the [`org.jooq.meta.jaxb` package](https://github.com/jOOQ/jOOQ/tree/main/jOOQ-meta/src/main/java/org/jooq/meta/jaxb)
+the [`org.jooq.meta.jaxb` package](https://github.com/jOOQ/jOOQ/blob/version-3.16.12/jOOQ-meta/src/main/java/org/jooq/meta/jaxb)
 will inform your configuration efforts.
