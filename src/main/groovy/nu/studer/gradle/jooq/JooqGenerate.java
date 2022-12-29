@@ -114,8 +114,8 @@ public abstract class JooqGenerate extends DefaultTask {
     }
 
     private Provider<String> normalizedJooqConfigurationHash(ObjectFactory objects, ProviderFactory providers) {
-        Property<String> normalizedConfiguration = objects.property(String.class);
-        normalizedConfiguration.set(providers.provider(() -> {
+        Property<String> normalizedConfigurationHash = objects.property(String.class);
+        normalizedConfigurationHash.set(providers.provider(() -> {
             Configuration clonedConfiguration = cloneObject(jooqConfiguration);
             OUTPUT_DIRECTORY_NORMALIZATION.execute(clonedConfiguration);
             if (generationToolNormalization != null) {
@@ -123,8 +123,8 @@ public abstract class JooqGenerate extends DefaultTask {
             }
             return Objects.deepHash(clonedConfiguration);
         }));
-        normalizedConfiguration.finalizeValueOnRead();
-        return normalizedConfiguration;
+        normalizedConfigurationHash.finalizeValueOnRead();
+        return normalizedConfigurationHash;
     }
 
     @Input
