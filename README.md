@@ -141,7 +141,7 @@ make available to the jOOQ plugin at configuration time, i.e. in the DSL of the 
 buildscript {
     configurations['classpath'].resolutionStrategy.eachDependency {
         if (requested.group == 'org.jooq') {
-            useVersion '3.16.1'
+            useVersion '3.17.3'
         }
     }
 }
@@ -153,7 +153,7 @@ buildscript {
 buildscript {
     configurations["classpath"].resolutionStrategy.eachDependency {
         if (requested.group == "org.jooq") {
-            useVersion("3.16.1")
+            useVersion("3.17.3")
         }
     }
 }
