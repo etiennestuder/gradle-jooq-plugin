@@ -502,7 +502,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 # Changelog
 
 + Next - TBD
-+ 8.1 - Ensure build caching compatibility with Gradle 8. Upgrade to jOOQ 3.17.6
++ 8.1 - Ensure build caching compatibility with Gradle 8. Upgrade to jOOQ 3.17.6.
 + 8.0 - Make Gradle 7.0 the minimum compatible version. Make Java 17 the minimum version. Upgrade to jOOQ 3.17.4.
 + 7.1.1 - Upgrade to jOOQ 3.16.4
 + 7.1 - Add support for Gradle Toolchains.
