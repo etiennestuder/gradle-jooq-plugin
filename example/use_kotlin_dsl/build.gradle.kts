@@ -4,7 +4,7 @@ import org.jooq.meta.jaxb.Property
 import org.jooq.meta.jaxb.ForcedType
 
 plugins {
-    id("nu.studer.jooq") version "8.0"
+    id("nu.studer.jooq") version "8.1"
     id("java")
 }
 

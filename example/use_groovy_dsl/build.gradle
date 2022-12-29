@@ -1,7 +1,7 @@
 import nu.studer.gradle.jooq.JooqEdition
 
 plugins {
-    id 'nu.studer.jooq' version '8.0'
+    id 'nu.studer.jooq' version '8.1'
     id 'java'
 }
 
