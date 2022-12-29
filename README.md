@@ -94,7 +94,7 @@ is on the classpath when the jOOQ code generation tool is executed. Optionally, 
 
 ```groovy
 dependencies {
-    jooqGenerator 'org.postgresql:postgresql:42.5.0'
+    jooqGenerator 'org.postgresql:postgresql:42.5.1'
 }
 ```
 
@@ -102,7 +102,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    jooqGenerator("org.postgresql:postgresql:42.5.0")
+    jooqGenerator("org.postgresql:postgresql:42.5.1")
 }
 ```
 
