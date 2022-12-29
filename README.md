@@ -451,6 +451,7 @@ jOOQ plugin or not.
 
 When migrating your build from jOOQ plugin 7.x to 8.x, follow these steps:
 
+- Ensure you run the Gradle build with at least Gradle 7
 - Ensure you run the Gradle build with at least JDK 17
 
 ## Migrating from jOOQ plugin 6.x to 7.x
