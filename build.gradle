@@ -56,6 +56,10 @@ tasks.withType(Test).configureEach {
     }
 }
 
+tasks.withType(Javadoc).configureEach {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
 gradlePlugin {
     website = 'https://github.com/etiennestuder/gradle-jooq-plugin'
     vcsUrl = 'https://github.com/etiennestuder/gradle-jooq-plugin'
