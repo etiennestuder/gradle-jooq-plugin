@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'nu.studer'
-version = '8.1'
+version = '8.1.1-DEV'
 
 dependencies {
     api 'org.jooq:jooq-codegen:3.17.6'
