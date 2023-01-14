@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+
+    <changeSet id="1" author="victorhsr">
+        <createTable tableName="t_location_details">
+            <column name="id" type="varchar(26)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="latitude" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="varchar(58)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="state" type="varchar(58)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="varchar(58)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zipCode" type="varchar(11)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>
