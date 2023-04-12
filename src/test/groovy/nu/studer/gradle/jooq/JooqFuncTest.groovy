@@ -115,7 +115,7 @@ dependencies {
 }
 
 jooq {
-    version.set("3.17.6")
+    version.set("3.18.2")
     configurations {
         create("main") {
             jooqConfiguration.apply {
@@ -1006,7 +1006,7 @@ dependencies {
 }
 
 jooq {
-  version = '3.17.6'
+  version = '3.18.2'
   configurations {
     main {
       generationTool {
@@ -1045,7 +1045,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq-codegen:3.17.6'
+    implementation 'org.jooq:jooq-codegen:3.18.2'
 }
 """
     }
