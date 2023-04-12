@@ -1,7 +1,7 @@
 import java.util.concurrent.atomic.AtomicReference
 
 plugins {
-    id 'nu.studer.jooq' version '8.1'
+    id 'nu.studer.jooq' version '8.2'
     id 'java'
 }
 
