@@ -12,6 +12,14 @@ plugins {
 group = 'nu.studer'
 version = '8.2.1-DEV'
 
+configurations.all { Configuration c ->
+    c.resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'jakarta.xml.bind' && details.requested.name == 'jakarta.xml.bind-api') {
+            details.useVersion '3.0.1'
+        }
+    }
+}
+
 dependencies {
     api 'org.jooq:jooq-codegen:3.18.2'
 
