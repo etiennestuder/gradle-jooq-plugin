@@ -21,7 +21,7 @@ configurations.all { Configuration c ->
 }
 
 dependencies {
-    api 'org.jooq:jooq-codegen:3.18.2'
+    api 'org.jooq:jooq-codegen:3.18.4'
 
     runtimeOnly 'org.glassfish.jaxb:jaxb-core:3.0.2'
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
