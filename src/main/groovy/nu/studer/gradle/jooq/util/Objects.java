@@ -86,6 +86,7 @@ public final class Objects {
 
     /**
      * Calculates a hash of the given object from its serialized version.
+     * This method is thread-safe, can be used in parallel builds without an issue.
      *
      * @param obj the object for which to calculate the hash
      * @return the hash
@@ -101,7 +102,10 @@ public final class Objects {
             }
 
             StringBuilder hexString = new StringBuilder();
-            byte[] encodedHash = MESSAGE_DIGEST.digest(bas.toByteArray());
+            byte[] encodedHash;
+            synchronized (MESSAGE_DIGEST) {
+                encodedHash = MESSAGE_DIGEST.digest(bas.toByteArray());
+            }
             for (byte hash : encodedHash) {
                 String hex = Integer.toHexString(0xff & hash);
                 if (hex.length() == 1) {
