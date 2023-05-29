@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'nu.studer'
-version = '8.2.1'
+version = '8.2.2-DEV'
 
 configurations.all { Configuration c ->
     c.resolutionStrategy.eachDependency { DependencyResolveDetails details ->
