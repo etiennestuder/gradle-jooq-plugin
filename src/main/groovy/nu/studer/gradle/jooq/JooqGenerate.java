@@ -73,7 +73,7 @@ import static nu.studer.gradle.jooq.util.Objects.cloneObject;
 @CacheableTask
 public abstract class JooqGenerate extends DefaultTask {
 
-    private final Configuration jooqConfiguration;
+    private final Provider<Configuration> jooqConfiguration;
     private final Provider<String> normalizedJooqConfigurationHash;
     private final FileCollection runtimeClasspath;
     private final Provider<Directory> outputDir;
@@ -90,11 +90,20 @@ public abstract class JooqGenerate extends DefaultTask {
     private static final Action<Configuration> OUTPUT_DIRECTORY_NORMALIZATION = c -> c.getGenerator().getTarget().setDirectory(null);
 
     @Inject
-    public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ExtensionContainer extensions, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations, FileSystemOperations fileSystemOperations) {
-        this.jooqConfiguration = config.getJooqConfiguration();
+    public JooqGenerate(
+	    Provider<JooqConfig> config,
+	    FileCollection runtimeClasspath,
+	    ExtensionContainer extensions,
+	    ObjectFactory objects,
+	    ProviderFactory providers,
+	    ProjectLayout projectLayout,
+	    ExecOperations execOperations,
+	    FileSystemOperations fileSystemOperations
+    ) {
+        jooqConfiguration = config.map(JooqConfig::getJooqConfiguration);
         this.normalizedJooqConfigurationHash = normalizedJooqConfigurationHash(objects, providers);
         this.runtimeClasspath = objects.fileCollection().from(runtimeClasspath);
-        this.outputDir = objects.directoryProperty().value(config.getOutputDir());
+        outputDir = objects.directoryProperty().value(config.flatMap(JooqConfig::getOutputDir));
         this.allInputsDeclared = objects.property(Boolean.class).convention(Boolean.FALSE);
 
         this.projectLayout = projectLayout;
@@ -116,7 +125,7 @@ public abstract class JooqGenerate extends DefaultTask {
     private Provider<String> normalizedJooqConfigurationHash(ObjectFactory objects, ProviderFactory providers) {
         Property<String> normalizedConfigurationHash = objects.property(String.class);
         normalizedConfigurationHash.set(providers.provider(() -> {
-            Configuration clonedConfiguration = cloneObject(jooqConfiguration);
+            Configuration clonedConfiguration = cloneObject(jooqConfiguration.get());
             OUTPUT_DIRECTORY_NORMALIZATION.execute(clonedConfiguration);
             if (generationToolNormalization != null) {
                 generationToolNormalization.execute(clonedConfiguration);
@@ -183,14 +192,15 @@ public abstract class JooqGenerate extends DefaultTask {
 
     @TaskAction
     public void generate() {
+        var resolvedConfiguration = jooqConfiguration.get();
         // abort if cleaning of output directory is disabled
-        ensureTargetIsCleaned(jooqConfiguration);
+        ensureTargetIsCleaned(resolvedConfiguration);
 
         // avoid excessive and/or schema-violating XML being created due to the serialization of default values
-        trimConfiguration(jooqConfiguration);
+        trimConfiguration(resolvedConfiguration);
 
         // set target directory to the defined default value if no explicit value has been configured
-        jooqConfiguration.getGenerator().getTarget().setDirectory(outputDir.get().getAsFile().getAbsolutePath());
+        resolvedConfiguration.getGenerator().getTarget().setDirectory(outputDir.get().getAsFile().getAbsolutePath());
 
         // clean target directory to ensure no stale files are still around
         fileSystemOperations.delete(spec -> spec.delete(outputDir.get()));
@@ -199,7 +209,7 @@ public abstract class JooqGenerate extends DefaultTask {
         File configFile = new File(getTemporaryDir(), "config.xml");
 
         // write jOOQ code generation configuration to config file
-        writeConfiguration(jooqConfiguration, configFile);
+        writeConfiguration(resolvedConfiguration, configFile);
 
         // generate the jOOQ Java sources files using the written config file
         ExecResult execResult = executeJooq(configFile);

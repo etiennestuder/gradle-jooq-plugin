@@ -38,22 +38,26 @@ public class JooqPlugin implements Plugin<Project> {
         // create configuration for the runtime classpath of the jooq code generator (shared by all jooq configuration domain objects)
         final Configuration runtimeConfiguration = createJooqGeneratorRuntimeConfiguration(project);
 
-        // create a jooq task for each jooq configuration domain object
-        jooqExtension.getConfigurations().configureEach(config -> {
-            String taskName = "generate" + (config.name.equals("main") ? "" : capitalize(config.name)) + "Jooq";
-            TaskProvider<JooqGenerate> jooq = project.getTasks().register(taskName, JooqGenerate.class, config, runtimeConfiguration, project.getExtensions());
-            jooq.configure(task -> {
-                task.setDescription(String.format("Generates the jOOQ sources from the %s jOOQ configuration.", config.name));
-                task.setGroup("jOOQ");
-            });
+        project.afterEvaluate(inner -> {
 
-            // add the output of the jooq task as a source directory of the source set with the matching name (which adds an implicit task dependency)
-            SourceSetContainer sourceSets = getSourceSets(project);
-            sourceSets.configureEach(sourceSet -> {
-                if (sourceSet.getName().equals(config.name)) {
-                    sourceSet.getJava().srcDir(config.getGenerateSchemaSourceOnCompilation().flatMap(b -> b ? jooq.flatMap(JooqGenerate::getOutputDir) : config.getOutputDir()));
-                    project.getDependencies().add(sourceSet.getImplementationConfigurationName(), "org.jooq:jooq");
-                }
+            // create a jooq task for each jooq configuration domain object
+            jooqExtension.getConfigurations().getNames().forEach(configName -> {
+                var config = jooqExtension.getConfigurations().named(configName);
+                String taskName = "generate" + (configName.equals("main") ? "" : capitalize(configName)) + "Jooq";
+                TaskProvider<JooqGenerate> jooq = inner.getTasks().register(taskName, JooqGenerate.class, config, runtimeConfiguration, inner.getExtensions());
+                jooq.configure(task -> {
+                    task.setDescription(String.format("Generates the jOOQ sources from the %s jOOQ configuration.", configName));
+                    task.setGroup("jOOQ");
+                });
+
+                // add the output of the jooq task as a source directory of the source set with the matching name (which adds an implicit task dependency)
+                SourceSetContainer sourceSets = getSourceSets(inner);
+                sourceSets.configureEach(sourceSet -> {
+                    if (sourceSet.getName().equals(configName)) {
+                        sourceSet.getJava().srcDir(config.get().getGenerateSchemaSourceOnCompilation().flatMap(b -> b ? jooq.flatMap(JooqGenerate::getOutputDir) : config.get().getOutputDir()));
+                        inner.getDependencies().add(sourceSet.getImplementationConfigurationName(), "org.jooq:jooq");
+                    }
+                });
             });
         });
 

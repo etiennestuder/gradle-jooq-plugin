@@ -74,7 +74,7 @@ gradlePlugin {
     vcsUrl = 'https://github.com/etiennestuder/gradle-jooq-plugin'
     plugins {
         pluginDevPlugin {
-            id = 'nu.studer.jooq'
+            id = 'nu.studer.jooq.withugglypatch'
             displayName = 'gradle-jooq-plugin'
             description = 'Gradle plugin that integrates jOOQ.'
             tags.set(['jooq'])
