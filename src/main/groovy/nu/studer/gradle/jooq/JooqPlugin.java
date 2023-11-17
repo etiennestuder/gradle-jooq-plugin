@@ -36,7 +36,7 @@ public class JooqPlugin implements Plugin<Project> {
         JooqExtension jooqExtension = project.getExtensions().create("jooq", JooqExtension.class);
 
         // create configuration for the runtime classpath of the jooq code generator (shared by all jooq configuration domain objects)
-        final Configuration runtimeConfiguration = createJooqGeneratorRuntimeConfiguration(project);
+        final Configuration runtimeConfiguration = createJooqGeneratorRuntimeConfiguration(project, jooqExtension);
 
         // create a jooq task for each jooq configuration domain object
         jooqExtension.getConfigurations().configureEach(config -> {
@@ -52,7 +52,7 @@ public class JooqPlugin implements Plugin<Project> {
             sourceSets.configureEach(sourceSet -> {
                 if (sourceSet.getName().equals(config.name)) {
                     sourceSet.getJava().srcDir(config.getGenerateSchemaSourceOnCompilation().flatMap(b -> b ? jooq.flatMap(JooqGenerate::getOutputDir) : config.getOutputDir()));
-                    project.getDependencies().add(sourceSet.getImplementationConfigurationName(), "org.jooq:jooq");
+                    project.getDependencies().add(sourceSet.getImplementationConfigurationName(), jooqExtension.getEdition().get().getGroupId() + ":jooq");
                 }
             });
         });
@@ -79,10 +79,10 @@ public class JooqPlugin implements Plugin<Project> {
      * Adds the configuration that holds the classpath to use for invoking jOOQ. Users can add their JDBC driver and any generator extensions they might have. Explicitly add JAXB
      * dependencies since they have been removed from JDK 9 and higher. Explicitly add Activation dependency since it has been removed from JDK 11 and higher.
      */
-    private static Configuration createJooqGeneratorRuntimeConfiguration(Project project) {
+    private static Configuration createJooqGeneratorRuntimeConfiguration(Project project, JooqExtension jooqExtension) {
         Configuration jooqGeneratorRuntime = project.getConfigurations().create("jooqGenerator");
         jooqGeneratorRuntime.setDescription("The classpath used to invoke the jOOQ code generator. Add your JDBC driver, generator extensions, and additional dependencies here.");
-        project.getDependencies().add(jooqGeneratorRuntime.getName(), "org.jooq:jooq-codegen");
+        project.getDependencies().add(jooqGeneratorRuntime.getName(), jooqExtension.getEdition().get().getGroupId() + ":jooq-codegen");
         return jooqGeneratorRuntime;
     }
 
