@@ -3,7 +3,7 @@ import org.gradle.util.GradleVersion
 import static java.lang.Integer.parseInt
 
 plugins {
-    id 'nu.studer.plugindev' version '4.1'
+    id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '1.2.1'
     id 'org.nosphere.gradle.github.actions' version '1.4.0'
     id 'groovy'
@@ -18,6 +18,10 @@ configurations.all { Configuration c ->
             details.useVersion '3.0.1'
         }
     }
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -81,4 +85,9 @@ gradlePlugin {
             implementationClass = 'nu.studer.gradle.jooq.JooqPlugin'
         }
     }
+}
+
+tasks.withType(ValidatePlugins.class).configureEach {
+    failOnWarning = true
+    enableStricterValidation = true
 }
