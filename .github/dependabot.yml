@@ -11,4 +11,4 @@ updates:
     registries:
       - gradle-plugin-portal
     schedule:
-      interval: "daily"
+      interval: "monthly"
