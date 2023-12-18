@@ -1,6 +1,9 @@
 name: "Build Gradle project"
 on: [ push, pull_request, workflow_dispatch ]
 
+permissions:
+    contents: write
+
 jobs:
     build:
         name: Test JVM/Gradle (${{ matrix.java-version }}, ${{ matrix.gradle-version }})
@@ -19,6 +22,8 @@ jobs:
                   distribution: 'liberica'
             - name: Setup Gradle
               uses: gradle/gradle-build-action@v2
+              with:
+                  dependency-graph: generate-and-submit
             - name: Build with Gradle
               run: "./gradlew clean build -PtestJavaRuntimeVersion=${{ matrix.java-version }} -PtestGradleVersion=${{ matrix.gradle-version }}"
               env:
