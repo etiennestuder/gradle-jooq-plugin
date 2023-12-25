@@ -1,5 +1,5 @@
 plugins {
-    id 'com.gradle.enterprise' version '3.11.4'
+    id 'com.gradle.enterprise' version '3.16.1'
 }
 
 rootProject.name = 'jooq-example-extract-precompiled-script-plugin'
