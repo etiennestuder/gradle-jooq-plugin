@@ -5,6 +5,7 @@ import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.ModuleVersionSelector;
 import org.gradle.api.plugins.JavaBasePlugin;
+import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.util.GradleVersion;
@@ -63,8 +64,7 @@ public class JooqPlugin implements Plugin<Project> {
 
     private SourceSetContainer getSourceSets(Project project) {
         if (isAtLeastGradleVersion("7.1")) {
-            // return project.getExtensions().getByType(JavaPluginExtension.class).getSourceSets();
-            return getSourceSetsDeprecated(project);
+            return project.getExtensions().getByType(JavaPluginExtension.class).getSourceSets();
         } else {
             return getSourceSetsDeprecated(project);
         }
