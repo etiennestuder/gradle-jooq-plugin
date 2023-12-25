@@ -65,6 +65,7 @@ tasks.named('generateJooq').configure { allInputsDeclared = false }
         then:
         fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
         result.output.contains("Calculating task graph as no configuration cache is available for tasks: generateJooq")
+                || result.output.contains("Calculating task graph as no cached configuration is available for tasks: generateJooq")
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
 
         when:
@@ -765,6 +766,7 @@ generateJooq {
         then:
         fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
         result.output.contains("Calculating task graph as no configuration cache is available for tasks: generateJooq")
+                || result.output.contains("Calculating task graph as no cached configuration is available for tasks: generateJooq")
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
         result.output.contains('Running jOOQ task with JDK 17')
 
