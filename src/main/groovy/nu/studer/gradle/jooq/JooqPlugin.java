@@ -63,7 +63,7 @@ public class JooqPlugin implements Plugin<Project> {
     }
 
     private SourceSetContainer getSourceSets(Project project) {
-        if (isAtLeastGradleVersion("7.1")) {
+        if (isAtLeastGradleVersion("8.0")) {
             return project.getExtensions().getByType(JavaPluginExtension.class).getSourceSets();
         } else {
             return getSourceSetsDeprecated(project);
