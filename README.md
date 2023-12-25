@@ -116,7 +116,7 @@ Note that the `org.jooq:jooq` dependency of the specified version and edition is
 
 ```groovy
 jooq {
-  version = '3.18.7'  // the default (can be omitted)
+  version = '3.19.1'  // the default (can be omitted)
   edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
 }
 ```
@@ -125,7 +125,7 @@ jooq {
 
 ```kotlin
 jooq {
-  version.set("3.18.7")  // the default (can be omitted)
+  version.set("3.19.1")  // the default (can be omitted)
   edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // the default (can be omitted)
 }
 ```
@@ -162,8 +162,8 @@ buildscript {
 ## Configuring the jOOQ generation tool
 
 Configure the jOOQ generation tool via `jooq` extension, made available by the jOOQ plugin. The full set of configuration options when using jOOQ 3.18.x can
-be seen on the jOOQ generation tool's [Configuration](https://github.com/jOOQ/jOOQ/tree/version-3.18.7/jOOQ-meta/src/main/java/org/jooq/meta/jaxb) class, or
-on the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.18.0.xsd).
+be seen on the jOOQ generation tool's [Configuration](https://github.com/jOOQ/jOOQ/tree/version-3.19.1/jOOQ-meta/src/main/java/org/jooq/meta/jaxb) class, or
+on the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.19.0.xsd).
 
 By default, the generated sources are written to `<projectDir>/build/generated-src/jooq/<configurationName>`. The target directory can be changed by
 explicitly setting the `directory` attribute of the `target` configuration of the `generator` configuration.
@@ -174,7 +174,7 @@ explicitly setting the `directory` attribute of the `target` configuration of th
 import org.jooq.meta.jaxb.Logging
 
 jooq {
-    version = '3.18.7'  // default (can be omitted)
+    version = '3.19.1'  // default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // default (can be omitted)
 
     configurations {
@@ -241,7 +241,7 @@ import org.jooq.meta.jaxb.Logging
 import org.jooq.meta.jaxb.Property
 
 jooq {
-    version.set("3.18.7")  // default (can be omitted)
+    version.set("3.19.1")  // default (can be omitted)
     edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // default (can be omitted)
 
     configurations {
