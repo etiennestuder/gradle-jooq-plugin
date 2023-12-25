@@ -502,7 +502,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 # Changelog
 
 + Next - TBD
-+ 8.2.2 - Upgrade to jOOQ 3.18.7.
++ 8.2.2 - Avoid deprecation warnings when using the plugin with Gradle 9. Upgrade to jOOQ 3.19.1.
 + 8.2.1 - Avoid race condition when running multiple jOOQ tasks in parallel. Upgrade to jOOQ 3.18.4.
 + 8.2 - Upgrade to jOOQ 3.18.2.
 + 8.1 - Ensure build caching compatibility with Gradle 8. Upgrade to jOOQ 3.17.6.
