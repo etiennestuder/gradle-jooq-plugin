@@ -32,6 +32,7 @@ dependencies {
 
     testImplementation 'com.h2database:h2:2.2.224'
     testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 java {
