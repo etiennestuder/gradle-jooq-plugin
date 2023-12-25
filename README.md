@@ -161,7 +161,7 @@ buildscript {
 
 ## Configuring the jOOQ generation tool
 
-Configure the jOOQ generation tool via `jooq` extension, made available by the jOOQ plugin. The full set of configuration options when using jOOQ 3.18.x can
+Configure the jOOQ generation tool via `jooq` extension, made available by the jOOQ plugin. The full set of configuration options when using jOOQ 3.19.x can
 be seen on the jOOQ generation tool's [Configuration](https://github.com/jOOQ/jOOQ/tree/version-3.19.1/jOOQ-meta/src/main/java/org/jooq/meta/jaxb) class, or
 on the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.19.0.xsd).
 
