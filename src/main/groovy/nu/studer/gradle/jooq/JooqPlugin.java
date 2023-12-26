@@ -37,12 +37,15 @@ public class JooqPlugin implements Plugin<Project> {
         JooqExtension jooqExtension = project.getExtensions().create("jooq", JooqExtension.class);
 
         // create configuration for the runtime classpath of the jooq code generator (shared by all jooq configuration domain objects)
-        final Configuration runtimeConfiguration = createJooqGeneratorRuntimeConfiguration(project, jooqExtension);
+        Configuration jooqGeneratorRuntimeConfiguration = createJooqGeneratorRuntimeConfiguration(project, jooqExtension);
+
+        // use the configured jOOQ version and edition on all jOOQ dependencies
+        enforceJooqEditionAndVersion(jooqGeneratorRuntimeConfiguration, jooqExtension);
 
         // create a jooq task for each jooq configuration domain object
         jooqExtension.getConfigurations().configureEach(config -> {
             String taskName = "generate" + (config.name.equals("main") ? "" : capitalize(config.name)) + "Jooq";
-            TaskProvider<JooqGenerate> jooq = project.getTasks().register(taskName, JooqGenerate.class, config, runtimeConfiguration, project.getExtensions());
+            TaskProvider<JooqGenerate> jooq = project.getTasks().register(taskName, JooqGenerate.class, config, jooqGeneratorRuntimeConfiguration, project.getExtensions());
             jooq.configure(task -> {
                 task.setDescription(String.format("Generates the jOOQ sources from the %s jOOQ configuration.", config.name));
                 task.setGroup("jOOQ");
@@ -58,9 +61,6 @@ public class JooqPlugin implements Plugin<Project> {
                 }
             });
         });
-
-        // use the configured jOOQ version and edition on all jOOQ dependencies
-        enforceJooqEditionAndVersion(project, jooqExtension);
     }
 
     private SourceSetContainer getSourceSets(Project project) {
@@ -89,20 +89,18 @@ public class JooqPlugin implements Plugin<Project> {
     }
 
     /**
-     * Forces the jOOQ version and edition selected by the user throughout all dependency configurations.
+     * Forces the jOOQ version and edition selected by the user on the given configuration.
      */
-    private static void enforceJooqEditionAndVersion(Project project, JooqExtension jooqExtension) {
+    private static void enforceJooqEditionAndVersion(Configuration configuration, JooqExtension jooqExtension) {
         Set<String> jooqGroupIds = Arrays.stream(JooqEdition.values()).map(JooqEdition::getGroupId).collect(Collectors.toSet());
-        project.getConfigurations().configureEach(configuration ->
-            configuration.getResolutionStrategy().eachDependency(details -> {
-                ModuleVersionSelector requested = details.getRequested();
-                if (jooqGroupIds.contains(requested.getGroup()) && requested.getName().startsWith("jooq")) {
-                    String group = jooqExtension.getEdition().get().getGroupId();
-                    String version = jooqExtension.getVersion().get();
-                    details.useTarget(group + ":" + requested.getName() + ":" + version);
-                }
-            })
-        );
+        configuration.getResolutionStrategy().eachDependency(details -> {
+            ModuleVersionSelector requested = details.getRequested();
+            if (jooqGroupIds.contains(requested.getGroup()) && requested.getName().startsWith("jooq")) {
+                String group = jooqExtension.getEdition().get().getGroupId();
+                String version = jooqExtension.getVersion().get();
+                details.useTarget(group + ":" + requested.getName() + ":" + version);
+            }
+        });
     }
 
 }
