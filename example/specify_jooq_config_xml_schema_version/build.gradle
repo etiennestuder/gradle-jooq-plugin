@@ -1,6 +1,6 @@
 buildscript {
     configurations['classpath'].resolutionStrategy.eachDependency {
-        if (requested.group == 'org.jooq') {
+        if (requested.group.startsWith('org.jooq') && requested.name.startsWith('jooq')) {
             // set jOOQ version used at configuration time to enforce a specific jOOQ config XML schema version
             useVersion '3.16.1'
         }
