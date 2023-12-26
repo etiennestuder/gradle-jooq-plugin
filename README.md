@@ -73,7 +73,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '8.2'
+    id 'nu.studer.jooq' version '8.2.3'
 }
 ```
 
@@ -81,7 +81,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("nu.studer.jooq") version "8.2"
+    id("nu.studer.jooq") version "8.2.3"
 }
 ```
 
@@ -94,7 +94,7 @@ is on the classpath when the jOOQ code generation tool is executed. Optionally, 
 
 ```groovy
 dependencies {
-    jooqGenerator 'org.postgresql:postgresql:42.5.1'
+    jooqGenerator 'org.postgresql:postgresql:42.5.4'
 }
 ```
 
@@ -102,7 +102,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    jooqGenerator("org.postgresql:postgresql:42.5.1")
+    jooqGenerator("org.postgresql:postgresql:42.5.4")
 }
 ```
 
@@ -502,6 +502,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 # Changelog
 
 + Next - TBD
++ 8.2.3 - Apply version and edition lazily.
 + 8.2.2 - Avoid deprecation warnings when using the plugin with Gradle 9. Upgrade to jOOQ 3.19.1.
 + 8.2.1 - Avoid race condition when running multiple jOOQ tasks in parallel. Upgrade to jOOQ 3.18.4.
 + 8.2 - Upgrade to jOOQ 3.18.2.
@@ -512,35 +513,35 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 + 7.0 - Upgrade to jOOQ 3.16.3 and make jOOQ 3.16.x the minimum version. Update used 3rd-party dependencies.
 + 6.0.1 - Avoid deprecation warnings at Gradle runtime. Upgrade to jOOQ 3.15.1.
 + 6.0 - Make Java 11 the minimum version. Upgrade to jOOQ 3.15.0.
-+ 5.2.2 - Upgrade to jOOQ 3.14.11
-+ 5.2.1 - Upgrade to jOOQ 3.14.7
++ 5.2.2 - Upgrade to jOOQ 3.14.11.
++ 5.2.1 - Upgrade to jOOQ 3.14.7.
 + 5.2 - Fail build if cleaning of output directory is set to false in the jOOQ configuration. Upgrade to jOOQ 3.13.5.
-+ 5.1.1 - Expose org.jooq:jooq-codegen library as `compile` dependency instead of `runtime` dependency
-+ 5.1.0 - Require explicit opt-in to participate in incremental builds
-+ 5.0.3 - Clean output directory before generating jOOQ sources
-+ 5.0.2 - Do not write out JDBC configuration when empty
-+ 5.0.1 - Support dependency substitution to use different versions of jOOQ dependencies than those pulled in by the jOOQ plugin
++ 5.1.1 - Expose org.jooq:jooq-codegen library as `compile` dependency instead of `runtime` dependency.
++ 5.1.0 - Require explicit opt-in to participate in incremental builds.
++ 5.0.3 - Clean output directory before generating jOOQ sources.
++ 5.0.2 - Do not write out JDBC configuration when empty.
++ 5.0.1 - Support dependency substitution to use different versions of jOOQ dependencies than those pulled in by the jOOQ plugin.
 + 5.0 - Change DSL. Support Gradle Kotlin DSL. Add normalization hook. Make Gradle 6.1 the minimum version. Upgrade to jOOQ 3.13.4.
 + 4.2 - Add new jOOQ editions for Java 8 and Java 6. Upgrade to jOOQ 3.13.1.
-+ 4.1 - Global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set
++ 4.1 - Global flag to turn off auto-generation of jOOQ schema source when compiling the containing source set.
 + 4.0 - Make Gradle 5.0 the minimum compatible version. Upgrade to jOOQ 3.12.3.
 + 3.0.3 - Explicitly add JAXB dependencies to run on JDK 9 and higher out-of-the-box. Upgrade to jOOQ 3.11.9.
-+ 3.0.2 - Bug fix when running on JDK 9+
-+ 3.0.1 - Improve Gradle build cache effectiveness of the jOOQ task
-+ 3.0.0 - Upgrade to jOOQ 3.11.2 (jOOQ 3.11.x breaks compatibility with jOOQ 3.10.x)
-+ 2.0.11 - Upgrade to jOOQ 3.10.4
-+ 2.0.10 - Removal of wiring between clean task and deleting generated jOOQ sources
-+ 2.0.9 - Make jOOQ 3.10.1 the default applied version
-+ 2.0.8 - Upgrade to jOOQ 3.10.1
-+ 2.0.7 - Upgrade to jOOQ 3.9.5
-+ 2.0.6 - Upgrade to jOOQ 3.9.3
-+ 2.0.5 - Make the jOOQ task parallelizable
-+ 2.0.4 - Upgrade to jOOQ 3.9.1 and better configuration error messages
-+ 2.0.3 - Upgrade to jOOQ 3.9.0
-+ 2.0.2 - Configuration of call-backs for code generation java execution process
-+ 2.0.1 - Bug fixes
-+ 2.0.0 - Make jOOQ version used for code generation independent from jOOQ version used by gradle-jooq plugin
-+ 1.0.6 - Upgrade to jOOQ 3.6.2
++ 3.0.2 - Bug fix when running on JDK 9+.
++ 3.0.1 - Improve Gradle build cache effectiveness of the jOOQ task.
++ 3.0.0 - Upgrade to jOOQ 3.11.2 (jOOQ 3.11.x breaks compatibility with jOOQ 3.10.x).
++ 2.0.11 - Upgrade to jOOQ 3.10.4.
++ 2.0.10 - Removal of wiring between clean task and deleting generated jOOQ sources.
++ 2.0.9 - Make jOOQ 3.10.1 the default applied version.
++ 2.0.8 - Upgrade to jOOQ 3.10.1.
++ 2.0.7 - Upgrade to jOOQ 3.9.5.
++ 2.0.6 - Upgrade to jOOQ 3.9.3.
++ 2.0.5 - Make the jOOQ task parallelizable.
++ 2.0.4 - Upgrade to jOOQ 3.9.1 and better configuration error messages.
++ 2.0.3 - Upgrade to jOOQ 3.9.0.
++ 2.0.2 - Configuration of call-backs for code generation java execution process.
++ 2.0.1 - Bug fixes.
++ 2.0.0 - Make jOOQ version used for code generation independent from jOOQ version used by gradle-jooq plugin.
++ 1.0.6 - Upgrade to jOOQ 3.6.2.
 
 # Feedback and Contributions
 
@@ -548,6 +549,9 @@ Both feedback and contributions are very welcome.
 
 # Acknowledgements
 
++ [erichaagdev](https://github.com/erichaagdev) (pr)
++ [ribafish](https://github.com/ribafish) (pr)
++ [lared](https://github.com/lared) (pr)
 + [alextu](https://github.com/alextu) (pr)
 + [rpalcolea ](https://github.com/rpalcolea) (pr)
 + [mrozanc](https://github.com/mrozanc) (pr)
