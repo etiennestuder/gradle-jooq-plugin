@@ -448,6 +448,13 @@ jOOQ plugin or not.
 
 # Migration
 
+## Migrating from jOOQ plugin 8.x to 9.x
+
+When migrating your build from jOOQ plugin 8.x to 9.x, follow these steps:
+
+- Ensure you run the Gradle build with at least Gradle 8
+- Declare any additional jOOQ dependencies with their specific versions, since the jOOQ plugin no longer registers any custom dependency resolution rules
+
 ## Migrating from jOOQ plugin 7.x to 8.x
 
 When migrating your build from jOOQ plugin 7.x to 8.x, follow these steps:
