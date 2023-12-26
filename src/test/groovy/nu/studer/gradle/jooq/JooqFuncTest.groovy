@@ -243,7 +243,7 @@ afterEvaluate {
 
         then:
         !result.output.contains('org.jooq:jooq-codegen -> 3.19.1')
-        result.output.contains('org.jooq:jooq -> 3.19.1')
+        result.output.contains('org.jooq:jooq:3.19.1')
     }
 
     void "can set custom jOOQ version"() {
@@ -262,7 +262,7 @@ afterEvaluate {
 
         then:
         !result.output.contains('org.jooq:jooq-codegen -> 3.16.1')
-        result.output.contains('org.jooq:jooq -> 3.16.1')
+        result.output.contains('org.jooq:jooq:3.16.1')
     }
 
     void "can set custom jOOQ version after initial configuration declaration"() {
@@ -284,7 +284,7 @@ jooq.version = '3.17.1'
 
         then:
         !result.output.contains('org.jooq:jooq-codegen -> 3.17.1')
-        result.output.contains('org.jooq:jooq -> 3.17.1')
+        result.output.contains('org.jooq:jooq:3.17.1')
     }
 
     void "can set custom jOOQ edition"() {
@@ -303,7 +303,7 @@ jooq.version = '3.17.1'
 
         then:
         !result.output.contains('org.jooq:jooq-codegen -> org.jooq.trial:jooq-codegen:3.19.1')
-        result.output.contains('org.jooq:jooq -> org.jooq.trial:jooq:3.19.1 FAILED')
+        result.output.contains('org.jooq.trial:jooq:3.19.1 FAILED')
     }
 
     void "can set custom jOOQ edition after initial configuration declaration"() {
@@ -324,7 +324,7 @@ jooq.edition = nu.studer.gradle.jooq.JooqEdition.PRO
 
         then:
         !result.output.contains('org.jooq:jooq-codegen -> org.jooq.pro:jooq-codegen:3.19.1')
-        result.output.contains('org.jooq:jooq -> org.jooq.pro:jooq:3.19.1 FAILED')
+        result.output.contains('org.jooq.pro:jooq:3.19.1 FAILED')
     }
 
     void "supports task avoidance"() {

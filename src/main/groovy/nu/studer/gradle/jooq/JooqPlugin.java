@@ -53,7 +53,8 @@ public class JooqPlugin implements Plugin<Project> {
             sourceSets.configureEach(sourceSet -> {
                 if (sourceSet.getName().equals(config.name)) {
                     sourceSet.getJava().srcDir(config.getGenerateSchemaSourceOnCompilation().flatMap(b -> b ? jooq.flatMap(JooqGenerate::getOutputDir) : config.getOutputDir()));
-                    project.getDependencies().add(sourceSet.getImplementationConfigurationName(), "org.jooq:jooq");
+                    project.getDependencies().addProvider(sourceSet.getImplementationConfigurationName(),
+                            jooqExtension.getEdition().map(e -> e.getGroupId() + ":jooq").flatMap(ga -> jooqExtension.getVersion().map(v -> ga + ":" + v)));
                 }
             });
         });
