@@ -55,6 +55,7 @@ The following Gradle features are supported by the jOOQ plugin:
 
 | Plugin version | Compatible Gradle versions | Support for Gradle Kotlin DSL |Support for Gradle Configuration Cache| Minimum JDK | Minimum jOOQ |
 |----------------|----------------------------|-------------------------------|--------------------------------------|-------------|--------------|
+| 9.0+           | 8.0+                       | Yes                           | Yes                                  | 17          | 3.16+        |
 | 8.0+           | 7.0+                       | Yes                           | Yes                                  | 17          | 3.16+        |
 | 7.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 11          | 3.16+        |
 | 6.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 11          | <= 3.15      |
@@ -73,7 +74,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '8.2.3'
+    id 'nu.studer.jooq' version '9.0'
 }
 ```
 
@@ -81,7 +82,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("nu.studer.jooq") version "8.2.3"
+    id("nu.studer.jooq") version "9.0"
 }
 ```
 
@@ -502,6 +503,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 # Changelog
 
 + Next - TBD
++ 9.0 - Do not register any dependency resolution rules. Make Gradle 8.0 the minimum compatible version.
 + 8.2.3 - Apply version and edition lazily.
 + 8.2.2 - Avoid deprecation warnings when using the plugin with Gradle 9. Upgrade to jOOQ 3.19.1.
 + 8.2.1 - Avoid race condition when running multiple jOOQ tasks in parallel. Upgrade to jOOQ 3.18.4.
