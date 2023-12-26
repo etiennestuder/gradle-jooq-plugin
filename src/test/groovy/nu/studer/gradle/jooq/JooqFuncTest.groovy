@@ -1214,7 +1214,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator 'org.jooq:jooq-meta-extensions'
+    jooqGenerator 'org.jooq:jooq-meta-extensions:3.19.1'
 }
 
 jooq {

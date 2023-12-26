@@ -39,9 +39,6 @@ public class JooqPlugin implements Plugin<Project> {
         // create configuration for the runtime classpath of the jooq code generator (shared by all jooq configuration domain objects)
         Configuration jooqGeneratorRuntimeConfiguration = createJooqGeneratorRuntimeConfiguration(project, jooqExtension);
 
-        // use the configured jOOQ version and edition on all jOOQ dependencies
-        enforceJooqEditionAndVersion(jooqGeneratorRuntimeConfiguration, jooqExtension);
-
         // create a jooq task for each jooq configuration domain object
         jooqExtension.getConfigurations().configureEach(config -> {
             String taskName = "generate" + (config.name.equals("main") ? "" : capitalize(config.name)) + "Jooq";
@@ -86,21 +83,6 @@ public class JooqPlugin implements Plugin<Project> {
         project.getDependencies().addProvider(jooqGeneratorRuntime.getName(),
                 jooqExtension.getEdition().map(e -> e.getGroupId() + ":jooq-codegen").flatMap(ga -> jooqExtension.getVersion().map(v -> ga + ":" + v)));
         return jooqGeneratorRuntime;
-    }
-
-    /**
-     * Forces the jOOQ version and edition selected by the user on the given configuration.
-     */
-    private static void enforceJooqEditionAndVersion(Configuration configuration, JooqExtension jooqExtension) {
-        Set<String> jooqGroupIds = Arrays.stream(JooqEdition.values()).map(JooqEdition::getGroupId).collect(Collectors.toSet());
-        configuration.getResolutionStrategy().eachDependency(details -> {
-            ModuleVersionSelector requested = details.getRequested();
-            if (jooqGroupIds.contains(requested.getGroup()) && requested.getName().startsWith("jooq")) {
-                String group = jooqExtension.getEdition().get().getGroupId();
-                String version = jooqExtension.getVersion().get();
-                details.useTarget(group + ":" + requested.getName() + ":" + version);
-            }
-        });
     }
 
 }
