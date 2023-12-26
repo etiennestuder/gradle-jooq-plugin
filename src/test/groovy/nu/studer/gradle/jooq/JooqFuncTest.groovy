@@ -235,14 +235,14 @@ afterEvaluate {
         def result = runWithArguments('dependencies', '--configuration', 'jooqGenerator')
 
         then:
-        result.output.contains('org.jooq:jooq-codegen -> 3.19.1')
+        result.output.contains('org.jooq:jooq-codegen:3.19.1')
         result.output.contains('org.jooq:jooq:3.19.1')
 
         when:
         result = runWithArguments('dependencies', '--configuration', 'compileClasspath')
 
         then:
-        !result.output.contains('org.jooq:jooq-codegen -> 3.19.1')
+        !result.output.contains('org.jooq:jooq-codegen:3.19.1')
         result.output.contains('org.jooq:jooq:3.19.1')
     }
 
@@ -254,14 +254,14 @@ afterEvaluate {
         def result = runWithArguments('dependencies', '--configuration', 'jooqGenerator')
 
         then:
-        result.output.contains('org.jooq:jooq-codegen -> 3.16.1')
+        result.output.contains('org.jooq:jooq-codegen:3.16.1')
         result.output.contains('org.jooq:jooq:3.16.1')
 
         when:
         result = runWithArguments('dependencies', '--configuration', 'compileClasspath')
 
         then:
-        !result.output.contains('org.jooq:jooq-codegen -> 3.16.1')
+        !result.output.contains('org.jooq:jooq-codegen:3.16.1')
         result.output.contains('org.jooq:jooq:3.16.1')
     }
 
@@ -276,14 +276,14 @@ jooq.version = '3.17.1'
         def result = runWithArguments('dependencies', '--configuration', 'jooqGenerator')
 
         then:
-        result.output.contains('org.jooq:jooq-codegen -> 3.17.1')
+        result.output.contains('org.jooq:jooq-codegen:3.17.1')
         result.output.contains('org.jooq:jooq:3.17.1')
 
         when:
         result = runWithArguments('dependencies', '--configuration', 'compileClasspath')
 
         then:
-        !result.output.contains('org.jooq:jooq-codegen -> 3.17.1')
+        !result.output.contains('org.jooq:jooq-codegen:3.17.1')
         result.output.contains('org.jooq:jooq:3.17.1')
     }
 
@@ -295,14 +295,14 @@ jooq.version = '3.17.1'
         def result = runWithArguments('dependencies', '--configuration', 'jooqGenerator')
 
         then: // resolution (incl. transitive dependencies) fails since the trial artifact is not in a public repository
-        result.output.contains('org.jooq:jooq-codegen -> org.jooq.trial:jooq-codegen:3.19.1 FAILED')
+        result.output.contains('org.jooq.trial:jooq-codegen:3.19.1 FAILED')
         !result.output.contains('org.jooq.trial:jooq:3.19.1')
 
         when:
         result = runWithArguments('dependencies', '--configuration', 'compileClasspath')
 
         then:
-        !result.output.contains('org.jooq:jooq-codegen -> org.jooq.trial:jooq-codegen:3.19.1')
+        !result.output.contains('org.jooq.trial:jooq-codegen:3.19.1')
         result.output.contains('org.jooq.trial:jooq:3.19.1 FAILED')
     }
 
@@ -316,14 +316,14 @@ jooq.edition = nu.studer.gradle.jooq.JooqEdition.PRO
         def result = runWithArguments('dependencies', '--configuration', 'jooqGenerator')
 
         then: // resolution (incl. transitive dependencies) fails since the pro artifact is not in a public repository
-        result.output.contains('org.jooq:jooq-codegen -> org.jooq.pro:jooq-codegen:3.19.1 FAILED')
+        result.output.contains('org.jooq.pro:jooq-codegen:3.19.1 FAILED')
         !result.output.contains('org.jooq.pro:jooq:3.19.1')
 
         when:
         result = runWithArguments('dependencies', '--configuration', 'compileClasspath')
 
         then:
-        !result.output.contains('org.jooq:jooq-codegen -> org.jooq.pro:jooq-codegen:3.19.1')
+        !result.output.contains('org.jooq.pro:jooq-codegen:3.19.1')
         result.output.contains('org.jooq.pro:jooq:3.19.1 FAILED')
     }
 
