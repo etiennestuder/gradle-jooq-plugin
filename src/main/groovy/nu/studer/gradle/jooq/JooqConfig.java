@@ -61,6 +61,10 @@ public class JooqConfig {
         return generateSchemaSourceOnCompilation;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public Provider<Directory> getOutputDir() {
         return outputDir;
     }
