@@ -52,17 +52,17 @@ public class JooqConfig {
                 )
             );
     }
-
+    
+    public String getName() {
+        return name;
+    }
+    
     public Configuration getJooqConfiguration() {
         return jooqConfiguration;
     }
 
     public Property<Boolean> getGenerateSchemaSourceOnCompilation() {
         return generateSchemaSourceOnCompilation;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Provider<Directory> getOutputDir() {
