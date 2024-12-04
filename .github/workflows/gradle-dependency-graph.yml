@@ -20,3 +20,5 @@ jobs:
           java-version: 11
       - name: Generate and submit dependency graph
         uses: gradle/actions/dependency-submission@v4
+        with:
+          develocity-access-key: ${{ secrets.DV_ACCESS_KEY }}
