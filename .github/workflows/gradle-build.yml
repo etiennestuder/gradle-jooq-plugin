@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         java-version: [ "21" ]
-        gradle-version: [ "7.0.2", "7.6.4", "8.0.2", "8.11.1" ]
+        gradle-version: [ "8.6", "8.13" ]
     steps:
       - name: Check out project
         uses: actions/checkout@v4
