@@ -54,6 +54,7 @@ The following Gradle features are supported by the jOOQ plugin:
 
 | Plugin version | Compatible Gradle versions | Support for Gradle Kotlin DSL |Support for Gradle Configuration Cache| Minimum JDK | Minimum jOOQ |
 |----------------|----------------------------|-------------------------------|--------------------------------------|-------------|--------------|
+| 10.0+          | 8.6+                       | Yes                           | Yes                                  | 21          | 3.16+        |
 | 9.0+           | 8.0+                       | Yes                           | Yes                                  | 17          | 3.16+        |
 | 8.0+           | 7.0+                       | Yes                           | Yes                                  | 17          | 3.16+        |
 | 7.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 11          | 3.16+        |
@@ -449,6 +450,13 @@ jOOQ plugin or not.
 ```
 
 # Migration
+
+## Migrating from jOOQ plugin 9.x to 10.x
+
+When migrating your build from jOOQ plugin 9.x to 10.x, follow these steps:
+
+- Ensure you run the Gradle build with at least Gradle 8.6
+- Ensure you run the Gradle build with at least JDK 21
 
 ## Migrating from jOOQ plugin 8.x to 9.x
 
