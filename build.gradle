@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-    api 'org.jooq:jooq-codegen:3.19.15'
+    api 'org.jooq:jooq-codegen:3.19.20'
 
     runtimeOnly 'org.glassfish.jaxb:jaxb-core:3.0.2'
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:3.0.2'

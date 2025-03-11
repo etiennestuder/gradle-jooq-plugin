@@ -13,7 +13,7 @@ dependencies {
 }
 
 jooq {
-    version = '3.19.15'
+    version = '3.19.20'
     configurations {
         main {
             generationTool {
