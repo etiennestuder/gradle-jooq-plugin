@@ -37,7 +37,7 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
         vendor = JvmVendorSpec.BELLSOFT
     }
 }
@@ -53,7 +53,7 @@ tasks.withType(Test).configureEach {
     maxParallelForks = 1 // there is currently only a single test class
     useJUnitPlatform()
 
-    String testJavaRuntimeVersion = findProperty('testJavaRuntimeVersion') ?: '17'
+    String testJavaRuntimeVersion = findProperty('testJavaRuntimeVersion') ?: '21'
     String testGradleVersion = findProperty('testGradleVersion') ?: GradleVersion.current().version
 
     javaLauncher.set(javaToolchains.launcherFor { spec ->
