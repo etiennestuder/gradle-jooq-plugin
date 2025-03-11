@@ -89,6 +89,7 @@ public abstract class JooqGenerate extends DefaultTask {
 
     private static final Action<Configuration> OUTPUT_DIRECTORY_NORMALIZATION = c -> c.getGenerator().getTarget().setDirectory(null);
 
+    @SuppressWarnings("this-escape")
     @Inject
     public JooqGenerate(JooqConfig config, FileCollection runtimeClasspath, ExtensionContainer extensions, ObjectFactory objects, ProviderFactory providers, ProjectLayout projectLayout, ExecOperations execOperations, FileSystemOperations fileSystemOperations) {
         this.jooqConfiguration = config.getJooqConfiguration();
