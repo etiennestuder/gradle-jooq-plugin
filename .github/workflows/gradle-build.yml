@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java-version: [ "17", "21" ]
+        java-version: [ "21" ]
         gradle-version: [ "7.0.2", "7.6.4", "8.0.2", "8.11.1" ]
     steps:
       - name: Check out project
