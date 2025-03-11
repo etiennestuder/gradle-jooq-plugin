@@ -4,7 +4,7 @@ import org.jooq.meta.jaxb.Property
 import org.jooq.meta.jaxb.ForcedType
 
 plugins {
-    id("nu.studer.jooq") version "9.0"
+    id("nu.studer.jooq") version "10.0"
     id("java")
 }
 
@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator("com.h2database:h2:2.1.214")
+    jooqGenerator("com.h2database:h2:2.3.232")
 }
 
 jooq {
