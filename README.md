@@ -511,8 +511,8 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 # Changelog
 
-+ Next - Upgrade to jOOQ 3.20.2
-+ 9.0 - Do not register any dependency resolution rules. Make Gradle 8.0 the minimum compatible version.
++ Next - TBD
++ 10.0 - Make Gradle 8.6 the minimum compatible version. Make Java 21 the minimum version. Upgrade to jOOQ 3.20.2.
 + 8.2.3 - Apply version and edition lazily.
 + 8.2.2 - Avoid deprecation warnings when using the plugin with Gradle 9. Upgrade to jOOQ 3.19.1.
 + 8.2.1 - Avoid race condition when running multiple jOOQ tasks in parallel. Upgrade to jOOQ 3.18.4.
