@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator("com.h2database:h2:2.1.214")
+    jooqGenerator("com.h2database:h2:2.3.232")
 }
 
 jooq {
@@ -41,13 +41,13 @@ jooq {
 // by default, generateJooq will use the configured java toolchain, if any
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
 tasks.named<nu.studer.gradle.jooq.JooqGenerate>("generateJooq") {
     // generateJooq can be configured to use a different/specific toolchain
     (launcher::set)(javaToolchains.launcherFor {
-        languageVersion.set(JavaLanguageVersion.of(18))
+        languageVersion.set(JavaLanguageVersion.of(23))
     })
 }
