@@ -745,7 +745,7 @@ generateJooq {
         buildFile << """
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 """
@@ -758,14 +758,14 @@ java {
         result.output.contains('Could not find method toolchain()')
     }
 
-    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('6.7')) })
+    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('8.6')) })
     void "can invoke jOOQ task and use default JVM toolchain"() {
         given:
         buildFile << buildWithJooqPluginDSL()
         buildFile << """
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -782,23 +782,23 @@ generateJooq {
         then:
         fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
-        result.output.contains('Running jOOQ task with JDK 17')
+        result.output.contains('Running jOOQ task with JDK 21')
     }
 
-    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.3')) })
+    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('8.6')) })
     void "can invoke jOOQ task and override default JVM toolchain"() {
         given:
         buildFile << buildWithJooqPluginDSL()
         buildFile << """
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
 generateJooq {
     launcher = javaToolchains.launcherFor {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
     doFirst {
        println("Running jOOQ task with JDK \${it.launcher.get().metadata.languageVersion.asInt()}")
@@ -812,7 +812,7 @@ generateJooq {
         then:
         fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
-        result.output.contains('Running jOOQ task with JDK 17')
+        result.output.contains('Running jOOQ task with JDK 21')
     }
 
     @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('7.3')) })
@@ -822,13 +822,13 @@ generateJooq {
         buildFile << """
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(11)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
 generateJooq {
     launcher = javaToolchains.launcherFor {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
     doFirst {
        println("Running jOOQ task with JDK \${it.launcher.get().metadata.languageVersion.asInt()}")
@@ -844,7 +844,7 @@ generateJooq {
         result.output.contains("Calculating task graph as no configuration cache is available for tasks: generateJooq")
                 || result.output.contains("Calculating task graph as no cached configuration is available for tasks: generateJooq")
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
-        result.output.contains('Running jOOQ task with JDK 17')
+        result.output.contains('Running jOOQ task with JDK 21')
 
         when:
         new File(workspaceDir, 'build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java').delete()
@@ -854,7 +854,7 @@ generateJooq {
         fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
         result.output.contains("Reusing configuration cache.")
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
-        result.output.contains('Running jOOQ task with JDK 17')
+        result.output.contains('Running jOOQ task with JDK 21')
     }
 
     private static String buildWithJooqPluginDSL(String targetPackageName = null,
