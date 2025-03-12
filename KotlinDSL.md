@@ -26,6 +26,7 @@ The act of customizing this tree can be made DSL-like using the `apply()` extens
 
 ```kotlin
 import org.jooq.meta.jaxb.Logging
+
 jooqConfiguration.apply {
     // this: org.jooq.meta.jaxb.Configuration
     logging = Logging.WARN  // simple assignment of single-valued property
@@ -47,9 +48,39 @@ is replaced with a collection of two elements:
 
 ```kotlin
 import org.jooq.meta.jaxb.ForcedType
+
 jooqConfiguration.apply {
     generator.apply {
         database.apply {
+            forcedTypes = listOf(
+                ForcedType().apply {
+                    name = "varchar"
+                    includeExpression = ".*"
+                    includeTypes = "JSONB?"
+                },
+                ForcedType().apply {
+                    name = "varchar"
+                    includeExpression = ".*"
+                    includeTypes = "INET"
+                }
+            )
+        }
+    }
+}
+```
+
+Using an extension function, you can omit most of the `apply()` calls except when configuring a newly constructed object, which makes
+the code more concise:
+
+```kotlin
+import org.jooq.meta.jaxb.ForcedType
+import org.jooq.util.jaxb.tools.XMLAppendable
+
+fun <T: XMLAppendable> T.apply(block: T.() -> Unit): T = this.apply(block)
+
+jooqConfiguration {
+    generator {
+        database {
             forcedTypes = listOf(
                 ForcedType().apply {
                     name = "varchar"

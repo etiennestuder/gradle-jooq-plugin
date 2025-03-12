@@ -243,6 +243,10 @@ See the [Examples](#examples) section for complete, exemplary build scripts that
 import org.jooq.meta.jaxb.ForcedType
 import org.jooq.meta.jaxb.Logging
 import org.jooq.meta.jaxb.Property
+import org.jooq.util.jaxb.tools.XMLAppendable
+
+// allows to omit the apply() function when configuring the jOOQ configuration 
+operator fun <T: XMLAppendable> T.invoke(block: T.() -> Unit) = this.apply(block)
 
 jooq {
     version.set("3.20.2")  // default (can be omitted)
@@ -252,9 +256,9 @@ jooq {
         create("main") {  // name of the jOOQ configuration
             generateSchemaSourceOnCompilation.set(true)  // default (can be omitted)
 
-            jooqConfiguration.apply {
+            jooqConfiguration {
                 logging = Logging.WARN
-                jdbc.apply {
+                jdbc {
                     driver = "org.postgresql.Driver"
                     url = "jdbc:postgresql://localhost:5432/sample"
                     user = "some_user"
@@ -264,9 +268,9 @@ jooq {
                         value = "true"
                     })
                 }
-                generator.apply {
+                generator {
                     name = "org.jooq.codegen.DefaultGenerator"
-                    database.apply {
+                    database {
                         name = "org.jooq.meta.postgres.PostgresDatabase"
                         inputSchema = "public"
                         forcedTypes.addAll(listOf(
@@ -282,13 +286,13 @@ jooq {
                             }
                         ))
                     }
-                    generate.apply {
+                    generate {
                         isDeprecated = false
                         isRecords = true
                         isImmutablePojos = true
                         isFluentSetters = true
                     }
-                    target.apply {
+                    target {
                         packageName = "nu.studer.sample"
                         directory = "build/generated-src/jooq/main"  // default (can be omitted)
                     }
@@ -569,6 +573,7 @@ Both feedback and contributions are very welcome.
 
 # Acknowledgements
 
++ [dmcg](https://github.com/dmcg) (advice)
 + [erichaagdev](https://github.com/erichaagdev) (pr)
 + [ribafish](https://github.com/ribafish) (pr)
 + [lared](https://github.com/lared) (pr)
