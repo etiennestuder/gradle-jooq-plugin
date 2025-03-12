@@ -1,7 +1,7 @@
 ## Working with Configurations using the Gradle Kotlin DSL
 
 Each configuration `create()`ed under the `jooq { configurations { } }` block presents the script author with an opportunity to customize a tree of JAXB elements drawn
-from `jooq-meta` which encodes the [JOOQ Codegen XML Schema](https://www.jooq.org/xsd/jooq-codegen-3.19.0.xsd).
+from `jooq-meta` which encodes the [JOOQ Codegen XML Schema](https://www.jooq.org/xsd/jooq-codegen-3.20.1.xsd).
 
 For each configuration so configured, this tree is serialized to a temporary XML file and passed as a command-line argument to `org.jooq.codegen.GenerationTool` for code
 generation.
