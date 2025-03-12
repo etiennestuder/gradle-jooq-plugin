@@ -17,7 +17,7 @@ dependencies {
     jooqGenerator("com.h2database:h2:2.3.232")
 }
 
-// allows for a more Kotlin-like DSL when configuring XMLAppendable types
+// allows to omit the apply() function when configuring the jOOQ configuration
 operator fun <T: XMLAppendable> T.invoke(block: T.() -> Unit) = this.apply(block)
 
 jooq {
