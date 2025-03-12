@@ -70,7 +70,7 @@ jooqConfiguration.apply {
 ```
 
 Using an extension function, you can omit most of the `apply()` calls except when configuring a newly constructed object, which makes
-the code more concise:
+the configuration easier to read:
 
 ```kotlin
 import org.jooq.meta.jaxb.ForcedType
