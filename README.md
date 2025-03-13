@@ -304,7 +304,7 @@ jooq {
 }
 ```
 
-See the [Examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin.
+See the [Examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin, using the above DSL and an improved DSL.
 
 ## Configuring the jOOQ generation task to participate in incremental builds and build caching
 
@@ -506,6 +506,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 + Configuring the jOOQ code generation via Gradle Groovy DSL: [here](example/use_groovy_dsl).
 + Configuring the jOOQ code generation via Gradle Kotlin DSL: [here](example/use_kotlin_dsl).
++ Configuring the jOOQ code generation with an improved DSL via Gradle Kotlin DSL: [here](example/use_kotlin_dsl_improved).
 + Extracting the jOOQ configuration into a script file: [here](example/extract_script_file).
 + Extracting the jOOQ configuration into a precompiled script plugin: [here](example/extract_precompiled_script_plugin).
 + Passing JVM args to the jOOQ code generation process: [here](example/configure_jvm_args).

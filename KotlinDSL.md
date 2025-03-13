@@ -69,34 +69,47 @@ jooqConfiguration.apply {
 }
 ```
 
-Using an extension function, you can omit most of the `apply()` calls except when configuring a newly constructed object, which makes
-the configuration easier to read:
+Declaring extension functions, you can omit the `apply()` calls and the explicit creation of lists and their elements, which
+improves the configuration's readability:
 
 ```kotlin
+import org.jooq.meta.jaxb.Database
 import org.jooq.meta.jaxb.ForcedType
 import org.jooq.util.jaxb.tools.XMLAppendable
 
 fun <T: XMLAppendable> T.apply(block: T.() -> Unit): T = this.apply(block)
 
+fun Database.forcedTypes(block: MutableList<ForcedType>.() -> Unit) {
+    block(forcedTypes)
+}
+
+fun MutableList<ForcedType>.forcedType(block: ForcedType.() -> Unit) {
+    val f = ForcedType()
+    block(f)
+    add(f)
+}
+
 jooqConfiguration {
     generator {
         database {
-            forcedTypes = listOf(
-                ForcedType().apply {
+            forcedTypes {
+                forcedType {
                     name = "varchar"
                     includeExpression = ".*"
                     includeTypes = "JSONB?"
-                },
-                ForcedType().apply {
+                }
+                forcedType {
                     name = "varchar"
                     includeExpression = ".*"
                     includeTypes = "INET"
                 }
-            )
+            }
         }
     }
 }
 ```
+
+The complete list of extension functions can be found in [JooqConfigurationExtensions.kt](src/main/kotlin/org/jooq/gradle/JooqConfigurationExtensions.kt). 
 
 Familiarity with the [JOOQ Codegen XML Schema](https://www.jooq.org/xsd/jooq-codegen-3.20.1.xsd) and
 the [`org.jooq.meta.jaxb` package](https://github.com/jOOQ/jOOQ/tree/version-3.20.2/jOOQ-meta/src/main/java/org/jooq/meta/jaxb)

@@ -1,3 +1,5 @@
+import org.jooq.util.jaxb.tools.XMLAppendable
+
 plugins {
     id("nu.studer.jooq") version "10.0"
     id("java")
@@ -11,25 +13,28 @@ dependencies {
     jooqGenerator("com.h2database:h2:2.3.232")
 }
 
+// allows to omit the apply() function when configuring the jOOQ configuration
+operator fun <T: XMLAppendable> T.invoke(block: T.() -> Unit) = this.apply(block)
+
 jooq {
    configurations {
         create("main") {
-            jooqConfiguration.apply {
+            jooqConfiguration {
                 logging = org.jooq.meta.jaxb.Logging.WARN
-                jdbc.apply {
+                jdbc {
                     driver = "org.h2.Driver"
                     url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
                     user = "sa"
                     password = ""
                 }
-                generator.apply {
+                generator {
                     name = "org.jooq.codegen.DefaultGenerator"
-                    database.apply {
+                    database {
                         name = "org.jooq.meta.h2.H2Database"
                         includes = ".*"
                         excludes = ""
                     }
-                    target.apply {
+µ                    target {
                         packageName = "nu.studer.sample"
                     }
                 }
