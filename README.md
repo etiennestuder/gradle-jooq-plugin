@@ -145,7 +145,7 @@ jOOQ plugin at configuration time, i.e. in the DSL of the jOOQ plugin.
 buildscript {
     configurations['classpath'].resolutionStrategy.eachDependency {
         if (requested.group.startsWith('org.jooq') && requested.name.startsWith('jooq')) {
-            useVersion '3.17.3'
+            useVersion '3.20.1'
         }
     }
 }
@@ -157,7 +157,7 @@ buildscript {
 buildscript {
     configurations["classpath"].resolutionStrategy.eachDependency {
         if (requested.group.startsWith("org.jooq") && requested.name.startsWith("jooq")) {
-            useVersion("3.17.3")
+            useVersion("3.20.1")
         }
     }
 }
