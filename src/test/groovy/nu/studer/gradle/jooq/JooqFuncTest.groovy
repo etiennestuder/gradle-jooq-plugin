@@ -97,10 +97,7 @@ tasks.named('generateJooq').configure { allInputsDeclared = false }
         given:
         file('build.gradle.kts') << """
 import org.jooq.meta.jaxb.Logging
-import org.jooq.meta.jaxb.Jdbc
-import org.jooq.meta.jaxb.Generator
-import org.jooq.meta.jaxb.Database
-import org.jooq.meta.jaxb.Target
+import org.jooq.meta.kotlin.*
 
 plugins {
     id("nu.studer.jooq")
@@ -119,16 +116,16 @@ jooq {
     version.set("3.20.2")
     configurations {
         create("main") {
-            jooqConfiguration.apply {
+            jooqConfiguration {
                 logging = Logging.WARN
-                jdbc.apply {
+                jdbc {
                     driver = "org.h2.Driver"
                     url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
                     user = "sa"
                     password = ""
                 }
-                generator.apply {
-                    database.apply {
+                generator {
+                    database {
                         name = "org.jooq.meta.h2.H2Database"
                         includes = ".*"
                         excludes = ""

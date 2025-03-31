@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
     api libs.bundles.jooq
+    api 'org.jooq:jooq-meta-kotlin:3.20.2'
 
     runtimeOnly libs.bundles.jaxb
 
