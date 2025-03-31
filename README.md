@@ -240,13 +240,8 @@ See the [Examples](#examples) section for complete, exemplary build scripts that
 ### Gradle Kotlin DSL
 
 ```kotlin
-import org.jooq.meta.jaxb.ForcedType
 import org.jooq.meta.jaxb.Logging
-import org.jooq.meta.jaxb.Property
-import org.jooq.util.jaxb.tools.XMLAppendable
-
-// allows to omit the apply() function when configuring the jOOQ configuration 
-operator fun <T: XMLAppendable> T.invoke(block: T.() -> Unit) = this.apply(block)
+import org.jooq.meta.kotlin.*
 
 jooq {
     version.set("3.20.2")  // default (can be omitted)
@@ -263,28 +258,30 @@ jooq {
                     url = "jdbc:postgresql://localhost:5432/sample"
                     user = "some_user"
                     password = "some_secret"
-                    properties.add(Property().apply {
-                        key = "ssl"
-                        value = "true"
-                    })
+                    properties {
+                        property {
+                            key = "ssl"
+                            value = "true"
+                        }
+                    }
                 }
                 generator {
                     name = "org.jooq.codegen.DefaultGenerator"
                     database {
                         name = "org.jooq.meta.postgres.PostgresDatabase"
                         inputSchema = "public"
-                        forcedTypes.addAll(listOf(
-                            ForcedType().apply {
+                        forcedTypes {
+                            forcedType {
                                 name = "varchar"
                                 includeExpression = ".*"
                                 includeTypes = "JSONB?"
-                            },
-                            ForcedType().apply {
+                            }
+                            forcedType {
                                 name = "varchar"
                                 includeExpression = ".*"
                                 includeTypes = "INET"
                             }
-                        ))
+                        }
                     }
                     generate {
                         isDeprecated = false
@@ -304,7 +301,7 @@ jooq {
 }
 ```
 
-See the [Examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin, using the above DSL and an improved DSL.
+See the [Examples](#examples) section for complete, exemplary build scripts that apply the jOOQ plugin.
 
 ## Configuring the jOOQ generation task to participate in incremental builds and build caching
 
@@ -422,10 +419,6 @@ forcedTypes = [
 ]
 ```
 
-### Working with Configurations in the Kotlin DSL
-
-See [here](KotlinDSL.md) for additional insights on configuring the jOOQ code generation tool using the Gradle Kotlin DSL.
-
 # Execution
 
 ## Generating the jOOQ sources
@@ -506,7 +499,6 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 
 + Configuring the jOOQ code generation via Gradle Groovy DSL: [here](example/use_groovy_dsl).
 + Configuring the jOOQ code generation via Gradle Kotlin DSL: [here](example/use_kotlin_dsl).
-+ Configuring the jOOQ code generation with an improved DSL via Gradle Kotlin DSL: [here](example/use_kotlin_dsl_improved).
 + Extracting the jOOQ configuration into a script file: [here](example/extract_script_file).
 + Extracting the jOOQ configuration into a precompiled script plugin: [here](example/extract_precompiled_script_plugin).
 + Passing JVM args to the jOOQ code generation process: [here](example/configure_jvm_args).

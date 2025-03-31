@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
     api 'org.jooq:jooq-codegen:3.20.2'
+    api 'org.jooq:jooq-meta-kotlin:3.20.2'
 
     runtimeOnly 'org.glassfish.jaxb:jaxb-core:3.0.2'
     runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
@@ -94,3 +95,4 @@ tasks.withType(ValidatePlugins.class).configureEach {
     failOnWarning = true
     enableStricterValidation = true
 }
+

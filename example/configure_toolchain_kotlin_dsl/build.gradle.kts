@@ -1,4 +1,4 @@
-import org.jooq.util.jaxb.tools.XMLAppendable
+import org.jooq.meta.kotlin.*
 
 plugins {
     id("nu.studer.jooq") version "10.0"
@@ -12,9 +12,6 @@ repositories {
 dependencies {
     jooqGenerator("com.h2database:h2:2.3.232")
 }
-
-// allows to omit the apply() function when configuring the jOOQ configuration
-operator fun <T: XMLAppendable> T.invoke(block: T.() -> Unit) = this.apply(block)
 
 jooq {
    configurations {
@@ -34,7 +31,7 @@ jooq {
                         includes = ".*"
                         excludes = ""
                     }
-µ                    target {
+                    target {
                         packageName = "nu.studer.sample"
                     }
                 }

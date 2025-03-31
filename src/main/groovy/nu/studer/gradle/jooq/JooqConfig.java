@@ -2,6 +2,7 @@ package nu.studer.gradle.jooq;
 
 import groovy.lang.Closure;
 import nu.studer.gradle.jooq.jaxb.JaxbConfigurationBridge;
+import org.gradle.api.Action;
 import org.gradle.api.file.Directory;
 import org.gradle.api.file.ProjectLayout;
 import org.gradle.api.model.ObjectFactory;
@@ -59,6 +60,10 @@ public class JooqConfig {
     
     public Configuration getJooqConfiguration() {
         return jooqConfiguration;
+    }
+
+    public void jooqConfiguration(Action<? super Configuration> action) {
+        action.execute(jooqConfiguration);
     }
 
     public Property<Boolean> getGenerateSchemaSourceOnCompilation() {
