@@ -3,16 +3,11 @@ package nu.studer.gradle.jooq;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
-import org.gradle.api.artifacts.ModuleVersionSelector;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.util.GradleVersion;
-
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static nu.studer.gradle.jooq.util.Gradles.isAtLeastGradleVersion;
 import static nu.studer.gradle.jooq.util.Strings.capitalize;
