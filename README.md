@@ -74,7 +74,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '10.0'
+    id 'nu.studer.jooq' version '10.1'
 }
 ```
 
@@ -82,7 +82,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("nu.studer.jooq") version "10.0"
+    id("nu.studer.jooq") version "10.1"
 }
 ```
 
@@ -517,7 +517,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 # Changelog
 
 + Next - TBD
-+ 10.1 - Upgrade to jOOQ 3.20.3.
++ 10.1 - First-class support for the Gradle Kotlin DSL. Upgrade to jOOQ 3.20.3.
 + 10.0 - Make Gradle 8.6 the minimum compatible version. Make Java 21 the minimum version. Upgrade to jOOQ 3.20.2.
 + 9.0 - Do not register any dependency resolution rules. Make Gradle 8.0 the minimum compatible version.
 + 8.2.3 - Apply version and edition lazily.

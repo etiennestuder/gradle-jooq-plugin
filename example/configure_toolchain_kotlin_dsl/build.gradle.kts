@@ -1,7 +1,7 @@
 import org.jooq.meta.kotlin.*
 
 plugins {
-    id("nu.studer.jooq") version "10.0"
+    id("nu.studer.jooq") version "10.1"
     id("java")
 }
 
