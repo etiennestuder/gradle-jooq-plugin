@@ -1,5 +1,3 @@
-import nu.studer.gradle.jooq.JooqEdition
-
 buildscript {
     repositories {
         gradlePluginPortal()
