@@ -6,6 +6,7 @@ spock = "2.3-groovy-3.0"
 
 [libraries]
 jooq-codegen = { group = "org.jooq", name = "jooq-codegen", version.ref = "jooq" }
+jooq-meta-kotlin = { group = "org.jooq", name = "jooq-meta-kotlin", version.ref = "jooq" }
 jaxb-core = { group = "org.glassfish.jaxb", name = "jaxb-core", version.ref = "jaxb" }
 jaxb-runtime = { group = "org.glassfish.jaxb", name = "jaxb-runtime", version.ref = "jaxb" }
 h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
@@ -13,7 +14,7 @@ spock = { group = "org.spockframework", name = "spock-core", version.ref = "spoc
 junit5-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 
 [bundles]
-jooq = ["jooq-codegen"]
+jooq = ["jooq-codegen", "jooq-meta-kotlin"]
 jaxb = ["jaxb-core", "jaxb-runtime"]
 
 [plugins]
