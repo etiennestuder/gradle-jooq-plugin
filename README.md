@@ -175,8 +175,6 @@ explicitly setting the `directory` attribute of the `target` configuration of th
 ### Gradle Groovy DSL
 
 ```groovy
-import org.jooq.meta.jaxb.Logging
-
 jooq {
     version = '3.20.3'  // default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // default (can be omitted)
@@ -186,7 +184,7 @@ jooq {
             generateSchemaSourceOnCompilation = true  // default (can be omitted)
 
             generationTool {
-                logging = Logging.WARN
+                logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc {
                     driver = 'org.postgresql.Driver'
                     url = 'jdbc:postgresql://localhost:5432/sample'
@@ -240,7 +238,6 @@ See the [Examples](#examples) section for complete, exemplary build scripts that
 ### Gradle Kotlin DSL
 
 ```kotlin
-import org.jooq.meta.jaxb.Logging
 import org.jooq.meta.kotlin.*
 
 jooq {
@@ -252,7 +249,7 @@ jooq {
             generateSchemaSourceOnCompilation.set(true)  // default (can be omitted)
 
             jooqConfiguration {
-                logging = Logging.WARN
+                logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc {
                     driver = "org.postgresql.Driver"
                     url = "jdbc:postgresql://localhost:5432/sample"

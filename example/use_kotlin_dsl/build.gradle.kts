@@ -1,4 +1,3 @@
-import org.jooq.meta.jaxb.Logging
 import org.jooq.meta.kotlin.*
 import nu.studer.gradle.jooq.JooqEdition
 
@@ -22,7 +21,7 @@ jooq {
     configurations {
         create("main") {
             jooqConfiguration {
-                logging = Logging.WARN
+                logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc  {
                     driver = "org.h2.Driver"
                     url = "jdbc:h2:~/test;AUTO_SERVER=TRUE"
