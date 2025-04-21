@@ -564,6 +564,7 @@ Both feedback and contributions are very welcome.
 
 # Acknowledgements
 
++ [jprinet](https://github.com/jprinet) (pr)
 + [dmcg](https://github.com/dmcg) (advice)
 + [erichaagdev](https://github.com/erichaagdev) (pr)
 + [ribafish](https://github.com/ribafish) (pr)
