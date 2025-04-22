@@ -44,12 +44,13 @@ The following Gradle configuration changes are contributed by the jOOQ plugin:
 
 The following Gradle features are supported by the jOOQ plugin:
 
+ * First-class support for the Gradle Kotlin DSL and the Gradle Groovy DSL
  * `JooqGenerate` task instances participate in task configuration avoidance
  * `JooqGenerate` task instances participate in configuration caching
  * `JooqGenerate` task instances participate in incremental builds (if the task gets explicitly marked as all inputs being declared)
  * `JooqGenerate` task instances participate in task output caching (if the task gets explicitly marked as all inputs being declared)
  * `JooqGenerate` task instances participate in toolchains (if the task or project is configured with a toolchain)
-
+ 
 # Compatibility
 
 | Plugin version | Compatible Gradle versions | Support for Gradle Kotlin DSL |Support for Gradle Configuration Cache| Minimum JDK | Minimum jOOQ |
