@@ -75,7 +75,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '10.1'
+    id 'nu.studer.jooq' version '10.1.1'
 }
 ```
 
@@ -83,7 +83,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("nu.studer.jooq") version "10.1"
+    id("nu.studer.jooq") version "10.1.1"
 }
 ```
 
@@ -96,7 +96,7 @@ is on the classpath when the jOOQ code generation tool is executed. Optionally, 
 
 ```groovy
 dependencies {
-    jooqGenerator 'org.postgresql:postgresql:42.5.4'
+    jooqGenerator 'org.postgresql:postgresql:42.7.7'
 }
 ```
 
@@ -104,7 +104,7 @@ dependencies {
 
 ```kotlin
 dependencies {
-    jooqGenerator("org.postgresql:postgresql:42.5.4")
+    jooqGenerator("org.postgresql:postgresql:42.7.7")
 }
 ```
 
