@@ -50,7 +50,7 @@ The following Gradle features are supported by the jOOQ plugin:
  * `JooqGenerate` task instances participate in incremental builds (if the task gets explicitly marked as all inputs being declared)
  * `JooqGenerate` task instances participate in task output caching (if the task gets explicitly marked as all inputs being declared)
  * `JooqGenerate` task instances participate in toolchains (if the task or project is configured with a toolchain)
- 
+
 # Compatibility
 
 | Plugin version | Compatible Gradle versions | Support for Gradle Kotlin DSL |Support for Gradle Configuration Cache| Minimum JDK | Minimum jOOQ |
