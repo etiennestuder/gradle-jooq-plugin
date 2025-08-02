@@ -120,7 +120,7 @@ The `<edition>:jooq:<version>` dependency of the specified version and edition i
 
 ```groovy
 jooq {
-  version = '3.20.3'  // the default (can be omitted)
+  version = '3.20.5'  // the default (can be omitted)
   edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
 }
 ```
@@ -129,7 +129,7 @@ jooq {
 
 ```kotlin
 jooq {
-  version.set("3.20.3")  // the default (can be omitted)
+  version.set("3.20.5")  // the default (can be omitted)
   edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // the default (can be omitted)
 }
 ```
@@ -166,8 +166,8 @@ buildscript {
 
 ## Configuring the jOOQ generation tool
 
-Configure the jOOQ generation tool via `jooq` extension, made available by the jOOQ plugin. The full set of configuration options when using jOOQ 3.19.x can
-be seen on the jOOQ generation tool's [Configuration](https://github.com/jOOQ/jOOQ/blob/version-3.20.3/jOOQ-meta/src/main/java/org/jooq/meta/jaxb/Configuration.java) class, or
+Configure the jOOQ generation tool via `jooq` extension, made available by the jOOQ plugin. The full set of configuration options when using jOOQ 3.20.x can
+be seen on the jOOQ generation tool's [Configuration](https://github.com/jOOQ/jOOQ/blob/version-3.20.5/jOOQ-meta/src/main/java/org/jooq/meta/jaxb/Configuration.java) class, or
 on the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.20.1.xsd).
 
 By default, the generated sources are written to `<projectDir>/build/generated-src/jooq/<configurationName>`. The target directory can be changed by
@@ -177,7 +177,7 @@ explicitly setting the `directory` attribute of the `target` configuration of th
 
 ```groovy
 jooq {
-    version = '3.20.3'  // default (can be omitted)
+    version = '3.20.5'  // default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // default (can be omitted)
 
     configurations {
@@ -242,7 +242,7 @@ See the [Examples](#examples) section for complete, exemplary build scripts that
 import org.jooq.meta.kotlin.*
 
 jooq {
-    version.set("3.20.3")  // default (can be omitted)
+    version.set("3.20.5")  // default (can be omitted)
     edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // default (can be omitted)
 
     configurations {
@@ -515,6 +515,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 # Changelog
 
 + Next - TBD
++ 10.1.1 - Upgrade to jOOQ 3.20.5.
 + 10.1 - First-class support for the Gradle Kotlin DSL. Upgrade to jOOQ 3.20.3.
 + 10.0 - Make Gradle 8.6 the minimum compatible version. Make Java 21 the minimum version. Upgrade to jOOQ 3.20.2.
 + 9.0 - Do not register any dependency resolution rules. Make Gradle 8.0 the minimum compatible version.
