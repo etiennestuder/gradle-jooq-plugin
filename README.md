@@ -356,7 +356,7 @@ See [here](example/configure_toolchain_kotlin_dsl) for a complete example on how
 
 ## Avoiding configuration pitfalls
 
-### Synchronizing the jOOQ version between the Spring Boot and the jOOQ Gradle plugin
+### Synchronizing the jOOQ version between Spring Boot and the jOOQ Gradle plugin
 
 It is advisable that the jOOQ Gradle plugin and the [Spring Boot Dependency Management plugin](https://docs.spring.io/dependency-management-plugin/docs/current/reference/html/) are configured to use the same version of jOOQ.
 
