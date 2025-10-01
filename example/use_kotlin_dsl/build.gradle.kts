@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator("com.h2database:h2:2.3.232")
+    jooqGenerator("com.h2database:h2:2.4.240")
 }
 
 jooq {

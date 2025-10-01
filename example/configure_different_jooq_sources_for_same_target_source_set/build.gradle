@@ -9,7 +9,7 @@ repositories {
 
 dependencies {
     implementation 'org.jooq:jooq:3.20.5' // manually add jOOQ dependency
-    jooqGenerator 'com.h2database:h2:2.3.232'
+    jooqGenerator 'com.h2database:h2:2.4.240'
 }
 
 jooq {
