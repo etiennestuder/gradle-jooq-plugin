@@ -1,6 +1,6 @@
 [versions]
 jooq = "3.20.5"
-jaxb = "3.0.2"
+jaxb = "4.0.6"
 h2 = "2.3.232"
 spock = "2.3-groovy-3.0"
 
