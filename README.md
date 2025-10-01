@@ -356,15 +356,14 @@ See [here](example/configure_toolchain_kotlin_dsl) for a complete example on how
 
 ## Avoiding configuration pitfalls
 
-### Synchronizing the jOOQ version between the Spring Boot Gradle plugin and the jOOQ Gradle plugin
+### Synchronizing the jOOQ version between the Spring Boot Dependency Management plugin and the jOOQ Gradle plugin
 
-It is advisable that the jOOQ Gradle plugin and the [Spring Boot Gradle plugin](https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-tools/spring-boot-gradle-plugin) are
+It is advisable that the jOOQ Gradle plugin and the [Spring Boot Dependency Management plugin](https://docs.spring.io/dependency-management-plugin/docs/current/reference/html/) are
 configured to use the same version of jOOQ.
 
-If you want the Spring Boot plugin to pull in the same version of jOOQ as defined by the jOOQ plugin, you have to explicitly set `ext['jooq.version'] = jooq.version.get()`.
+If you want the Spring Boot Dependency Management plugin to pull in the same version of jOOQ as defined by the jOOQ plugin, you have to explicitly set `ext['jooq.version'] = jooq.version.get()`.
 
-The other way around, if you want the jOOQ plugin to pull in the same version of jOOQ as defined by the Spring Boot plugin, you have to explicitly
-set `jooq.version = dependencyManagement.importedProperties['jooq.version']`.
+The other way around, if you want the jOOQ plugin to pull in the same version of jOOQ as defined by the Spring Boot Dependency Management plugin, you have to explicitly set `jooq.version = ""`.
 
 ### Enforcing dependency versions via dependency rules from third-party plugins or from the build itself
 
