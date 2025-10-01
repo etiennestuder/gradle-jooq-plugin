@@ -22,6 +22,8 @@ You can find more details about the actual jOOQ source code generation in the [j
 
 The jOOQ plugin is hosted at the [Gradle Plugin Portal](https://plugins.gradle.org/plugin/nu.studer.jooq).
 
+> The jOOQ project provides its own [Gradle plugin](https://www.jooq.org/doc/latest/manual/code-generation/codegen-execution/codegen-gradle) that you might consider as an alternative.
+
 ## Build scan
 
 Recent build scan: https://gradle.com/s/zcltzipq7zzha
