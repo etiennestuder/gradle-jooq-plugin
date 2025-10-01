@@ -361,7 +361,7 @@ configured to use the same version of jOOQ.
 
 If you want the Spring Boot Dependency Management plugin to pull in the same version of jOOQ as defined by the jOOQ plugin, you have to explicitly set `ext['jooq.version'] = jooq.version.get()`.
 
-The other way around, if you want the jOOQ plugin to not affect the version of jOOQ already defined by any other dependency source (e.g. Spring Boot BOMs or Spring Dependency Management plugin), you have to explicitly set `jooq.version = ""`.
+The other way around, if you want the jOOQ plugin to pull in the same version of jOOQ as defined by the Spring Boot Dependency Management plugin, you have to explicitly set `jooq.version = ""`.
 
 ### Enforcing dependency versions via dependency rules from third-party plugins or from the build itself
 
