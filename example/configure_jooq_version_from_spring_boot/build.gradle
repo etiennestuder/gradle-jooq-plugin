@@ -25,7 +25,7 @@ test {
 }
 
 jooq {
-    // use jOOQ version defined by any other existing version source
+    // use jOOQ version defined by the Spring Boot Dependency Management plugin
     version = ""
     edition = JooqEdition.OSS
 
