@@ -1,6 +1,7 @@
 package nu.studer.gradle.jooq
 
 import groovy.sql.Sql
+import groovy.xml.XmlSlurper
 import org.gradle.testkit.runner.TaskOutcome
 import org.gradle.util.GradleVersion
 import org.jooq.Constants
@@ -198,7 +199,7 @@ jooq {
 jooq.configurations.main.jooqConfiguration.generator.target.directory = file('src/generated/jooq/yet/another')
 
 afterEvaluate {
-  SourceSetContainer sourceSets = project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets()
+  SourceSetContainer sourceSets = project.getExtensions().getByType(SourceSetContainer.class);
   SourceSet sourceSet = sourceSets.findByName('main')
   Set<File> dirs = sourceSet.getJava().getSrcDirs()
   dirs.eachWithIndex { dir, index ->
