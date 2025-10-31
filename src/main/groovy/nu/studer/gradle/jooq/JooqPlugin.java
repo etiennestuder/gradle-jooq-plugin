@@ -4,12 +4,10 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.plugins.JavaBasePlugin;
-import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.TaskProvider;
 import org.gradle.util.GradleVersion;
 
-import static nu.studer.gradle.jooq.util.Gradles.isAtLeastGradleVersion;
 import static nu.studer.gradle.jooq.util.Strings.capitalize;
 
 /**
@@ -44,7 +42,7 @@ public class JooqPlugin implements Plugin<Project> {
             });
 
             // add the output of the jooq task as a source directory of the source set with the matching name (which adds an implicit task dependency)
-            SourceSetContainer sourceSets = getSourceSets(project);
+            SourceSetContainer sourceSets = project.getExtensions().getByType(SourceSetContainer.class);
             sourceSets.configureEach(sourceSet -> {
                 if (sourceSet.getName().equals(config.name)) {
                     sourceSet.getJava().srcDir(config.getGenerateSchemaSourceOnCompilation().flatMap(b -> b ? jooq.flatMap(JooqGenerate::getOutputDir) : config.getOutputDir()));
@@ -53,19 +51,6 @@ public class JooqPlugin implements Plugin<Project> {
                 }
             });
         });
-    }
-
-    private SourceSetContainer getSourceSets(Project project) {
-        if (isAtLeastGradleVersion("8.0")) {
-            return project.getExtensions().getByType(JavaPluginExtension.class).getSourceSets();
-        } else {
-            return getSourceSetsDeprecated(project);
-        }
-    }
-
-    @SuppressWarnings("deprecation")
-    private SourceSetContainer getSourceSetsDeprecated(Project project) {
-        return project.getConvention().getPlugin(org.gradle.api.plugins.JavaPluginConvention.class).getSourceSets();
     }
 
     /**

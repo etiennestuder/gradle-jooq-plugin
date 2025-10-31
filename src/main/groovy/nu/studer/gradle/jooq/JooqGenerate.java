@@ -63,6 +63,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 
 import static nu.studer.gradle.jooq.util.Objects.cloneObject;
@@ -300,13 +302,18 @@ public abstract class JooqGenerate extends DefaultTask {
         if (Gradles.isAtLeastGradleVersion("6.4")) {
             spec.getMainClass().set(mainClass);
         } else {
-            setMainClassDeprecated(mainClass, spec);
+            setMainClassRemoved(mainClass, spec);
         }
     }
 
-    @SuppressWarnings("deprecation")
-    private void setMainClassDeprecated(String mainClass, JavaExecSpec spec) {
-        spec.setMain(mainClass);
+    private void setMainClassRemoved(String mainClass, JavaExecSpec spec) {
+        try {
+            // use reflection to access the setMain method as it was removed in Gradle 9
+            Method method = JavaExecSpec.class.getMethod("setMain", String.class);
+            method.invoke(spec, mainClass);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Unable to set the main class via reflection", e);
+        }
     }
 
 }
