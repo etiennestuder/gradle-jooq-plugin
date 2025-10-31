@@ -31,6 +31,7 @@ dependencies {
 
     testImplementation libs.h2
     testImplementation libs.spock
+    testImplementation libs.bundles.groovy
     testRuntimeOnly libs.junit5.launcher
 }
 
@@ -63,7 +64,8 @@ tasks.withType(Test).configureEach {
     systemProperty 'testContext.gradleVersion', testGradleVersion
     dvBuildScan.value(identityPath.path + "#gradleVersion", testGradleVersion)
 
-    def incompatibleJavaVsGradleVersions = parseInt(testJavaRuntimeVersion) > 20 && GradleVersion.version(testGradleVersion) < GradleVersion.version('8.6') ||
+    def incompatibleJavaVsGradleVersions = parseInt(testJavaRuntimeVersion) < 17 && GradleVersion.version(testGradleVersion) > GradleVersion.version('9.0') ||
+            parseInt(testJavaRuntimeVersion) > 20 && GradleVersion.version(testGradleVersion) < GradleVersion.version('8.6') ||
             parseInt(testJavaRuntimeVersion) > 16 && GradleVersion.version(testGradleVersion) < GradleVersion.version('7.3') ||
             parseInt(testJavaRuntimeVersion) > 15 && GradleVersion.version(testGradleVersion) < GradleVersion.version('7.0')
     if (incompatibleJavaVsGradleVersions) {
