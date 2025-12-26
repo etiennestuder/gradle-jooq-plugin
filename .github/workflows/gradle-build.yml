@@ -14,19 +14,19 @@ jobs:
         gradle-version: [ "8.6", "8.14.3", "9.0.0", "9.2.1" ]
     steps:
       - name: Check out project
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Set up JDK 21
         uses: actions/setup-java@v5
         with:
           distribution: 'liberica'
           java-version: 21
       - name: Set up JDK 25
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'liberica'
           java-version: 25
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v5
         with:
           develocity-access-key: ${{ secrets.DV_ACCESS_KEY }}
       - name: Build with Gradle
