@@ -17,6 +17,9 @@ configurations.configureEach { Configuration c ->
         if (details.requested.group == 'jakarta.xml.bind' && details.requested.name == 'jakarta.xml.bind-api') {
             details.useVersion '3.0.1'
         }
+        if (details.requested.group == 'org.apache.groovy' && details.requested.name == 'groovy-xml') {
+            details.useVersion '4.0.28'
+        }
     }
 }
 

@@ -2,8 +2,8 @@
 jooq = "3.20.5"
 jaxb = "3.0.2"
 h2 = "2.4.240"
-spock = "2.3-groovy-4.0"
-groovy = "4.0.28"
+spock = "2.4-groovy-4.0"
+groovy = "4.0.29"
 
 [libraries]
 jooq-codegen = { group = "org.jooq", name = "jooq-codegen", version.ref = "jooq" }
