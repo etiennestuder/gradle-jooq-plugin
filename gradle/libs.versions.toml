@@ -11,15 +11,14 @@ jooq-meta-kotlin = { group = "org.jooq", name = "jooq-meta-kotlin", version.ref 
 jaxb-core = { group = "org.glassfish.jaxb", name = "jaxb-core", version.ref = "jaxb" }
 jaxb-runtime = { group = "org.glassfish.jaxb", name = "jaxb-runtime", version.ref = "jaxb" }
 h2 = { group = "com.h2database", name = "h2", version.ref = "h2" }
-spock = { group = "org.spockframework", name = "spock-core", version.ref = "spock" }
 groovy-sql = { group = "org.apache.groovy", name = "groovy-sql", version.ref = "groovy" }
 groovy-xml = { group = "org.apache.groovy", name = "groovy-xml", version.ref = "groovy" }
+spock = { group = "org.spockframework", name = "spock-core", version.ref = "spock" }
 junit5-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 
 [bundles]
 jooq = ["jooq-codegen", "jooq-meta-kotlin"]
 jaxb = ["jaxb-core", "jaxb-runtime"]
-groovy = ["groovy-sql", "groovy-xml"]
 
 [plugins]
 publish = { id = "com.gradle.plugin-publish", version = "2.0.0" }

@@ -42,9 +42,9 @@ testing {
         test {
             dependencies {
                 implementation libs.h2
-                implementation libs.spock
                 implementation libs.groovy.xml
                 implementation libs.groovy.sql
+                implementation libs.spock
                 runtimeOnly libs.junit5.launcher
             }
             targets {
