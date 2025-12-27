@@ -199,7 +199,7 @@ jooq {
 jooq.configurations.main.jooqConfiguration.generator.target.directory = file('src/generated/jooq/yet/another')
 
 afterEvaluate {
-  SourceSetContainer sourceSets = project.getExtensions().getByType(SourceSetContainer.class);
+  SourceSetContainer sourceSets = project.extensions.getByType(SourceSetContainer.class);
   SourceSet sourceSet = sourceSets.findByName('main')
   Set<File> dirs = sourceSet.getJava().getSrcDirs()
   dirs.eachWithIndex { dir, index ->
