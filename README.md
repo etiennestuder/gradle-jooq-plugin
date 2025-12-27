@@ -248,7 +248,7 @@ jooq {
     edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // default (can be omitted)
 
     configurations {
-        create("main") {  // name of the jOOQ configuration
+        create<nu.studer.gradle.jooq.JooqConfig>("main") {  // name of the jOOQ configuration
             generateSchemaSourceOnCompilation.set(true)  // default (can be omitted)
 
             jooqConfiguration {
