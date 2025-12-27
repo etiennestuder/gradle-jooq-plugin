@@ -122,7 +122,7 @@ The `<edition>:jooq:<version>` dependency of the specified version and edition i
 
 ```groovy
 jooq {
-  version = '3.20.5'  // the default (can be omitted)
+  version = '3.20.10'  // the default (can be omitted)
   edition = nu.studer.gradle.jooq.JooqEdition.OSS  // the default (can be omitted)
 }
 ```
@@ -131,7 +131,7 @@ jooq {
 
 ```kotlin
 jooq {
-  version.set("3.20.5")  // the default (can be omitted)
+  version.set("3.20.10")  // the default (can be omitted)
   edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // the default (can be omitted)
 }
 ```
@@ -179,7 +179,7 @@ explicitly setting the `directory` attribute of the `target` configuration of th
 
 ```groovy
 jooq {
-    version = '3.20.5'  // default (can be omitted)
+    version = '3.20.10'  // default (can be omitted)
     edition = nu.studer.gradle.jooq.JooqEdition.OSS  // default (can be omitted)
 
     configurations {
@@ -244,7 +244,7 @@ See the [Examples](#examples) section for complete, exemplary build scripts that
 import org.jooq.meta.kotlin.*
 
 jooq {
-    version.set("3.20.5")  // default (can be omitted)
+    version.set("3.20.10")  // default (can be omitted)
     edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // default (can be omitted)
 
     configurations {
@@ -515,6 +515,7 @@ When migrating your build from jOOQ plugin 4.x to 5.x, follow these steps:
 # Changelog
 
 + Next - TBD
++ 10.2 - Add Gradle 9 compatibility. Upgrade to jOOQ 3.20.10.
 + 10.1.1 - Upgrade to jOOQ 3.20.5.
 + 10.1 - First-class support for the Gradle Kotlin DSL. Upgrade to jOOQ 3.20.3.
 + 10.0 - Make Gradle 8.6 the minimum compatible version. Make Java 21 the minimum version. Upgrade to jOOQ 3.20.2.

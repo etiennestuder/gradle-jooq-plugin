@@ -114,7 +114,7 @@ dependencies {
 }
 
 jooq {
-    version.set("3.20.5")
+    version.set("3.20.10")
     configurations {
         create("main") {
             jooqConfiguration {
@@ -233,15 +233,15 @@ afterEvaluate {
         def result = runWithArguments('dependencies', '--configuration', 'jooqGenerator')
 
         then:
-        result.output.contains('org.jooq:jooq-codegen:3.20.5')
-        result.output.contains('org.jooq:jooq:3.20.5')
+        result.output.contains('org.jooq:jooq-codegen:3.20.10')
+        result.output.contains('org.jooq:jooq:3.20.10')
 
         when:
         result = runWithArguments('dependencies', '--configuration', 'compileClasspath')
 
         then:
-        !result.output.contains('org.jooq:jooq-codegen:3.20.5')
-        result.output.contains('org.jooq:jooq:3.20.5')
+        !result.output.contains('org.jooq:jooq-codegen:3.20.10')
+        result.output.contains('org.jooq:jooq:3.20.10')
     }
 
     void "can set custom jOOQ version"() {
@@ -293,15 +293,15 @@ jooq.version = '3.17.1'
         def result = runWithArguments('dependencies', '--configuration', 'jooqGenerator')
 
         then: // resolution (incl. transitive dependencies) fails since the trial artifact is not in a public repository
-        result.output.contains('org.jooq.trial:jooq-codegen:3.20.5 FAILED')
-        !result.output.contains('org.jooq.trial:jooq:3.20.5')
+        result.output.contains('org.jooq.trial:jooq-codegen:3.20.10 FAILED')
+        !result.output.contains('org.jooq.trial:jooq:3.20.10')
 
         when:
         result = runWithArguments('dependencies', '--configuration', 'compileClasspath')
 
         then:
-        !result.output.contains('org.jooq.trial:jooq-codegen:3.20.5')
-        result.output.contains('org.jooq.trial:jooq:3.20.5 FAILED')
+        !result.output.contains('org.jooq.trial:jooq-codegen:3.20.10')
+        result.output.contains('org.jooq.trial:jooq:3.20.10 FAILED')
     }
 
     void "can set custom jOOQ edition after initial configuration declaration"() {
@@ -314,15 +314,15 @@ jooq.edition = nu.studer.gradle.jooq.JooqEdition.PRO
         def result = runWithArguments('dependencies', '--configuration', 'jooqGenerator')
 
         then: // resolution (incl. transitive dependencies) fails since the pro artifact is not in a public repository
-        result.output.contains('org.jooq.pro:jooq-codegen:3.20.5 FAILED')
-        !result.output.contains('org.jooq.pro:jooq:3.20.5')
+        result.output.contains('org.jooq.pro:jooq-codegen:3.20.10 FAILED')
+        !result.output.contains('org.jooq.pro:jooq:3.20.10')
 
         when:
         result = runWithArguments('dependencies', '--configuration', 'compileClasspath')
 
         then:
-        !result.output.contains('org.jooq.pro:jooq-codegen:3.20.5')
-        result.output.contains('org.jooq.pro:jooq:3.20.5 FAILED')
+        !result.output.contains('org.jooq.pro:jooq-codegen:3.20.10')
+        result.output.contains('org.jooq.pro:jooq:3.20.10 FAILED')
     }
 
     void "supports task avoidance"() {
@@ -1082,7 +1082,7 @@ dependencies {
 }
 
 jooq {
-  version = '3.20.5'
+  version = '3.20.10'
   configurations {
     main {
       generationTool {
@@ -1121,7 +1121,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jooq:jooq-codegen:3.20.5'
+    implementation 'org.jooq:jooq-codegen:3.20.10'
 }
 """
     }
@@ -1212,7 +1212,7 @@ repositories {
 }
 
 dependencies {
-    jooqGenerator 'org.jooq:jooq-meta-extensions:3.20.5'
+    jooqGenerator 'org.jooq:jooq-meta-extensions:3.20.10'
 }
 
 jooq {
