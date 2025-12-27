@@ -170,7 +170,7 @@ buildscript {
 
 Configure the jOOQ generation tool via `jooq` extension, made available by the jOOQ plugin. The full set of configuration options when using jOOQ 3.20.x can
 be seen on the jOOQ generation tool's [Configuration](https://github.com/jOOQ/jOOQ/blob/version-3.20.5/jOOQ-meta/src/main/java/org/jooq/meta/jaxb/Configuration.java) class, or
-on the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.20.1.xsd).
+on the [jOOQ XSD](https://www.jooq.org/xsd/jooq-codegen-3.20.9.xsd).
 
 By default, the generated sources are written to `<projectDir>/build/generated-src/jooq/<configurationName>`. The target directory can be changed by
 explicitly setting the `directory` attribute of the `target` configuration of the `generator` configuration.
@@ -383,7 +383,7 @@ well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache
 ### Configuring a sequence of elements using the Gradle Groovy DSL
 
 Resemblance of the jOOQ configuration DSL with the Groovy language is coincidental. Complex types that include
-sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.13.0.xsd) must be defined in the DSL's nesting style:
+sequences like [ForcedTypes](https://www.jooq.org/xsd/jooq-codegen-3.20.9.xsd) must be defined in the DSL's nesting style:
 
 ```groovy
 forcedTypes {
