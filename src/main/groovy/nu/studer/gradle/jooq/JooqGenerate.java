@@ -15,7 +15,6 @@
  */
 package nu.studer.gradle.jooq;
 
-import nu.studer.gradle.jooq.util.Gradles;
 import nu.studer.gradle.jooq.util.Objects;
 import org.gradle.api.Action;
 import org.gradle.api.DefaultTask;
@@ -63,10 +62,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URL;
 
+import static nu.studer.gradle.jooq.ToolchainHelper.applyJavaLauncher;
+import static nu.studer.gradle.jooq.ToolchainHelper.configureJavaLauncher;
 import static nu.studer.gradle.jooq.util.Objects.cloneObject;
 
 /**
@@ -104,8 +103,8 @@ public abstract class JooqGenerate extends DefaultTask {
         this.execOperations = execOperations;
         this.fileSystemOperations = fileSystemOperations;
 
-        // Gradle toolchain support is only available as of Gradle 6.7
-        ToolchainHelper.tryConfigureJavaLauncher(getLauncher(), extensions);
+        // configure Gradle toolchain support
+        configureJavaLauncher(getLauncher(), extensions);
 
         // do not use lambda due to a bug in Gradle 6.5
         getOutputs().upToDateWhen(new Spec<Task>() {
@@ -287,33 +286,15 @@ public abstract class JooqGenerate extends DefaultTask {
 
     private ExecResult executeJooq(final File configFile) {
         return execOperations.javaexec(spec -> {
-            setMainClass("org.jooq.codegen.GenerationTool", spec);
+            spec.getMainClass().set("org.jooq.codegen.GenerationTool");
             spec.setClasspath(runtimeClasspath);
             spec.setWorkingDir(projectLayout.getProjectDirectory());
             spec.args(configFile);
-            ToolchainHelper.tryApplyJavaLauncher(getLauncher(), spec);
+            applyJavaLauncher(getLauncher(), spec);
             if (javaExecSpec != null) {
                 javaExecSpec.execute(spec);
             }
         });
-    }
-
-    private void setMainClass(String mainClass, JavaExecSpec spec) {
-        if (Gradles.isAtLeastGradleVersion("6.4")) {
-            spec.getMainClass().set(mainClass);
-        } else {
-            setMainClassRemoved(mainClass, spec);
-        }
-    }
-
-    private void setMainClassRemoved(String mainClass, JavaExecSpec spec) {
-        try {
-            // use reflection to access the setMain method as it was removed in Gradle 9
-            Method method = JavaExecSpec.class.getMethod("setMain", String.class);
-            method.invoke(spec, mainClass);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException("Unable to set the main class via reflection", e);
-        }
     }
 
 }
