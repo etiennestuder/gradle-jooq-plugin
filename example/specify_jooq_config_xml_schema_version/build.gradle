@@ -2,7 +2,7 @@ buildscript {
     configurations['classpath'].resolutionStrategy.eachDependency {
         if (requested.group.startsWith('org.jooq') && requested.name.startsWith('jooq')) {
             // set jOOQ version used at configuration time to enforce a specific jOOQ config XML schema version
-            useVersion '3.20.5'
+            useVersion '3.20.10'
         }
     }
 }
@@ -21,7 +21,7 @@ dependencies {
 }
 
 jooq {
-    version = '4.01'
+    version = '3.20.10' // set jOOQ version used at task execution time
 
     configurations {
         main {

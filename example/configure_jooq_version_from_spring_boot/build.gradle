@@ -26,7 +26,7 @@ test {
 
 jooq {
     // use jOOQ version defined by the Spring Boot Dependency Management plugin
-    version = ""
+    version = ''
     edition = JooqEdition.OSS
 
     configurations {
