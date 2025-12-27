@@ -77,7 +77,7 @@ Apply the `nu.studer.jooq` plugin to your Gradle project.
 
 ```groovy
 plugins {
-    id 'nu.studer.jooq' version '10.1.1'
+    id 'nu.studer.jooq' version '10.2'
 }
 ```
 
@@ -85,7 +85,7 @@ plugins {
 
 ```kotlin
 plugins {
-    id("nu.studer.jooq") version "10.1.1"
+    id("nu.studer.jooq") version "10.2"
 }
 ```
 
