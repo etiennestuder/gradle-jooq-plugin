@@ -106,13 +106,8 @@ public abstract class JooqGenerate extends DefaultTask {
         // configure Gradle toolchain support
         configureJavaLauncher(getLauncher(), extensions);
 
-        // do not use lambda due to a bug in Gradle 6.5
-        getOutputs().upToDateWhen(new Spec<Task>() {
-            @Override
-            public boolean isSatisfiedBy(Task task) {
-                return allInputsDeclared.get();
-            }
-        });
+        // conditionally participate in incremental builds
+        getOutputs().upToDateWhen(task -> allInputsDeclared.get());
     }
 
     private Provider<String> normalizedJooqConfigurationHash(ObjectFactory objects, ProviderFactory providers) {
@@ -144,11 +139,13 @@ public abstract class JooqGenerate extends DefaultTask {
         return outputDir;
     }
 
+    @SuppressWarnings("unused")
     @Internal
     public Property<Boolean> getAllInputsDeclared() {
         return allInputsDeclared;
     }
 
+    @SuppressWarnings("unused")
     @Internal
     public Action<? super JavaExecSpec> getJavaExecSpec() {
         return javaExecSpec;
@@ -159,6 +156,7 @@ public abstract class JooqGenerate extends DefaultTask {
         this.javaExecSpec = javaExecSpec;
     }
 
+    @SuppressWarnings("unused")
     @Internal
     public Action<? super ExecResult> getExecResultHandler() {
         return execResultHandler;
@@ -169,6 +167,7 @@ public abstract class JooqGenerate extends DefaultTask {
         this.execResultHandler = execResultHandler;
     }
 
+    @SuppressWarnings("unused")
     @Internal
     public Action<? super Configuration> getGenerationToolNormalization() {
         return generationToolNormalization;
