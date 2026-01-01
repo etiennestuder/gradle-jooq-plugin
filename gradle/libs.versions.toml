@@ -2,7 +2,7 @@
 jooq = "3.20.10"
 jaxb = "3.0.2"
 h2 = "2.4.240"
-spock = "2.4-groovy-4.0"
+spock = "2.4-groovy-5.0"
 groovy = "4.0.29"
 
 [libraries]
