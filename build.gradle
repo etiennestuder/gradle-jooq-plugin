@@ -18,7 +18,7 @@ configurations.configureEach { Configuration c ->
             details.useVersion '3.0.1'
         }
         if (details.requested.group == 'org.apache.groovy' && details.requested.name == 'groovy-xml') {
-            details.useVersion '4.0.28'
+            details.useVersion '4.0.29'
         }
     }
 }
