@@ -24,10 +24,14 @@ public enum JooqEdition {
 
     OSS("org.jooq"),
     PRO("org.jooq.pro"),
+    PRO_JAVA_21("org.jooq.pro-java-21"),
+    PRO_JAVA_17("org.jooq.pro-java-17"),
     PRO_JAVA_11("org.jooq.pro-java-11"),
     PRO_JAVA_8("org.jooq.pro-java-8"),
     PRO_JAVA_6("org.jooq.pro-java-6"),
     TRIAL("org.jooq.trial"),
+    TRIAL_JAVA_21("org.jooq.trial-java-21"),
+    TRIAL_JAVA_17("org.jooq.trial-java-17"),
     TRIAL_JAVA_11("org.jooq.trial-java-11"),
     TRIAL_JAVA_8("org.jooq.trial-java-8"),
     TRIAL_JAVA_6("org.jooq.trial-java-6");
