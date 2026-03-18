@@ -2,7 +2,7 @@ import org.jooq.meta.kotlin.*
 import nu.studer.gradle.jooq.JooqEdition
 
 plugins {
-    id("nu.studer.jooq") version "10.2"
+    id("nu.studer.jooq") version "10.2.1"
     id("java")
 }
 
@@ -15,7 +15,7 @@ dependencies {
 }
 
 jooq {
-    version.set("3.20.10")
+    version.set("3.20.11")
     edition.set(JooqEdition.OSS)
 
     configurations {

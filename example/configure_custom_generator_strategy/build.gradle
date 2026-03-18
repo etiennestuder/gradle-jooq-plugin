@@ -1,5 +1,5 @@
 plugins {
-    id 'nu.studer.jooq' version '10.2'
+    id 'nu.studer.jooq' version '10.2.1'
     id 'java'
 }
 
@@ -13,7 +13,7 @@ dependencies {
 }
 
 jooq {
-    version = '3.20.10'
+    version = '3.20.11'
     configurations {
         main {
             generationTool {
