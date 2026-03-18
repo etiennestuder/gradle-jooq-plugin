@@ -107,6 +107,11 @@ gradlePlugin {
             description = 'Gradle plugin that integrates jOOQ.'
             tags.set(['jooq'])
             implementationClass = 'nu.studer.gradle.jooq.JooqPlugin'
+            compatibility {
+                features {
+                    configurationCache = true
+                }
+            }
         }
     }
 }
