@@ -7,7 +7,7 @@ plugins {
 def isCI = System.getenv('CI') != null
 
 develocity {
-    server = 'https://etiennestuder.gradle-enterprise.cloud'
+    server = 'https://etiennestuder.develocity.cloud'
 
     buildScan {
         publishing.onlyIf { it.authenticated }
