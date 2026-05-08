@@ -1,5 +1,6 @@
 <p align="left">
   <a href="https://github.com/etiennestuder/gradle-jooq-plugin/actions?query=workflow%3A%22Build+Gradle+project%22"><img src="https://github.com/etiennestuder/gradle-jooq-plugin/workflows/Build%20Gradle%20project/badge.svg"></a>
+  <a href="https://community.develocity.cloud/scans?search.rootProjectNames=gradle-jooq-plugin"><img src="https://img.shields.io/badge/Revved%20up%20by-Develocity-06A0CE?logo=Gradle&labelColor=02303A" alt="Revved up by Develocity"></a>
 </p>
 
 gradle-jooq-plugin
