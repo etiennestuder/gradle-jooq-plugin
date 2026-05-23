@@ -69,6 +69,7 @@ testing {
 
                         def incompatibleJavaVsGradleVersions =
                                 parseInt(testJavaRuntimeVersion) < 17 && GradleVersion.version(testGradleVersion) >= GradleVersion.version('9.0') ||
+                                parseInt(testJavaRuntimeVersion) > 24 && GradleVersion.version(testGradleVersion) < GradleVersion.version('9.1') ||
                                 parseInt(testJavaRuntimeVersion) > 20 && GradleVersion.version(testGradleVersion) < GradleVersion.version('8.6') ||
                                 parseInt(testJavaRuntimeVersion) > 16 && GradleVersion.version(testGradleVersion) < GradleVersion.version('7.3') ||
                                 parseInt(testJavaRuntimeVersion) > 15 && GradleVersion.version(testGradleVersion) < GradleVersion.version('7.0')
