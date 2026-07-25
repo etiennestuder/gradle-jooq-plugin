@@ -15,7 +15,7 @@ dependencies {
 
 jooq {
    configurations {
-       create<nu.studer.gradle.jooq.JooqConfig>("main") {
+       create("main") {
             jooqConfiguration {
                 logging = org.jooq.meta.jaxb.Logging.WARN
                 jdbc {
