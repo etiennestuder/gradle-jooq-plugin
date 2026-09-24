@@ -49,22 +49,24 @@ The following Gradle features are supported by the jOOQ plugin:
 
  * First-class support for the Gradle Kotlin DSL and the Gradle Groovy DSL
  * `JooqGenerate` task instances participate in task configuration avoidance
- * `JooqGenerate` task instances participate in configuration caching
  * `JooqGenerate` task instances participate in incremental builds (if the task gets explicitly marked as all inputs being declared)
  * `JooqGenerate` task instances participate in task output caching (if the task gets explicitly marked as all inputs being declared)
  * `JooqGenerate` task instances participate in toolchains (if the task or project is configured with a toolchain)
+ * The jOOQ plugin is compatible with [Configuration Cache](https://docs.gradle.org/current/userguide/configuration_cache.html)
+ * The jOOQ plugin is compatible with [Isolated Projects](https://docs.gradle.org/current/userguide/isolated_projects.html)
 
 # Compatibility
 
-| Plugin version | Compatible Gradle versions | Support for Gradle Kotlin DSL |Support for Gradle Configuration Cache| Minimum JDK | Minimum jOOQ |
-|----------------|----------------------------|-------------------------------|--------------------------------------|-------------|--------------|
-| 10.0+          | 8.6+                       | Yes                           | Yes                                  | 21          | 3.16+        |
-| 9.0+           | 8.0+                       | Yes                           | Yes                                  | 17          | 3.16+        |
-| 8.0+           | 7.0+                       | Yes                           | Yes                                  | 17          | 3.16+        |
-| 7.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 11          | 3.16+        |
-| 6.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 11          | <= 3.15      |
-| 5.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 8           | <= 3.15      |
-| 4.0            | 5.0+, 6.0+, 7.0+           | No                            | No                                   | 8           | <= 3.15      |
+| Plugin version | Compatible Gradle versions | Support for Gradle Kotlin DSL |Support for Gradle Configuration Cache|Support for Gradle Isolated Projects| Minimum JDK | Minimum jOOQ |
+|----------------|----------------------------|-------------------------------|--------------------------------------|------------------------------------|-------------|--------------|
+| 10.0+          | 8.6+                       | Yes                           | Yes                                  | Yes (Gradle 9.7+)                  | 21          | 3.16+        |
+| 9.0+           | 8.0+                       | Yes                           | Yes                                  | Yes (Gradle 9.7+)                  | 17          | 3.16+        |
+| 8.2.2+         | 7.0+                       | Yes                           | Yes                                  | Yes (Gradle 9.7+)                  | 17          | 3.16+        |
+| 8.0+           | 7.0+                       | Yes                           | Yes                                  | No                                 | 17          | 3.16+        |
+| 7.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | No                                 | 11          | 3.16+        |
+| 6.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | No                                 | 11          | <= 3.15      |
+| 5.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | No                                 | 8           | <= 3.15      |
+| 4.0            | 5.0+, 6.0+, 7.0+           | No                            | No                                   | No                                 | 8           | <= 3.15      |
 
 See the [Migration](#migration) section on how to migrate your build from older to newer jOOQ plugin versions.
 
