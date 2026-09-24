@@ -14,7 +14,7 @@ gradle-jooq-plugin
 For each named jOOQ configuration declared in the build, the plugin adds a task to generate the jOOQ sources from the specified database schema and includes the
 generated Java sources in the matching source set, if existing. The code generation tasks participate
 in [task configuration avoidance](https://docs.gradle.org/current/userguide/task_configuration_avoidance.html),
-in [build configuration caching](https://docs.gradle.org/nightly/userguide/configuration_cache.html),
+in [build configuration caching](https://docs.gradle.org/current/userguide/configuration_cache.html),
 in [incremental builds](https://docs.gradle.org/current/userguide/incremental_build.html),
 in [task output caching](https://docs.gradle.org/current/userguide/build_cache.html),
 and in [toolchains](https://docs.gradle.org/current/userguide/toolchains.html). The plugin can be applied on both Java projects and Android projects.
@@ -381,7 +381,7 @@ provides some insights on how to debug such cases.
 
 My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This avoids overlapping
 outputs, and it also keeps the door open to let Gradle cache the generated sources which can be a significant build performance gain. The rationale is explained very
-well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
+well in the [Build Cache User Guide](https://docs.gradle.org/current/userguide/build_cache_concepts.html#concepts_overlapping_outputs).
 
 ### Configuring a sequence of elements using the Gradle Groovy DSL
 
