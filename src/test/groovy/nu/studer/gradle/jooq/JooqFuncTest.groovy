@@ -79,6 +79,40 @@ tasks.named('generateJooq').configure { allInputsDeclared = false }
         result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
     }
 
+    @Requires({ (determineGradleVersion().baseVersion >= GradleVersion.version('9.7')) })
+    void "can invoke jOOQ tasks in multi-project build with Gradle isolated projects enabled"() {
+        given:
+        settingsFile << """
+include 'sub'
+"""
+
+        and:
+        buildFile << buildWithJooqPluginDSL()
+        file('sub/build.gradle') << buildWithJooqPluginDSL()
+
+        when:
+        def result = runWithArguments('generateJooq', '-Dorg.gradle.isolated-projects=true', '--warning-mode', 'all')
+
+        then:
+        fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        fileExists('sub/build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        result.output.contains("Isolated Projects is an incubating feature.")
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+        result.task(':sub:generateJooq').outcome == TaskOutcome.SUCCESS
+
+        when:
+        new File(workspaceDir, 'build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java').delete()
+        new File(workspaceDir, 'sub/build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java').delete()
+        result = runWithArguments('generateJooq', '-Dorg.gradle.isolated-projects=true')
+
+        then:
+        fileExists('build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        fileExists('sub/build/generated-src/jooq/main/nu/studer/sample/jooq_test/tables/Foo.java')
+        result.output.contains("Reusing configuration cache.")
+        result.task(':generateJooq').outcome == TaskOutcome.SUCCESS
+        result.task(':sub:generateJooq').outcome == TaskOutcome.SUCCESS
+    }
+
     void "can invoke jOOQ task derived from configuration DSL with multiple items"() {
         given:
         buildFile << buildWithMultipleItemsJooqPluginDSL()

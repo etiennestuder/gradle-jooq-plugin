@@ -14,7 +14,7 @@ gradle-jooq-plugin
 For each named jOOQ configuration declared in the build, the plugin adds a task to generate the jOOQ sources from the specified database schema and includes the
 generated Java sources in the matching source set, if existing. The code generation tasks participate
 in [task configuration avoidance](https://docs.gradle.org/current/userguide/task_configuration_avoidance.html),
-in [build configuration caching](https://docs.gradle.org/nightly/userguide/configuration_cache.html),
+in [build configuration caching](https://docs.gradle.org/current/userguide/configuration_cache.html),
 in [incremental builds](https://docs.gradle.org/current/userguide/incremental_build.html),
 in [task output caching](https://docs.gradle.org/current/userguide/build_cache.html),
 and in [toolchains](https://docs.gradle.org/current/userguide/toolchains.html). The plugin can be applied on both Java projects and Android projects.
@@ -49,22 +49,24 @@ The following Gradle features are supported by the jOOQ plugin:
 
  * First-class support for the Gradle Kotlin DSL and the Gradle Groovy DSL
  * `JooqGenerate` task instances participate in task configuration avoidance
- * `JooqGenerate` task instances participate in configuration caching
  * `JooqGenerate` task instances participate in incremental builds (if the task gets explicitly marked as all inputs being declared)
  * `JooqGenerate` task instances participate in task output caching (if the task gets explicitly marked as all inputs being declared)
  * `JooqGenerate` task instances participate in toolchains (if the task or project is configured with a toolchain)
+ * The jOOQ plugin is compatible with [Configuration Cache](https://docs.gradle.org/current/userguide/configuration_cache.html)
+ * The jOOQ plugin is compatible with [Isolated Projects](https://docs.gradle.org/current/userguide/isolated_projects.html)
 
 # Compatibility
 
-| Plugin version | Compatible Gradle versions | Support for Gradle Kotlin DSL |Support for Gradle Configuration Cache| Minimum JDK | Minimum jOOQ |
-|----------------|----------------------------|-------------------------------|--------------------------------------|-------------|--------------|
-| 10.0+          | 8.6+                       | Yes                           | Yes                                  | 21          | 3.16+        |
-| 9.0+           | 8.0+                       | Yes                           | Yes                                  | 17          | 3.16+        |
-| 8.0+           | 7.0+                       | Yes                           | Yes                                  | 17          | 3.16+        |
-| 7.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 11          | 3.16+        |
-| 6.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 11          | <= 3.15      |
-| 5.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | 8           | <= 3.15      |
-| 4.0            | 5.0+, 6.0+, 7.0+           | No                            | No                                   | 8           | <= 3.15      |
+| Plugin version | Compatible Gradle versions | Support for Gradle Kotlin DSL |Support for Gradle Configuration Cache|Support for Gradle Isolated Projects| Minimum JDK | Minimum jOOQ |
+|----------------|----------------------------|-------------------------------|--------------------------------------|------------------------------------|-------------|--------------|
+| 10.0+          | 8.6+                       | Yes                           | Yes                                  | Yes (Gradle 9.7+)                  | 21          | 3.16+        |
+| 9.0+           | 8.0+                       | Yes                           | Yes                                  | Yes (Gradle 9.7+)                  | 17          | 3.16+        |
+| 8.2.2+         | 7.0+                       | Yes                           | Yes                                  | Yes (Gradle 9.7+)                  | 17          | 3.16+        |
+| 8.0+           | 7.0+                       | Yes                           | Yes                                  | No                                 | 17          | 3.16+        |
+| 7.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | No                                 | 11          | 3.16+        |
+| 6.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | No                                 | 11          | <= 3.15      |
+| 5.0+           | 6.1+, 7.0+                 | Yes                           | Yes                                  | No                                 | 8           | <= 3.15      |
+| 4.0            | 5.0+, 6.0+, 7.0+           | No                            | No                                   | No                                 | 8           | <= 3.15      |
 
 See the [Migration](#migration) section on how to migrate your build from older to newer jOOQ plugin versions.
 
@@ -379,7 +381,7 @@ provides some insights on how to debug such cases.
 
 My recommendation is to generate the jOOQ sources into a distinct folder, e.g. _src/generated/jooq_ or _build/generated-src/jooq_ (default). This avoids overlapping
 outputs, and it also keeps the door open to let Gradle cache the generated sources which can be a significant build performance gain. The rationale is explained very
-well in the [Build Cache User Guide](https://guides.gradle.org/using-build-cache/#concepts_overlapping_outputs).
+well in the [Build Cache User Guide](https://docs.gradle.org/current/userguide/build_cache_concepts.html#concepts_overlapping_outputs).
 
 ### Configuring a sequence of elements using the Gradle Groovy DSL
 
